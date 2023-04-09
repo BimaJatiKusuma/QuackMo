@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/peternak/peternak_transaksi.dart';
 
 class PeternakHomepage extends StatelessWidget {
   const PeternakHomepage({super.key});
@@ -42,16 +43,57 @@ class PeternakHomepage extends StatelessWidget {
               children: [
                 Text("Kategori"),
                 Row(
-                  children: [],
+                  children: [
+                    ElevatedButton(onPressed: (){}, child: Column(
+                      children: [
+                        Image(image: AssetImage('images/produk.png')),
+                        Text('Produk')
+                      ],
+                    )),
+                    ElevatedButton(onPressed: (){}, child: Column(
+                      children: [
+                        Image(image: AssetImage('images/cuaca.png')),
+                        Text('Monitoring Cuaca')
+                      ],
+                    )),
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return PeternakTransaksi();
+                      }));
+                    }, child: Column(
+                      children: [
+                        Image(image: AssetImage('images/transaksi.png')),
+                        Text('Transaksi')
+                      ],
+                    ))
+                  ],
                 ),
                 Row(
-                  children: [],
+                  children: [
+                    ElevatedButton(onPressed: (){}, child: Column(
+                      children: [
+                        Image(image: AssetImage('images/pesanan.png')),
+                        Text('Pesanan Masuk')
+                      ],
+                    )),
+                    ElevatedButton(onPressed: (){}, child: Column(
+                      children: [
+                        Image(image: AssetImage('images/distribusi.png')),
+                        Text('Distribusi')
+                      ],
+                    ))
+                  ],
                 )
               ],
             ),
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
+        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Keluar'),
+      ])
     );
   }
 }
