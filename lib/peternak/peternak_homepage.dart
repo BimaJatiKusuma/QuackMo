@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/peternak/peternak_pesanan.dart';
 import 'package:quackmo/peternak/peternak_transaksi.dart';
 
 class PeternakHomepage extends StatelessWidget {
@@ -70,7 +71,11 @@ class PeternakHomepage extends StatelessWidget {
                 ),
                 Row(
                   children: [
-                    ElevatedButton(onPressed: (){}, child: Column(
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return PeternakPesanan();
+                      }));
+                    }, child: Column(
                       children: [
                         Image(image: AssetImage('images/pesanan.png')),
                         Text('Pesanan Masuk')
@@ -80,6 +85,12 @@ class PeternakHomepage extends StatelessWidget {
                       children: [
                         Image(image: AssetImage('images/distribusi.png')),
                         Text('Distribusi')
+                      ],
+                    )),
+                    ElevatedButton(onPressed: (){}, child: Column(
+                      children: [
+                        Image(image: AssetImage('images/pesan_masuk.png')),
+                        Text('Pesan Masuk')
                       ],
                     ))
                   ],

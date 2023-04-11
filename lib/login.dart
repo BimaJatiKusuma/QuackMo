@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
+import 'package:quackmo/produsen/produsen_login.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -32,14 +33,14 @@ class Login extends StatelessWidget {
                   children: [
                     Image(image: AssetImage('images/produsen_01.png')),
                     Text("Produsen Telur Asin"),
-                    // ElevatedButton(
-                    //   onPressed: (){
-                    //     Navigator.push(context, MaterialPageRoute(builder: (context){
-                    //       return PeternakLogin();
-                    //     }));
-                    //   },
-                    //   child: Text("Masuk")
-                    // ),
+                    ElevatedButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ProdusenLogin();
+                        }));
+                      },
+                      child: Text("Masuk")
+                    ),
                   ],
                 )
               ],
