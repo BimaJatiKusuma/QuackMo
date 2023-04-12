@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/produsen/produsen_pesanan.dart';
+import 'package:quackmo/produsen/produsen_transaksi.dart';
 
 class ProdusenHomepage extends StatelessWidget {
   const ProdusenHomepage({super.key});
@@ -33,14 +35,14 @@ class ProdusenHomepage extends StatelessWidget {
                     ElevatedButton(onPressed: (){}, child: Column(
                       children: [
                         Image(image: AssetImage('images/daftar_peternak.png')),
-                        Text('Produk')
+                        Text('List Peternak')
                       ],
                     )),
 
                     ElevatedButton(onPressed: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (context){
-                      //   return PeternakPesanan();
-                      // }));
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ProdusenPesanan();
+                      }));
                     }, child: Column(
                       children: [
                         Image(image: AssetImage('images/pesanan.png')),
@@ -50,9 +52,9 @@ class ProdusenHomepage extends StatelessWidget {
 
 
                     ElevatedButton(onPressed: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (context){
-                      //   return PeternakTransaksi();
-                      // }));
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ProdusenTransaksi();
+                      }));
                     }, child: Column(
                       children: [
                         Image(image: AssetImage('images/transaksi.png')),
@@ -84,6 +86,8 @@ class ProdusenHomepage extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Keluar'),
+        //beri action onPress https://stackoverflow.com/questions/57496185/how-to-give-onpress-function-for-bottomnavigationbar-menu-in-flutter
+        //bisa dari referensi file praktikum pbm
       ])
     );
   }

@@ -8,11 +8,12 @@ class PeternakTransaksiDetailDone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return  Scaffold(
+      body: Center(
       child: Column(
         children: [
           Icon(Icons.check_circle),
-          Text('TRANSAKSI BERHASIL DITAMBAHKAN'),
+          Text('TRANSAKSI BERHASIL DISETUJUI'),
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
             // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
@@ -21,6 +22,8 @@ class PeternakTransaksiDetailDone extends StatelessWidget {
           }, child: Text('Kembali'))
         ],
       ),
+    ),
     );
+    
   }
 }

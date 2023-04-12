@@ -42,7 +42,7 @@ class PeternakPesanan extends StatelessWidget {
                 },
                 child: Card(
                       child: Row(children: [
-                        Image(image: AssetImage('images/transaksi_02.png')),
+                        Icon(Icons.square),
                         Column(
                           children: [
                             Text('Telur Hibrida'),
@@ -67,7 +67,7 @@ class PeternakPesanan extends StatelessWidget {
                     Text('1 April 2023'),
                     Card(
                       child: Row(children: [
-                        Image(image: AssetImage('images/transaksi_02.png')),
+                        Icon(Icons.square),
                         Column(
                           children: [
                             Text('Telur Hibrida'),
@@ -89,7 +89,7 @@ class PeternakPesanan extends StatelessWidget {
                     Text('1 April 2023'),
                     Card(
                       child: Row(children: [
-                        Image(image: AssetImage('images/transaksi_02.png')),
+                        Icon(Icons.square),
                         Column(
                           children: [
                             Text('Telur Hibrida'),
@@ -109,11 +109,11 @@ class PeternakPesanan extends StatelessWidget {
   }
 }
 
-class PeternakPesananKonfirmasi extends StatelessWidget {
-  const PeternakPesananKonfirmasi({super.key});
+// class PeternakPesananKonfirmasi extends StatelessWidget {
+//   const PeternakPesananKonfirmasi({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(onPressed: () {}, child: Text("test"));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextButton(onPressed: () {}, child: Text("test"));
+//   }
+// }
