@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/produsen/produsen_daftar_peternak.dart';
 import 'package:quackmo/produsen/produsen_pesanan.dart';
 import 'package:quackmo/produsen/produsen_transaksi.dart';
 
@@ -32,7 +33,11 @@ class ProdusenHomepage extends StatelessWidget {
                 Text("Kategori"),
                 Row(
                   children: [
-                    ElevatedButton(onPressed: (){}, child: Column(
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return ProdusenDaftarPeternak();
+                      }));
+                    }, child: Column(
                       children: [
                         Image(image: AssetImage('images/daftar_peternak.png')),
                         Text('List Peternak')

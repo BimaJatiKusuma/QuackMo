@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quackmo/peternak/peternak_homepage.dart';
+import 'package:quackmo/peternak/peternak_regis.dart';
 
 class PeternakLogin extends StatefulWidget {
   const PeternakLogin({super.key});
@@ -62,7 +63,11 @@ class _PeternakLoginState extends State<PeternakLogin> {
                   Row(
                     children: [
                       Text("Don't have an account?"),
-                      Text("Sign Up", style: TextStyle(color: Colors.blue))
+                      TextButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return PeternakRegis();
+                        }));
+                      }, child: Text("daftar"))
                     ],
                   ),
 
