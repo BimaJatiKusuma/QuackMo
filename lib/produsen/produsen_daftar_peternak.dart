@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/produsen/produsen_daftar_produk.dart';
+
 
 class ProdusenDaftarPeternak extends StatelessWidget {
   const ProdusenDaftarPeternak({super.key});
@@ -14,9 +16,31 @@ class ProdusenDaftarPeternak extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          ElevatedButton(onPressed: (){
-            
-          }, child: Text("Cek Bentuk Pembayaran_Test01"))
+          Text("Jember"),
+          Container(
+          child: Column(children: [
+            InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ProdusenDaftarProduk();
+                }));
+              },
+              child: Ink(
+                color: Colors.blue,
+                child: Row(
+                  children: [
+                    Icon(Icons.square),
+                    Column(children: [
+                      Text('Peternak Bebek Farhaz'),
+                      Text('PT. Jaya Abadi'),
+                      Text('Alamat: Jl. Mawar Merah no. 11')
+                    ])
+                  ],
+                ),
+              ),
+            ),
+          ]),
+        ),
         ],
       ),
     );

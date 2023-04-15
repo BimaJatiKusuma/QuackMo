@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -19,6 +17,13 @@ class _PeternakRegisState extends State<PeternakRegis> {
 
   TextEditingController usernameController =  TextEditingController();
   TextEditingController emailController =  TextEditingController();
+  TextEditingController noHPController =  TextEditingController();
+  TextEditingController alamatController =  TextEditingController();
+  TextEditingController kotaController =  TextEditingController();
+  TextEditingController negaraController =  TextEditingController();
+  TextEditingController kodePosController =  TextEditingController();
+  TextEditingController usiaController =  TextEditingController();
+  TextEditingController genderController =  TextEditingController();
   TextEditingController passwordController =  TextEditingController();
   TextEditingController konfirmasipasswordController =  TextEditingController();
 
@@ -53,13 +58,49 @@ class _PeternakRegisState extends State<PeternakRegis> {
                       TextFormField(
                         controller: usernameController,
                         decoration: InputDecoration(
-                          hintText: 'username',
+                          hintText: 'Nama',
                         ),
                       ),
                       TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: noHPController,
+                        decoration: InputDecoration(
+                          hintText: 'No. Hp',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: alamatController,
+                        decoration: InputDecoration(
+                          hintText: 'Alamat',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: kotaController,
+                        decoration: InputDecoration(
+                          hintText: 'Kota',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: kodePosController,
+                        decoration: InputDecoration(
+                          hintText: 'Kode Pos',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: usiaController,
+                        decoration: InputDecoration(
+                          hintText: 'Usia (dalam tahun)',
+                        ),
+                      ),
+                      TextFormField(
+                        controller: genderController,
+                        decoration: InputDecoration(
+                          hintText: 'Jenis Kelamin',
                         ),
                       ),
                       TextFormField(

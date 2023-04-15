@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/produsen/produsen_homepage.dart';
 
 class ProdusenPesanan extends StatelessWidget {
   const ProdusenPesanan({super.key});
@@ -9,7 +10,10 @@ class ProdusenPesanan extends StatelessWidget {
         appBar: AppBar(
           leading: BackButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+                return ProdusenHomepage();
+              }), (route) => false);
+
             },
           ),
           title: Title(color: Colors.indigo, child: Text("Pemesanan")),
