@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quackmo/peternak/peternak_homepage.dart';
 import 'package:quackmo/produsen/produsen_homepage.dart';
+import 'package:quackmo/produsen/produsen_regis.dart';
 
 class ProdusenLogin extends StatefulWidget {
   const ProdusenLogin({super.key});
@@ -63,7 +64,11 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                   Row(
                     children: [
                       Text("Don't have an account?"),
-                      Text("Sign Up", style: TextStyle(color: Colors.blue))
+                      TextButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ProdusenRegis();
+                        }));
+                      }, child: Text("daftar"))
                     ],
                   ),
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quackmo/produsen/produsen_homepage.dart';
+import 'package:quackmo/produsen/produsen_pembayaran.dart';
 
 class ProdusenPesanan extends StatelessWidget {
   const ProdusenPesanan({super.key});
@@ -68,7 +69,11 @@ class ProdusenPesanan extends StatelessWidget {
 
 
                 InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return ProdusenPembayaran();
+                  }));
+                },
                 child: Column(
                   children: [
                     Text('30 Maret 2023'),
@@ -80,7 +85,7 @@ class ProdusenPesanan extends StatelessWidget {
                             Text('Telur Hibrida'),
                             Text('PT. Jaya Abadi'),
                             Text('Pemesanan: 1 butir telur'),
-                            Text('Berhasil memesan')
+                            Text('Menunggu Pembayaran')
                           ],
                         ),
 

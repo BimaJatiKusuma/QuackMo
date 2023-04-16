@@ -103,7 +103,7 @@ class TabDetailPenjualan extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        Text("+ Rp. 100.0000"),
+                        Text("- Rp. 100.0000"),
                         Text("+ Rp. 200.0000"),
                         Text("+ Rp. 100.0000")
                       ],

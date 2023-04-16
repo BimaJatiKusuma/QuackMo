@@ -108,10 +108,10 @@ class _ProdusenDaftarProdukDetailState
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () =>
-                                      Navigator.pushAndRemoveUntil(context,
+                                      Navigator.pushReplacement(context,
                                           MaterialPageRoute(builder: (context) {
                                     return ProdusenPesanan();
-                                  }), (route) => false),
+                                  })),
                                   child: const Text('Pesan Sekarang'),
                                 ),
                               ],
@@ -120,7 +120,7 @@ class _ProdusenDaftarProdukDetailState
 
                       setState(() {});
                     },
-                    child: Text("Show Dailog"))
+                    child: Text("Beli"))
               ],
             ),
           )

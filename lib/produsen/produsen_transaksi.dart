@@ -32,7 +32,7 @@ class ProdusenTransaksi extends StatelessWidget {
                             Text('Telur Hibrida'),
                             Text('PT. Jaya Abadi'),
                             Text('Pemesanan: 1 butir telur'),
-                            Text('Berhasil')
+                            Text('Menunggu Verifikasi Peternak')
                           ],
                         ),
                         Text("- Rp. 20.000")
@@ -55,7 +55,7 @@ class ProdusenTransaksi extends StatelessWidget {
                             Text('Telur Hibrida'),
                             Text('PT. Jaya Abadi'),
                             Text('Pemesanan: 1 butir telur'),
-                            Text('Berhasil')
+                            Text('Pembayaran Ditolak')
                           ],
                         ),
                         Text("- Rp. 20.000"),
@@ -83,7 +83,7 @@ class ProdusenTransaksi extends StatelessWidget {
                             Text('Telur Hibrida'),
                             Text('PT. Jaya Abadi'),
                             Text('Pemesanan: 1 butir telur'),
-                            Text('Berhasilr')
+                            Text('Berhasil, Menunggu Pengiriman')
                           ],
                         ),
                         Text("- Rp. 20.000"),

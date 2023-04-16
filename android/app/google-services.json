@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "924952088144",
+    "project_id": "quackmoppl",
+    "storage_bucket": "quackmoppl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:924952088144:android:8dbb70c7f7ce0deadf4b55",
+        "android_client_info": {
+          "package_name": "com.example.quackmo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924952088144-25irvcduc0cf6aceov5295dekifjkhki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCi8AuN2pr3kIvlWWgfTkqRywIHdI0AjMg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924952088144-25irvcduc0cf6aceov5295dekifjkhki.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

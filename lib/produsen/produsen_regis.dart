@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-class PeternakRegis extends StatefulWidget {
-  const PeternakRegis({super.key});
+class ProdusenRegis extends StatefulWidget {
+  const ProdusenRegis({super.key});
 
   @override
-  State<PeternakRegis> createState() => _PeternakRegisState();
+  State<ProdusenRegis> createState() => _ProdusenRegisState();
 }
 
-class _PeternakRegisState extends State<PeternakRegis> {
+class _ProdusenRegisState extends State<ProdusenRegis> {
   String username = "";
   String email= "";
   String password= "";
