@@ -76,7 +76,7 @@ class PeternakPesanan extends StatelessWidget {
                             Text('Pemesanan telah dibatalkan')
                           ],
                         ),
-                        Icon(Icons.check_circle_outline),
+                        Icon(Icons.close_rounded),
                       ]),
                     ),
                   ],
