@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:quackmo/peternak/peternak_homepage.dart';
 import 'package:quackmo/produsen/produsen_homepage.dart';
 import 'package:quackmo/produsen/produsen_regis.dart';
 
