@@ -32,7 +32,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
     final ImagePicker foto = ImagePicker();
     final XFile? fotoProduk = await foto.pickImage(source: ImageSource.gallery);
     fotoProduk1 = fotoProduk!.path;
-    produkFoto = File(fotoProduk!.path);
+    produkFoto = File(fotoProduk.path);
     
     if(produkFoto==null) return;
     
