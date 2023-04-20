@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
+import 'package:quackmo/peternak/peternak_login.dart';
 import 'package:quackmo/peternak/peternak_pesanan.dart';
 import 'package:quackmo/peternak/peternak_transaksi.dart';
 
 import 'package:quackmo/login.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
@@ -57,6 +60,7 @@ class _PeternakHomepageState extends State<PeternakHomepage> {
 
 _logout(context){
   SchedulerBinding.instance.addPostFrameCallback((_) {
+    userPeternakID='';
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
         return Login();
         }), (route) => false);
@@ -94,6 +98,7 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                 Image(image: AssetImage('images/peternak_01.png')),
                 Column(
                   children: [
+                    Text(userPeternakID),
                     Text('Hi,Peternak'),
                     Text('Farlin Nurjananti')
                   ],
@@ -123,7 +128,11 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                 Text("Kategori"),
                 Row(
                   children: [
-                    ElevatedButton(onPressed: (){}, child: Column(
+                    ElevatedButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return PeternakDaftarProduk();
+                      }));
+                    }, child: Column(
                       children: [
                         Image(image: AssetImage('images/produk.png')),
                         Text('Produk')
