@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,16 +24,42 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
   TextEditingController rekeningController = TextEditingController();
   TextEditingController danaController = TextEditingController();
 
-  File? buktiFoto;
+  File? produkFoto;
+  String fotoProduk1='';
+  String imageUrl = '';
 
   Future getImage() async {
     final ImagePicker foto = ImagePicker();
-    final XFile? fotoBukti = await foto.pickImage(source: ImageSource.gallery);
-    buktiFoto = File(fotoBukti!.path);
+    final XFile? fotoProduk = await foto.pickImage(source: ImageSource.gallery);
+    fotoProduk1 = fotoProduk!.path;
+    produkFoto = File(fotoProduk!.path);
+    
+    if(produkFoto==null) return;
+    
     setState(() {});
+
   }
 
+Future uploadImage() async{
+    String uniqeFileName = DateTime.now().millisecondsSinceEpoch.toString();
+    //Reference ke storage root
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference referenceDirFotoProduk = referenceRoot.child('foto_produk');
 
+    //Membuat reference untuk foto yang akan diupload
+    Reference referenceFotoProdukUpload = referenceDirFotoProduk.child(uniqeFileName);
+
+    try{
+    //menyimpan file
+    await referenceFotoProdukUpload.putFile(File(fotoProduk1));
+    //success
+    imageUrl = await referenceFotoProdukUpload.getDownloadURL();
+    }
+    catch(error){
+      print(error);
+    }
+
+}
 
   @override
   Widget build(BuildContext context) {
@@ -50,16 +77,16 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
             key: _formkey,
             child: Column(
             children: [
-              Text("$buktiFoto"),
+              Text("$produkFoto"),
               Container(
                 child: Column(
                   children: [
-                    buktiFoto != null
+                    produkFoto != null
                         ? Container(
                             height: 500,
                             width: MediaQuery.of(context).size.width,
                             child: Image.file(
-                              buktiFoto!,
+                              produkFoto!,
                               fit: BoxFit.cover,
                             ))
                         : Container(),
@@ -76,6 +103,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                   ],
                 ),
               ),
+              Text(imageUrl),
               TextFormField(
                 controller: namaProdukController,
                 decoration: InputDecoration(label: Text("Nama Produk")),
@@ -128,6 +156,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
 
               ElevatedButton(onPressed: () async{
                 await
+                  uploadImage();
                   peternak_produk.add({
                     'peternak_uid': userPeternakID,
                     'nama_produk': namaProdukController.text,
@@ -136,7 +165,8 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                     'satuan': int.tryParse(satuanController.text)??0,
                     'keterangan': keteranganController.text,
                     'no_rekening': int.tryParse(rekeningController.text)??0,
-                    'dana':int.tryParse(danaController.text)??0
+                    'dana':int.tryParse(danaController.text)??0,
+                    'foto_url':imageUrl,
                 });
                 namaProdukController.text = '';
                 stokController.text = '';
