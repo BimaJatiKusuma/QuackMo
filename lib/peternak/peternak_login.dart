@@ -13,7 +13,7 @@ class PeternakLogin extends StatefulWidget {
 
 
 String userPeternakID = '';
-
+String alertText = ' ';
 
 class _PeternakLoginState extends State<PeternakLogin> {
   bool _isObscure = true;
@@ -96,7 +96,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                     ),
             
 
-
+                    Text("perhatian!!: ${alertText}"),
 
 
                     Row(
@@ -188,10 +188,16 @@ class _PeternakLoginState extends State<PeternakLogin> {
                           }), (route) => false);
                         }
                         else{
+                          setState(() {
+                            alertText = 'User Belum mendaftar sebagai peternak';
+                          });
                           return print('User Belum mendaftar sebagai peternak');
                         }
                       }
                       else{
+                        setState(() {
+                          alertText = 'Email tidak terdaftar';
+                        });
                         print('Email tidak terdaftar');
                       }
                     });
@@ -209,9 +215,15 @@ class _PeternakLoginState extends State<PeternakLogin> {
       }
       on FirebaseAuthException catch (e){
         if (e.code == 'user-not-found'){
+          setState(() {
+            alertText = 'Email tidak terdaftar';
+          });
           print('Email tidak terdaftar');
         }
         else if (e.code == 'wrong-password'){
+          setState(() {
+            alertText = 'Password salah';
+          });
           print('Password salah');
         }
       }
