@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quackmo/produsen/produsen_login.dart';
+
 
 class ProdusenRegis extends StatefulWidget {
   const ProdusenRegis({super.key});
@@ -15,6 +19,9 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
   String password= "";
   bool _obscureText = true;
 
+  final _formkey = GlobalKey<FormState>();
+  final _auth = FirebaseAuth.instance;
+
   TextEditingController usernameController =  TextEditingController();
   TextEditingController emailController =  TextEditingController();
   // TextEditingController noHPController =  TextEditingController();
@@ -27,6 +34,8 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
   TextEditingController passwordController =  TextEditingController();
   TextEditingController konfirmasipasswordController =  TextEditingController();
 
+  var role = 'produsen';
+  
   void _toggle(){
     setState(() {
       _obscureText = !_obscureText;
@@ -53,6 +62,7 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
               children: [
                 Text('Sign Up'),
                 Form(
+                  key: _formkey,
                   child: Column(
                     children: [
                       TextFormField(
@@ -66,6 +76,17 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                         decoration: InputDecoration(
                           hintText: 'Email',
                         ),
+                        validator: (value) {
+                          if (value!.length == 0){
+                            return "Email tidak boleh kosong";
+                          }
+                          if (!RegExp("^[1-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                            return ("Masukkan email secara benar");
+                          }
+                          else {
+                            return null;
+                          }
+                        },
                       ),
                       // TextFormField(
                       //   controller: noHPController,
@@ -110,7 +131,18 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                           hintText: 'Password',
                           suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
                         ),
-                        
+                        validator: (value) {
+                          RegExp regex = RegExp(r'^.{6,}$');
+                          if (value!.isEmpty){
+                            return "password tidak boleh kosong";
+                          }
+                          if (!regex.hasMatch(value)){
+                            return ("masukkan password minimal 6 karakter");
+                          }
+                          else {
+                            return null;
+                          }
+                        },
                       ),
                       TextFormField(
                         controller: konfirmasipasswordController,
@@ -119,10 +151,18 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                           hintText: 'Konfirmasi Password',
                           suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
                         ),
+                        validator: (value) {
+                          if (konfirmasipasswordController.text != passwordController.text){
+                            return "Password tidak sama";
+                          }
+                          else {
+                            return null;
+                          }
+                        },
                       ),
                     
                     ElevatedButton(onPressed: (){
-                      Navigator.pop(context);
+                      signUp(usernameController.text, emailController.text, passwordController.text, role);
                     }, child: Text("Daftar"))
                     ],
                   ),
@@ -134,4 +174,38 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
       ),
     );
   }
+
+
+  void signUp(String nama, String email, String password, String role) async {
+    CircularProgressIndicator();
+    if(_formkey.currentState!.validate()){
+      try{
+        //fix this
+      await _auth
+        .createUserWithEmailAndPassword(email: email, password: password)
+        .then((value) => {postDetailsToFirestore(nama, email, role)});
+        // .catchError((e){});
+      }
+      on FirebaseAuthException catch (e){
+        if(e.code == 'email-already-in-use'){
+            print("email sudah digunakan");
+            
+          }
+      }
+    }
+  }
+
+  postDetailsToFirestore(String nama, String email, String role) async {
+    CircularProgressIndicator();
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    var user = _auth.currentUser;
+    CollectionReference ref = FirebaseFirestore.instance.collection('users');
+    ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role});
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+      return ProdusenLogin();
+    }));
+  }
+
+
+
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quackmo/login.dart';
-import 'package:quackmo/produsen/produsen_daftar_peternak.dart';
+import 'package:quackmo/produsen/daftarpeternak/produsen_daftar_peternak.dart';
+import 'package:quackmo/produsen/produsen_login.dart';
 import 'package:quackmo/produsen/produsen_pesanan.dart';
 import 'package:quackmo/produsen/produsen_transaksi.dart';
 
@@ -55,6 +56,7 @@ class _ProdusenHomepageState extends State<ProdusenHomepage> {
 
 _logout(context){
   SchedulerBinding.instance.addPostFrameCallback((_) {
+    userProdusenID='';
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
         return Login();
         }), (route) => false);
@@ -92,6 +94,7 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
                 Image(image: AssetImage('images/produsen_01.png')),
                 Column(
                   children: [
+                    Text(userProdusenID),
                     Text('Hi,Produsen!'),
                     Text('Farhaz Nurjananto')
                   ],
