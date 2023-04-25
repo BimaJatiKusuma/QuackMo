@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quackmo/peternak/peternak_transaksi_detail.dart';
+import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi_detail.dart';
 
 class TabTransaksiMasuk extends StatelessWidget {
   const TabTransaksiMasuk({super.key});

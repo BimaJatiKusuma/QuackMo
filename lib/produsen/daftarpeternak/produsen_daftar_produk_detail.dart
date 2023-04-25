@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quackmo/produsen/produsen_login.dart';
-import 'package:quackmo/produsen/produsen_pesanan.dart';
+import 'package:quackmo/produsen/pesanan/produsen_pesanan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProdusenDaftarProdukDetail extends StatefulWidget {
@@ -26,7 +26,7 @@ class _ProdusenDaftarProdukDetailState
   late int total = satuan;
   int hargaTotal = 0;
   _add() {
-    if (total > _produkData['stok']) {
+    if (total >= _produkData['stok']) {
       total = total;
     } else {
       total = total + satuan;
@@ -35,7 +35,7 @@ class _ProdusenDaftarProdukDetailState
   }
 
   _decrease() {
-    if (total > 0) {
+    if (total <= satuan) {
       total = satuan;
     } else {
       total = total - satuan;
@@ -137,7 +137,7 @@ class _ProdusenDaftarProdukDetailState
                                             children: [
                                               Text("SubTotal:"),
                                               Text(
-                                                  '${_produkData['harga'] * total}')
+                                                  '${_produkData['harga'] * (total / satuan)}')
                                             ],
                                           )
                                         ]),

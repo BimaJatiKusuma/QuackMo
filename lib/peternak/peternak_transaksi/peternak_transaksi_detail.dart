@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:quackmo/peternak/peternak_transaksi_detail_done.dart';
+import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi_detail_done.dart';
 
 class PeternakTransaksiDetail extends StatelessWidget {
   const PeternakTransaksiDetail({super.key});

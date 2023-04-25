@@ -90,7 +90,9 @@ class _PeternakPesananState extends State<PeternakPesanan> {
                               ),
                               TextButton(
                                 onPressed: () {
-                                  _pemesananList.doc(id_pemesanan).update({'id_kondisi':3});
+                                  _pemesananList
+                                      .doc(id_pemesanan)
+                                      .update({'id_kondisi': 3});
                                   Navigator.pop(context, 'Ya');
                                 },
                                 child: Text('YA'),

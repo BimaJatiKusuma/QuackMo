@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
-import 'package:quackmo/peternak/peternak_pesanan.dart';
-import 'package:quackmo/peternak/peternak_transaksi.dart';
+import 'package:quackmo/peternak/peternak_pemesanan/peternak_pesanan.dart';
+import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi.dart';
 
 import 'package:quackmo/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,8 +99,8 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                 Column(
                   children: [
                     Text(userPeternakID),
-                    Text('Hi,Peternak'),
-                    Text('Farlin Nurjananti')
+                    Text('Hai, Peternak'),
+                    Text(userNamaPeternak),
                   ],
                 )
               ],

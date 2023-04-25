@@ -13,6 +13,7 @@ class PeternakLogin extends StatefulWidget {
 
 
 String userPeternakID = '';
+String userNamaPeternak = '';
 String alertText = ' ';
 
 class _PeternakLoginState extends State<PeternakLogin> {
@@ -183,6 +184,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                       if (documentSnapshot.exists){
                         if(documentSnapshot.get('role')=='peternak'){
                           userPeternakID = user.uid;
+                          userNamaPeternak = documentSnapshot.get('nama');
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
                             return PeternakHomepage();
                           }), (route) => false);
