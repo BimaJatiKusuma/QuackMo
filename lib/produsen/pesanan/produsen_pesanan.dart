@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:quackmo/produsen/produsen_homepage.dart';
 import 'package:quackmo/produsen/produsen_login.dart';
-import 'package:quackmo/produsen/produsen_pembayaran.dart';
+import 'package:quackmo/produsen/pembayaran/produsen_pembayaran.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:quackmo/produsen/transaksi/produsen_transaksi.dart';
@@ -21,6 +21,8 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
   late Stream<QuerySnapshot> _streamPemesananList;
   List kondisi_produk = [1, 2, 3];
 
+  String _orderBy = 'id_kondisi';
+  bool _isDescending = false;
   void initState() {
     super.initState();
     _streamPemesananList = _pemesananList
@@ -92,12 +94,20 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
               QuerySnapshot querySnapshot = snapshot.data;
               List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
                   querySnapshot.docs;
+              if(listQueryDocumentSnapshot.length>=2){
+                listQueryDocumentSnapshot.sort((a,b)=> b['id_kondisi'].compareTo(a['id_kondisi']));
+              }
+              // print(listQueryDocumentSnapshot);
+              // print(querySnapshot);
+              // print(listQueryDocumentSnapshot[1]);
 
               return ListView.builder(
                 itemCount: listQueryDocumentSnapshot.length,
                 itemBuilder: (context, index) {
                   QueryDocumentSnapshot pemesanan =
                       listQueryDocumentSnapshot[index];
+                      print(index);
+                      print(pemesanan);
                   var id_pemesanan = pemesanan.id;
                   DateTime waktuDB = (pemesanan['waktu'] as Timestamp).toDate();
                   String formatWaktu =
@@ -105,9 +115,10 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
 
                   return InkWell(
                       onTap: () {
-                        if (pemesanan['id_kondisi']==3){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                            return ProdusenTransaksi();
+                        if (pemesanan['id_kondisi'] == 3) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ProdusenPembayaran(id_pemesanan);
                           }));
                         }
                       },

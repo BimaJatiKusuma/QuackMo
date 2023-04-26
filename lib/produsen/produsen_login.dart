@@ -116,6 +116,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       setState(() {
                         visible = true;
                       });
+                      CircularProgressIndicator();
                       signIn(emailController.text, passwordController.text);
                     }, child: Text("Sign In")),
               

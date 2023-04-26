@@ -30,141 +30,172 @@ class _PeternakLoginState extends State<PeternakLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: Column(
-          children: [
-            Image(image: AssetImage('images/peternak_01.png')),
-            Text("Peternak Bebek"),
-            Container(
-              child: Form(
-                key: _formkey,
-                child: Column(
-                  children: [
-                    Text("Log In"),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        hintText: 'Email'
-                      ),
-                      validator: (value) {
-                        if (value!.length == 0){
-                            return "Email tidak boleh kosong";
-                          }
-                          if (!RegExp("^[1-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
-                            return ("Masukkan email secara benar");
-                          }
-                          else {
-                            return null;
-                          }
-                      },
-                      onSaved: (newValue) {
-                        emailController.text = newValue!;
-                      },
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-
-
-
-                    TextFormField(
-                      controller: passwordController,
-                      obscureText: _isObscure,
-                      decoration: InputDecoration(
-                        hintText: 'Password',
-                        suffixIcon: IconButton(
-                          icon: Icon(_isObscure ? Icons.visibility:Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              _isObscure = !_isObscure;
-                            });
-                          },
-                        )
-                      ),
-                      validator: (value) {
-                        RegExp regex = RegExp(r'^.{6,}$');
-                        if (value!.isEmpty){
-                          return "password tidak boleh kosong";
-                        }
-                        if (!regex.hasMatch(value)){
-                          return ("masukkan password minimal 6 karakter");
-                        }
-                        else {
-                          return null;
-                        }
-                      },
-                      onSaved: (newValue) {
-                        passwordController.text = newValue!;
-                      },
-                    ),
-            
-
-                    Text("perhatian!!: ${alertText}"),
-
-
-                    Row(
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            children: [
+              Flexible(
+                flex: 2,
+                child: Column(children: [
+                  Image(image: AssetImage('images/peternak_01.png')),
+                  Text("Peternak Bebek"),
+                ],)),
+              
+              Flexible(
+                flex: 4,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20, 30, 20, 10),
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(225,202,167,1)
+                  ),
+                  child: Form(
+                    key: _formkey,
+                    child: Column(
+                      
+                      
                       children: [
-                        Container(child: CheckboxListTile(
-                              value: isChecked,
-                              onChanged: (bool? value){
+                        Text("Log In", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 28),),
+                        
+                        SizedBox(height: 20,),
+                        
+                        TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                            hintText: 'Email'
+                          ),
+                          validator: (value) {
+                            if (value!.length == 0){
+                                return "Email tidak boleh kosong";
+                              }
+                              if (!RegExp("^[1-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                                return ("Masukkan email secara benar");
+                              }
+                              else {
+                                return null;
+                              }
+                          },
+                          onSaved: (newValue) {
+                            emailController.text = newValue!;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+              
+                        SizedBox(height: 20,),
+              
+              
+                        TextFormField(
+                          controller: passwordController,
+                          obscureText: _isObscure,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                            hintText: 'Password',
+                            suffixIcon: IconButton(
+                              icon: Icon(_isObscure ? Icons.visibility:Icons.visibility_off),
+                              onPressed: () {
                                 setState(() {
-                                  isChecked = value!;
+                                  _isObscure = !_isObscure;
                                 });
                               },
-                              title: Text("Remember me"),
-                              ),
-                          width: 200,
-                              ),
-                        
-                        Text("forgot password?")
-                      ],
-                    ),
-              
-                    ElevatedButton(onPressed: (){
-                      setState(() {
-                        visible = true;
-                      });
-                      signIn(emailController.text, passwordController.text);
-                      
-                    }, child: Text("Sign In")),
-              
-                    Row(
-                      children: [
-                        Text("Don't have an account?"),
-                        TextButton(onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return PeternakRegis();
-                          }));
-                        }, child: Text("daftar"))
-                      ],
-                    ),
-              
-                    Column(
-                      children: [
-                        Text('or sign in with'),
+                            )
+                          ),
+                          validator: (value) {
+                            RegExp regex = RegExp(r'^.{6,}$');
+                            if (value!.isEmpty){
+                              return "password tidak boleh kosong";
+                            }
+                            if (!regex.hasMatch(value)){
+                              return ("masukkan password minimal 6 karakter");
+                            }
+                            else {
+                              return null;
+                            }
+                          },
+                          onSaved: (newValue) {
+                            passwordController.text = newValue!;
+                          },
+                        ),
+                
+                    
+                        Text("${alertText}", style: TextStyle(color: Colors.red),),
+                    
+                    
+                        // Row(
+                        //   children: [
+                        //     Container(child: CheckboxListTile(
+                        //           value: isChecked,
+                        //           onChanged: (bool? value){
+                        //             setState(() {
+                        //               isChecked = value!;
+                        //             });
+                        //           },
+                        //           title: Text("Remember me"),
+                        //           ),
+                        //       width: 200,
+                        //           ),
+                            
+                        //     Text("forgot password?")
+                        //   ],
+                        // ),
+                  
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: (){
+                            setState(() {
+                              visible = true;
+                            });
+                            signIn(emailController.text, passwordController.text);
+                            },
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
+                            child: Text("Sign In")),
+                        ),
+                  
                         Row(
                           children: [
-                            ElevatedButton(onPressed: (){}, child: Text("Google")),
-                            ElevatedButton(onPressed: (){}, child: Text("Facebook"))
+                            Text("Don't have an account?"),
+                            TextButton(onPressed: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                return PeternakRegis();
+                              }));
+                            }, child: Text("daftar"))
                           ],
-                        )
+                        ),
+                  
+                        // Column(
+                        //   children: [
+                        //     Text('or sign in with'),
+                        //     Row(
+                        //       children: [
+                        //         ElevatedButton(onPressed: (){}, child: Text("Google")),
+                        //         ElevatedButton(onPressed: (){}, child: Text("Facebook"))
+                        //       ],
+                        //     )
+                        //   ],
+                        // ),
+                        
+                      
+                    
+                        // Visibility(
+                        //         maintainSize: true,
+                        //         maintainAnimation: true,
+                        //         maintainState: true,
+                        //         visible: visible,
+                        //         child: Container(
+                        //             child: CircularProgressIndicator(
+                        //           color: Colors.white,
+                        //         ))),
                       ],
                     ),
-                    
-                  
-
-                    Visibility(
-                            maintainSize: true,
-                            maintainAnimation: true,
-                            maintainState: true,
-                            visible: visible,
-                            child: Container(
-                                child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ))),
-                  ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

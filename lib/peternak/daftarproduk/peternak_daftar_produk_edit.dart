@@ -189,9 +189,9 @@ class _PeternakDaftarProdukEditState extends State<PeternakDaftarProdukEdit> {
                                       'satuan':
                                           int.tryParse(satuanController.text) ?? 0,
                                       'keterangan': keteranganController.text,
-                                      'no_rekening':
-                                          int.tryParse(rekeningController.text) ??
-                                              0,
+                                      // 'no_rekening':
+                                      //     int.tryParse(rekeningController.text) ??
+                                      //         0,
                                       'dana':
                                           int.tryParse(danaController.text) ?? 0,
                                       'foto_url': imageUrl,

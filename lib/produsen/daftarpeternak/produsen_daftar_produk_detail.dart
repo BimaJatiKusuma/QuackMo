@@ -24,7 +24,7 @@ class _ProdusenDaftarProdukDetailState
   late var _produkData = widget.data;
   late int satuan = _produkData['satuan'];
   late int total = satuan;
-  int hargaTotal = 0;
+  late int hargaTotal = 0;
   _add() {
     if (total >= _produkData['stok']) {
       total = total;
@@ -136,8 +136,8 @@ class _ProdusenDaftarProdukDetailState
                                           Row(
                                             children: [
                                               Text("SubTotal:"),
-                                              Text(
-                                                  '${_produkData['harga'] * (total / satuan)}')
+                                              Text('${_produkData['harga'] * (total / satuan)}'),
+                                              // Text('${hargaTotal}')
                                             ],
                                           )
                                         ]),
@@ -146,6 +146,9 @@ class _ProdusenDaftarProdukDetailState
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () async {
+                                          setState(() {
+                                            hargaTotal = (_produkData['harga'] * (total / satuan)).round();
+                                          });
                                           CircularProgressIndicator();
                                           await pemesanan.add({
                                             'id_kondisi': 1,
@@ -153,9 +156,13 @@ class _ProdusenDaftarProdukDetailState
                                             'id_produsen': userProdusenID,
                                             'id_peternak':
                                                 _produkData['peternak_uid'],
-                                            // 'id_transaksi':
+                                            // 'id_transaksi': '',
                                             'quantity': total,
-                                            'waktu': DateTime.now()
+                                            'waktu': DateTime.now(),
+                                            'alamat_kirim': '',
+                                            'total': hargaTotal,
+                                            'url_bukti_pembayaran': '',
+                                            'waktu_transaksi': DateTime.now()
                                           });
 
                                           Navigator.pushReplacement(context,

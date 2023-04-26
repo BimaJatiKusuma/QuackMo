@@ -40,7 +40,7 @@ class _PeternakPesananState extends State<PeternakPesanan> {
               Navigator.pop(context);
             },
           ),
-          title: Title(color: Colors.indigo, child: Text("Transaksi")),
+          title: Title(color: Colors.indigo, child: Text("Pesanan Masuk")),
         ),
         body: StreamBuilder(
           stream: _streamPemesananList,

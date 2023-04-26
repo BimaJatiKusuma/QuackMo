@@ -31,54 +31,61 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Daftar Produk"),
+        centerTitle: true,
+        title: Text("DAFTAR PRODUK"),
         leading: BackButton(),
+        backgroundColor: Color.fromRGBO(225,202,167,1),
       ),
       body: 
-          StreamBuilder(
-            stream: _streamProdukList,
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              if(snapshot.hasError){
-                return Text(snapshot.error.toString());
-              }
-              if(snapshot.connectionState==ConnectionState.active){
-                QuerySnapshot querySnapshot = snapshot.data;
-                List<QueryDocumentSnapshot> listQueryDocumentSnapshot = querySnapshot.docs;
-
-                return ListView.builder(
-                  itemCount: listQueryDocumentSnapshot.length,
-                  itemBuilder:(context, index) {
-                    QueryDocumentSnapshot produk=listQueryDocumentSnapshot[index];
-                    var id_produk = produk.id;
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(5, 0, 5, 10),
-                      child: ListTile(
-                        tileColor: Colors.amber,
-                        minVerticalPadding: 10,
-                        visualDensity: VisualDensity.adaptivePlatformDensity,
-                        leading: Image(image: NetworkImage(produk['foto_url'])),
-                        title: Text(produk['nama_produk']),
-                        subtitle: Column(
-                          children: [
-                            Text(id_produk),
-                            Text("${produk['peternak_uid']}"),
-                            Text("Stock: ${produk['stok']}"),
-                            Text("Harga: ${produk['harga']} / ${produk['satuan']}  telur")
-                          ],
+          Container(
+            padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+            child: StreamBuilder(
+              stream: _streamProdukList,
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                if(snapshot.hasError){
+                  return Text(snapshot.error.toString());
+                }
+                if(snapshot.connectionState==ConnectionState.active){
+                  QuerySnapshot querySnapshot = snapshot.data;
+                  List<QueryDocumentSnapshot> listQueryDocumentSnapshot = querySnapshot.docs;
+          
+                  return ListView.builder(
+                    itemCount: listQueryDocumentSnapshot.length,
+                    itemBuilder:(context, index) {
+                      QueryDocumentSnapshot produk=listQueryDocumentSnapshot[index];
+                      var id_produk = produk.id;
+                      return Container(
+                        height: 100,
+                        margin: EdgeInsets.fromLTRB(5, 0, 5, 10),
+                        child: ListTile(
+                          tileColor: Color.fromRGBO(225,202,167,1),
+                          minVerticalPadding: 10,
+                          visualDensity: VisualDensity.adaptivePlatformDensity,
+                          leading: Image(image: NetworkImage(produk['foto_url'])),
+                          title: Text(produk['nama_produk']),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Text(id_produk),
+                              // Text("${produk['peternak_uid']}"),
+                              Text("Stock: ${produk['stok']}"),
+                              Text("Harga: ${produk['harga']} / ${produk['satuan']}  telur")
+                            ],
+                          ),
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return PeternakDaftarProdukDetail(id_produk);
+                            }));
+                          },
                         ),
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return PeternakDaftarProdukDetail(id_produk);
-                          }));
-                        },
-                      ),
-                    );
-                    // Text(produk['nama_produk']);
-                  },
-                );
-              }
-              return Center(child: CircularProgressIndicator(),);
-            },
+                      );
+                      // Text(produk['nama_produk']);
+                    },
+                  );
+                }
+                return Center(child: CircularProgressIndicator(),);
+              },
+            ),
           ),
        
       floatingActionButton: FloatingActionButton(
@@ -88,6 +95,7 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
           }));
         },
         child: Icon(Icons.add),
+        backgroundColor: Color.fromRGBO(225,202,167,1),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );

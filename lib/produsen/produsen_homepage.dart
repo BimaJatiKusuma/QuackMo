@@ -4,7 +4,7 @@ import 'package:quackmo/login.dart';
 import 'package:quackmo/produsen/daftarpeternak/produsen_daftar_peternak.dart';
 import 'package:quackmo/produsen/produsen_login.dart';
 import 'package:quackmo/produsen/pesanan/produsen_pesanan.dart';
-import 'package:quackmo/produsen/produsen_transaksi.dart';
+import 'package:quackmo/produsen/transaksi/produsen_transaksi.dart';
 
 
 class ProdusenHomepage extends StatefulWidget {

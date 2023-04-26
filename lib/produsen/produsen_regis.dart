@@ -51,6 +51,7 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
     }
   }
 
+  String alertTextRegis='';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,7 +161,7 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                           }
                         },
                       ),
-                    
+                    Text(alertTextRegis),
                     ElevatedButton(onPressed: (){
                       signUp(usernameController.text, emailController.text, passwordController.text, role);
                     }, child: Text("Daftar"))
@@ -188,7 +189,10 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
       }
       on FirebaseAuthException catch (e){
         if(e.code == 'email-already-in-use'){
-            print("email sudah digunakan");
+            // print("email sudah digunakan");
+            setState(() {
+              alertTextRegis ='email sudah digunakan';
+            });
             
           }
       }

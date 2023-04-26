@@ -9,6 +9,7 @@ class Start extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(image: AssetImage('images/open_apps_01.png')),
             Text('QUACKMO'),
@@ -19,6 +20,7 @@ class Start extends StatelessWidget {
                 return Login();
               }));
             },
+            style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225,202,167,1)),
             child: Text("Get Started"))
           ],
         ),
