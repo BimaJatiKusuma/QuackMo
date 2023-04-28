@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi_detail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,9 +14,10 @@ class TabTransaksiMasuk extends StatefulWidget {
 }
 
 class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
-  CollectionReference _transaksiCollection = FirebaseFirestore.instance.collection('transaksi');
+  CollectionReference _transaksiCollection =
+      FirebaseFirestore.instance.collection('pemesanan');
   late Stream<QuerySnapshot> _streamTransaksi;
-  
+
   // List listIDpemesanan = [];
   // String listIDpemesanan2 = '';
   //   getDataPesanan() {
@@ -32,7 +34,7 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
   //         print(value.size);
   //       });
   //       // print(dataPesanan);
-        
+
   //   //     .doc()
   //   //     .get()
   //   //     .then((DocumentSnapshot documentSnapshot) {
@@ -55,21 +57,49 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
   //   //   }
   //   // });
   // }
+  List kondisi_pesanan = [3, 4, 5, 6];
+  _textKondisi(kondisi) {
+    if (kondisi == 3) {
+      return Text("Belum Dibayar oleh Pembeli");
+    }
+    else if (kondisi == 4) {
+      return Text("Konfirmasi Pembayaran");
+    }
+    else if (kondisi == 5) {
+      return Text("Pembayaran Ditolak");
+    } else if (kondisi == 6) {
+      return Text("Pembayaran Disetujui");
+    }
+  }
 
-
+  _iconKondisi(kondisi){
+    if(kondisi == 3){
+      return Icon(Icons.access_time_rounded);
+    }
+    else if (kondisi == 4) {
+      return Icon(Icons.access_time_filled_outlined);
+    } else if (kondisi == 5) {
+      return Icon(Icons.close);
+    } else if (kondisi == 6) {
+      return Icon(Icons.verified_rounded);
+    }
+  }
+  NumberFormat formatter =
+      NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 2);
   void initState() {
     super.initState();
     // getDataPesanan();
-    _streamTransaksi = _transaksiCollection.where('id_peternak', isEqualTo: userPeternakID).snapshots();
+    _streamTransaksi = _transaksiCollection
+        .where('id_peternak', isEqualTo: userPeternakID)
+        .where('id_kondisi', whereIn: List.of(kondisi_pesanan))
+        .snapshots();
   }
 
   @override
   Widget build(BuildContext context) {
     _transaksiCollection.snapshots();
 
-    return
-    
-    StreamBuilder(
+    return StreamBuilder(
       stream: _streamTransaksi,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasError) {
@@ -83,38 +113,44 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
           return ListView.builder(
             itemCount: listQueryDocumentSnapshot.length,
             itemBuilder: (context, index) {
-              QueryDocumentSnapshot transaksi =
+              QueryDocumentSnapshot pemesanan =
                   listQueryDocumentSnapshot[index];
-              var id_transaksi = transaksi.id;
+              var id_pemesanan = pemesanan.id;
               return Container(
+                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                decoration:
+                    BoxDecoration(color: Color.fromRGBO(225, 202, 167, 1)),
                 child: Column(children: [
-                  Text('1 April 2023'),
-                  Text(id_transaksi),
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
-                        return PeternakTransaksiDetail();
+                        return PeternakTransaksiDetail(id_pemesanan);
                       }));
                     },
                     child: Ink(
                       color: Colors.blue,
-                      child: Row(
+                      child: Column(
                         children: [
-                          Image(
-                            image: AssetImage('images/transaksi_02.png'),
-                          ),
-                          Column(children: [
-                            Text('Transfer Rupiah'),
-                            Text('Transfer dari BANK MANDIRI'),
-                            Text('FARHAZ NURJANANTO 09183764644')
-                          ]),
-                          Column(
+                          Text('${pemesanan['waktu_transaksi']}'),
+                          Text(id_pemesanan),
+                          Row(
                             children: [
-                              Icon(Icons.access_time_filled_outlined),
-                              Text("+ Rp. 20.0000")
+                              Image(
+                                image: AssetImage('images/transaksi_02.png'),
+                              ),
+                              Column(children: [
+                                _textKondisi(pemesanan['id_kondisi'])
+                              ]),
+                              Column(
+                                children: [
+                                  _iconKondisi(pemesanan['id_kondisi']),
+                                  Text(
+                                      "+ ${formatter.format(pemesanan['total'])}")
+                                ],
+                              )
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -132,6 +168,123 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
     );
   }
 }
+
+class TabDetailPenjualan extends StatelessWidget {
+  const TabDetailPenjualan({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: ListView(
+      children: [
+        Text("Semua Penjualan"),
+        InkWell(
+            onTap: () {},
+            child: Column(
+              children: [
+                Text('Juni'),
+                Card(
+                  child: Row(children: [
+                    Image(image: AssetImage('images/transaksi_02.png')),
+                    Column(
+                      children: [
+                        Text('Pengeluaran'),
+                        Text('Pendapatan'),
+                        Text('Untung')
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text("- Rp. 100.0000"),
+                        Text("+ Rp. 200.0000"),
+                        Text("+ Rp. 100.0000")
+                      ],
+                    )
+                  ]),
+                ),
+              ],
+            ))
+      ],
+    ));
+  }
+}
+
+class PeternakTransaksi extends StatefulWidget {
+  const PeternakTransaksi({super.key});
+
+  @override
+  State<PeternakTransaksi> createState() => _PeternakTransaksiState();
+}
+
+class _PeternakTransaksiState extends State<PeternakTransaksi> {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+        length: 2,
+        child: Scaffold(
+            appBar: AppBar(
+              leading: BackButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: Title(color: Colors.indigo, child: Text("Transaksi")),
+              bottom: TabBar(tabs: [
+                Tab(
+                  child: Text("Transaksi Masuk"),
+                ),
+                Tab(
+                  child: Text("Detail Penjualan"),
+                )
+              ]),
+            ),
+            body: TabBarView(
+              children: [TabTransaksiMasuk(), TabDetailPenjualan()],
+            )));
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // class TabTransaksiMasuk extends StatelessWidget {
 //   const TabTransaksiMasuk({super.key});
@@ -208,78 +361,3 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
 //     ));
 //   }
 // }
-
-class TabDetailPenjualan extends StatelessWidget {
-  const TabDetailPenjualan({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        child: ListView(
-      children: [
-        Text("Semua Penjualan"),
-        InkWell(
-            onTap: () {},
-            child: Column(
-              children: [
-                Text('Juni'),
-                Card(
-                  child: Row(children: [
-                    Image(image: AssetImage('images/transaksi_02.png')),
-                    Column(
-                      children: [
-                        Text('Pengeluaran'),
-                        Text('Pendapatan'),
-                        Text('Untung')
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text("- Rp. 100.0000"),
-                        Text("+ Rp. 200.0000"),
-                        Text("+ Rp. 100.0000")
-                      ],
-                    )
-                  ]),
-                ),
-              ],
-            ))
-      ],
-    ));
-  }
-}
-
-class PeternakTransaksi extends StatefulWidget {
-  const PeternakTransaksi({super.key});
-
-  @override
-  State<PeternakTransaksi> createState() => _PeternakTransaksiState();
-}
-
-class _PeternakTransaksiState extends State<PeternakTransaksi> {
-  @override
-  Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 2,
-        child: Scaffold(
-            appBar: AppBar(
-              leading: BackButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              title: Title(color: Colors.indigo, child: Text("Transaksi")),
-              bottom: TabBar(tabs: [
-                Tab(
-                  child: Text("Transaksi Masuk"),
-                ),
-                Tab(
-                  child: Text("Detail Penjualan"),
-                )
-              ]),
-            ),
-            body: TabBarView(
-              children: [TabTransaksiMasuk(), TabDetailPenjualan()],
-            )));
-  }
-}

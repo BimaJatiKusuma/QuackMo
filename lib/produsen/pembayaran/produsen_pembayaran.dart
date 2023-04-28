@@ -12,7 +12,8 @@ enum SingingCharacter { lafayette, jefferson }
 
 class ProdusenPembayaran extends StatefulWidget {
   ProdusenPembayaran(this.pesananID) {
-    _referencePesanan = FirebaseFirestore.instance.collection('pemesanan').doc(pesananID);
+    _referencePesanan =
+        FirebaseFirestore.instance.collection('pemesanan').doc(pesananID);
     _futureData1 = _referencePesanan.get();
   }
 
@@ -21,25 +22,28 @@ class ProdusenPembayaran extends StatefulWidget {
   late Future<DocumentSnapshot> _futureData1;
   late Map dataPesanan;
 
+  late DocumentReference _referenceProduk;
+  late Future<DocumentSnapshot> _futureData2;
+  late Map dataProduk;
+
   @override
   State<ProdusenPembayaran> createState() => _ProdusenPembayaranState();
 }
 
 enum MetodeKirim { Diantar, TidakDiantar }
 
-enum MetodeBayar { Dana, BankMandiri, PembayaranDitempat }
-
-
+// enum MetodeBayar { Dana, BankMandiri, PembayaranDitempat }
 
 class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
   final formKey = GlobalKey<FormState>();
   String alamat = "";
   MetodeKirim? _metodeKirim = MetodeKirim.Diantar;
-  MetodeBayar? _metodeBayar = MetodeBayar.Dana;
+  // MetodeBayar? _metodeBayar = MetodeBayar.Dana;
 
   File? buktiFoto;
   String fotoPath = '';
   String fotoBuktiUrl = '';
+  int id_pengiriman = 0;
 
   Future getImage() async {
     final ImagePicker foto = ImagePicker();
@@ -66,43 +70,11 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
     }
   }
 
-  String id_peternak = '';
-  late String id_produk = '';
-  late int hargaProduk = 0;
-  int quantity = 0;
-  late String namaProduk='';
-  // String id_transaksi='';
-  
-  Future getDataPesanan() async {
-    var dataPesanan = FirebaseFirestore.instance
-        .collection('produk')
-        .doc(widget.pesananID)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          id_produk = documentSnapshot.get('id_produk');
-          hargaProduk = documentSnapshot.get('total');
-        });
-
-        // var dataProduk = FirebaseFirestore.instance
-        //     .collection('produk')
-        //     .doc(id_produk)
-        //     .get()
-        //     .then((DocumentSnapshot documentSnapshot) {
-        //   setState(() {
-        //     namaProduk = documentSnapshot.get('nama_produk');
-        //   });
-        // });
-      }
-    });
-  }
-
-
   TextEditingController alamat_kirimController = TextEditingController();
+
   _alamatPengiriman(x) {
     if (x == MetodeKirim.Diantar) {
-      alamat_kirimController.text = '';
+      id_pengiriman = 200;
       return Container(
         child: Form(
             key: formKey,
@@ -117,41 +89,19 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
             )),
       );
     } else if (x == MetodeKirim.TidakDiantar) {
-      alamat_kirimController.text = 'ini alamat peternak';
+      alamat_kirimController.text = '${widget.dataProduk['alamat']}';
+      id_pengiriman = 100;
       return Container(
-        child: Text('Ini alamat peternak'),
+        child: Text(widget.dataProduk['alamat']),
       );
     }
   }
-  
-  // Future getDataProduk(ProdukID) async {
-  //   var dataProduk = FirebaseFirestore.instance
-  //       .collection('produk')
-  //       .doc(ProdukID)
-  //       .get()
-  //       .then((DocumentSnapshot documentSnapshot) {
-  //     setState(() {
-  //       hargaProduk = documentSnapshot.get('harga');
-  //     });
-  //   });
-  // }
 
-  
   NumberFormat formatter =
       NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 2);
+
   @override
-  void initState() {
-    super.initState();
-    getDataPesanan();
-  }
-
   Widget build(BuildContext context) {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    // CollectionReference transaksiCollection = firestore.collection('transaksi');
-    CollectionReference pemesananCollection = firestore.collection('pemesanan');
-
-    // getDataProduk(id_produk);
-
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -164,25 +114,182 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
       ),
       body: Container(
         child: FutureBuilder<DocumentSnapshot>(
-          future: widget._futureData1,
-          builder: (context, snapshot){
-            if (snapshot.hasError){
-              return Center(child: Text('Terjadi Error ${snapshot.hasError}'));
-            }
-            if (snapshot.hasData){
-              DocumentSnapshot? documentSnapshot = snapshot.data;
-              widget.dataPesanan = documentSnapshot!.data() as Map;
-              return ListView(
-                children: [
-                  Text(widget.dataPesanan['id_produk'])
-                ],
-              );
-            }
-            return CircularProgressIndicator();
-          }
-          
-          
-        ),
+            future: widget._futureData1,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Center(
+                    child: Text('Terjadi Error ${snapshot.hasError}'));
+              }
+              if (snapshot.hasData) {
+                DocumentSnapshot? documentSnapshot = snapshot.data;
+                widget.dataPesanan = documentSnapshot!.data() as Map;
+
+                print(widget.dataPesanan['id_produk']);
+                widget._referenceProduk = FirebaseFirestore.instance
+                    .collection('produk')
+                    .doc(widget.dataPesanan['id_produk']);
+                widget._futureData2 = widget._referenceProduk.get();
+
+                return FutureBuilder(
+                  future: widget._futureData2,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child: Text('Terjadi Error ${snapshot.hasError}'));
+                    }
+                    if (snapshot.hasData) {
+                      DocumentSnapshot? documentSnapshot2 = snapshot.data;
+                      widget.dataProduk = documentSnapshot2!.data() as Map;
+                      return ListView(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Text(
+                                    'harga produk total adalah ${formatter.format(widget.dataPesanan['total'])}'),
+                                Text(alamat),
+                                Text(
+                                  "Metode Pengiriman",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                // Divider(),
+                                RadioListTile(
+                                  title: Text("Diantar"),
+                                  value: MetodeKirim.Diantar,
+                                  groupValue: _metodeKirim,
+                                  onChanged: (MetodeKirim? value) {
+                                    setState(() {
+                                      _metodeKirim = value;
+                                    });
+                                  },
+                                ),
+                                RadioListTile(
+                                  title: Text("Diambil Sendiri"),
+                                  value: MetodeKirim.TidakDiantar,
+                                  groupValue: _metodeKirim,
+                                  onChanged: (MetodeKirim? value) {
+                                    setState(() {
+                                      _metodeKirim = value;
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          _alamatPengiriman(_metodeKirim),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "Metode Pembayaran",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                //mandiri
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Text('Bank Mandiri'),
+                                      Text(
+                                          '${widget.dataProduk['bank_mandiri']} atas nama ${widget.dataProduk['bank_mandiri_penerima']}'),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                //bri
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Text('Bank BRI'),
+                                      Text(
+                                          '${widget.dataProduk['bank_bri']} atas nama ${widget.dataProduk['bank_bri_penerima']}'),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Text('DANA'),
+                                      Text(
+                                          '${widget.dataProduk['dana']} atas nama ${widget.dataProduk['dana_penerima']}'),
+                                    ],
+                                  ),
+                                ),
+
+                                SizedBox(
+                                  height: 20,
+                                ),
+
+                                Container(
+                                  child: Column(
+                                    children: [
+                                      Text(widget
+                                          .dataProduk['bank_lainnya_namabank']),
+                                      Text(
+                                          '${widget.dataProduk['bank_lainnya']} atas nama ${widget.dataProduk['bank_lainnya_penerima']}'),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                ElevatedButton(
+                                    onPressed: () async {
+                                      await getImage();
+                                    },
+                                    child: Text("Masukkan bukti pembayaran")),
+                                buktiFoto != null
+                                    ? Container(
+                                        height: 500,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: Image.file(
+                                          buktiFoto!,
+                                          fit: BoxFit.cover,
+                                        ))
+                                    : Container(),
+                              ],
+                            ),
+                          ),
+                          ElevatedButton(
+                              onPressed: () async {
+                                CircularProgressIndicator();
+                                await uploadBuktiFoto();
+                                await widget._referencePesanan.update({
+                                  'id_kondisi': 4,
+                                  'url_bukti_pembayaran': fotoBuktiUrl,
+                                  'waktu_transaksi': DateTime.now(),
+                                  'total': widget.dataPesanan['total'],
+                                  'alamat_kirim': alamat_kirimController.text,
+                                  'id_pengiriman': id_pengiriman
+                                });
+                                Navigator.pushReplacement(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ProdusenTransaksi();
+                                }));
+                              },
+                              child: Text("Bayar"))
+                        ],
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                );
+              }
+              return CircularProgressIndicator();
+            }),
       ),
     );
   }

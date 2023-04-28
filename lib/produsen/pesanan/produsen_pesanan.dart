@@ -41,7 +41,7 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
     }
   }
 
-  _batalIcon(kondisi) {
+  _batalIcon(kondisi, id_pemesanan) {
     if (kondisi == 1) {
       return TextButton(
           onPressed: () {
@@ -56,8 +56,11 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                     child: const Text('Tidak'),
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pop(context, 'Ya'),
-                    child: const Text('Ya'),
+                    onPressed: () {
+                      _pemesananList.doc(id_pemesanan).delete();
+                      Navigator.pop(context, 'Ya');
+                    },
+                    child: Text('Ya'),
                   ),
                 ],
               ),
@@ -94,8 +97,9 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
               QuerySnapshot querySnapshot = snapshot.data;
               List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
                   querySnapshot.docs;
-              if(listQueryDocumentSnapshot.length>=2){
-                listQueryDocumentSnapshot.sort((a,b)=> b['id_kondisi'].compareTo(a['id_kondisi']));
+              if (listQueryDocumentSnapshot.length >= 2) {
+                listQueryDocumentSnapshot
+                    .sort((a, b) => b['id_kondisi'].compareTo(a['id_kondisi']));
               }
               // print(listQueryDocumentSnapshot);
               // print(querySnapshot);
@@ -106,8 +110,8 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                 itemBuilder: (context, index) {
                   QueryDocumentSnapshot pemesanan =
                       listQueryDocumentSnapshot[index];
-                      print(index);
-                      print(pemesanan);
+                  print(index);
+                  print(pemesanan);
                   var id_pemesanan = pemesanan.id;
                   DateTime waktuDB = (pemesanan['waktu'] as Timestamp).toDate();
                   String formatWaktu =
@@ -136,7 +140,7 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                                   _textKondisi(pemesanan['id_kondisi'])
                                 ],
                               ),
-                              _batalIcon(pemesanan['id_kondisi'])
+                              _batalIcon(pemesanan['id_kondisi'], id_pemesanan)
                             ]),
                           ),
                         ],

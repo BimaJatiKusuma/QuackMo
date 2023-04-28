@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
+import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi.dart';
 
 class PeternakPesanan extends StatefulWidget {
   const PeternakPesanan({super.key});
@@ -28,6 +29,76 @@ class _PeternakPesananState extends State<PeternakPesanan> {
         .where('id_kondisi', whereIn: List.of(kondisi_produk))
         .snapshots();
     // _streamPemesananList = _pemesananList.where('id_kondisi', whereIn: List.of(kondisi_produk)).snapshots();
+  }
+
+
+    _textKondisi(kondisi) {
+    if (kondisi == 1) {
+      return Text("menunggu konfirmasi peternak 1x24 jam");
+    } else if (kondisi == 2) {
+      return Text("Pemesanan Ditolak");
+    } else if (kondisi == 3) {
+      return Text("Pesanan disetujui, Harap dibayar");
+    }
+  }
+
+
+  _alert(id_pemesanan) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Pemberitahuan'),
+        content: const Text('Pemesanan disetujui'),
+        actions: [
+          Row(
+            children: [
+              Flexible(
+                child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Kembali")),
+              ),
+              Flexible(
+                  child: Row(
+                children: [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      _pemesananList
+                          .doc(id_pemesanan)
+                          .update({'id_kondisi': 2});
+                      Navigator.pop(context, 'Tidak');
+                    },
+                    child: const Text('TIDAK'),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white),
+                    onPressed: () {
+                      _pemesananList
+                          .doc(id_pemesanan)
+                          .update({'id_kondisi': 3});
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) {
+                        return PeternakTransaksi();
+                      }));
+                    },
+                    child: Text('YA'),
+                  ),
+                ],
+              ))
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -60,55 +131,28 @@ class _PeternakPesananState extends State<PeternakPesanan> {
                       listQueryDocumentSnapshot[index];
                   var id_pemesanan = pemesanan.id;
                   return Container(
-                    margin: EdgeInsets.fromLTRB(5, 0, 5, 10),
+                    margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
                     child: ListTile(
                       tileColor: Colors.amber,
                       minVerticalPadding: 10,
                       visualDensity: VisualDensity.adaptivePlatformDensity,
                       // leading: Image(image: NetworkImage(pemesanan['foto_url'])),
-                      title: Text(pemesanan['id_produsen']),
-                      subtitle: Column(
+                      subtitle: Row(
                         children: [
-                          Text(id_pemesanan),
-                          Text("${pemesanan['waktu']}"),
-                          Text("${pemesanan['quantity']}"),
-                          // Text("Stock: ${produk['stok']}"),
-                          // Text("Harga: ${produk['harga']} / ${produk['satuan']}  telur")
+                          Column(
+                            children: [
+                              Text("${pemesanan['waktu']}"),
+                              Text("${pemesanan['quantity']} telur"),
+                              _textKondisi(pemesanan['id_kondisi'])
+                            ],
+                          ),
                         ],
                       ),
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Pemberitahuan'),
-                            content: const Text('Pemesanan disetujui'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () =>
-                                    Navigator.pop(context, 'Tidak'),
-                                child: const Text('Tidak'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  _pemesananList
-                                      .doc(id_pemesanan)
-                                      .update({'id_kondisi': 3});
-                                  Navigator.pop(context, 'Ya');
-                                },
-                                child: Text('YA'),
-                                // onPressed: () => Navigator.pop(context, 'Ya'),
-                                // child: const Text('Ya'),
-                              ),
-                            ],
-                          ),
-                        );
-                        // Navigator.push(context, MaterialPageRoute(builder: (context){
-                        //   return PeternakDaftarProdukDetail(id_produk);
-                        // }));
+                        _alert(id_pemesanan);
                       },
                     ),
                   );
-                  // Text(produk['nama_produk']);
                 },
               );
             }

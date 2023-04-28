@@ -92,25 +92,25 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       },
                     ),
                     
-                    Text("perhatian!!: ${alertText}"),
+                    Text("${alertText}"),
 
-                    Row(
-                      children: [
-                        Container(child: CheckboxListTile(
-                              value: isChecked,
-                              onChanged: (bool? value){
-                                setState(() {
-                                  isChecked = value!;
-                                });
-                              },
-                              title: Text("Remember me"),
-                              ),
-                          width: 200,
-                              ),
+                    // Row(
+                    //   children: [
+                    //     Container(child: CheckboxListTile(
+                    //           value: isChecked,
+                    //           onChanged: (bool? value){
+                    //             setState(() {
+                    //               isChecked = value!;
+                    //             });
+                    //           },
+                    //           title: Text("Remember me"),
+                    //           ),
+                    //       width: 200,
+                    //           ),
                         
-                        Text("forgot password?")
-                      ],
-                    ),
+                    //     Text("forgot password?")
+                    //   ],
+                    // ),
               
                     ElevatedButton(onPressed: (){
                       setState(() {
@@ -131,17 +131,17 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       ],
                     ),
               
-                    Column(
-                      children: [
-                        Text('or sign in with'),
-                        Row(
-                          children: [
-                            ElevatedButton(onPressed: (){}, child: Text("Google")),
-                            ElevatedButton(onPressed: (){}, child: Text("Facebook"))
-                          ],
-                        )
-                      ],
-                    ),
+                    // Column(
+                    //   children: [
+                    //     Text('or sign in with'),
+                    //     Row(
+                    //       children: [
+                    //         ElevatedButton(onPressed: (){}, child: Text("Google")),
+                    //         ElevatedButton(onPressed: (){}, child: Text("Facebook"))
+                    //       ],
+                    //     )
+                    //   ],
+                    // ),
                     
 
                     

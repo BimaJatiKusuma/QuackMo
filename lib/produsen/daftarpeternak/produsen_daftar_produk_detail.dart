@@ -162,7 +162,8 @@ class _ProdusenDaftarProdukDetailState
                                             'alamat_kirim': '',
                                             'total': hargaTotal,
                                             'url_bukti_pembayaran': '',
-                                            'waktu_transaksi': DateTime.now()
+                                            'waktu_transaksi': DateTime.now(),
+                                            'id_pengiriman':0
                                           });
 
                                           Navigator.pushReplacement(context,
