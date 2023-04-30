@@ -933,10 +933,20 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
 
                             SizedBox(height: 30,),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Container(
-                                    margin: EdgeInsets.only(right: 20),
+                                    
+                                    width: 150,
+                                    child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: Colors.blue),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Text("Batal"))),
+                                Container(
+                                    
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
