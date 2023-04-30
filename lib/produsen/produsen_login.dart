@@ -94,24 +94,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                     
                     Text("${alertText}"),
 
-                    // Row(
-                    //   children: [
-                    //     Container(child: CheckboxListTile(
-                    //           value: isChecked,
-                    //           onChanged: (bool? value){
-                    //             setState(() {
-                    //               isChecked = value!;
-                    //             });
-                    //           },
-                    //           title: Text("Remember me"),
-                    //           ),
-                    //       width: 200,
-                    //           ),
-                        
-                    //     Text("forgot password?")
-                    //   ],
-                    // ),
-              
+
                     ElevatedButton(onPressed: (){
                       setState(() {
                         visible = true;
@@ -124,6 +107,9 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       children: [
                         Text("Don't have an account?"),
                         TextButton(onPressed: (){
+                              setState(() {
+                                alertText = '';
+                              });
                           Navigator.push(context, MaterialPageRoute(builder: (context){
                             return ProdusenRegis();
                           }));
@@ -131,19 +117,6 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       ],
                     ),
               
-                    // Column(
-                    //   children: [
-                    //     Text('or sign in with'),
-                    //     Row(
-                    //       children: [
-                    //         ElevatedButton(onPressed: (){}, child: Text("Google")),
-                    //         ElevatedButton(onPressed: (){}, child: Text("Facebook"))
-                    //       ],
-                    //     )
-                    //   ],
-                    // ),
-                    
-
                     
 
                     Visibility(
@@ -183,6 +156,9 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       if (documentSnapshot.exists){
                         if(documentSnapshot.get('role')=='produsen'){
                           userProdusenID = user.uid;
+                              setState(() {
+                                alertText = '';
+                              });
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
                             return ProdusenHomepage();
                           }), (route) => false);

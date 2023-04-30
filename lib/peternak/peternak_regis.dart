@@ -23,13 +23,6 @@ class _PeternakRegisState extends State<PeternakRegis> {
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
-  // TextEditingController noHPController =  TextEditingController();
-  // TextEditingController alamatController =  TextEditingController();
-  // TextEditingController kotaController =  TextEditingController();
-  // TextEditingController negaraController =  TextEditingController();
-  // TextEditingController kodePosController =  TextEditingController();
-  // TextEditingController usiaController =  TextEditingController();
-  // TextEditingController genderController =  TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController konfirmasipasswordController = TextEditingController();
 
@@ -50,6 +43,7 @@ class _PeternakRegisState extends State<PeternakRegis> {
     }
   }
 
+  String alertTextRegis='';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,42 +110,7 @@ class _PeternakRegisState extends State<PeternakRegis> {
                           ),
 
                           SizedBox(height: 20,),
-                          // TextFormField(
-                          //   controller: noHPController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'No. Hp',
-                          //   ),
-                          // ),
-                          // TextFormField(
-                          //   controller: alamatController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Alamat',
-                          //   ),
-                          // ),
-                          // TextFormField(
-                          //   controller: kotaController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Kota',
-                          //   ),
-                          // ),
-                          // TextFormField(
-                          //   controller: kodePosController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Kode Pos',
-                          //   ),
-                          // ),
-                          // TextFormField(
-                          //   controller: usiaController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Usia (dalam tahun)',
-                          //   ),
-                          // ),
-                          // TextFormField(
-                          //   controller: genderController,
-                          //   decoration: InputDecoration(
-                          //     hintText: 'Jenis Kelamin',
-                          //   ),
-                          // ),
+
                           TextFormField(
                             controller: passwordController,
                             obscureText: _obscureText,
@@ -200,6 +159,7 @@ class _PeternakRegisState extends State<PeternakRegis> {
                             },
                           ),
                           SizedBox(height: 20,),
+                          Text(alertTextRegis),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(  
@@ -228,10 +188,13 @@ class _PeternakRegisState extends State<PeternakRegis> {
       await _auth
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) => {postDetailsToFirestore(nama, email, role)});
+        
       }
       on FirebaseAuthException catch (e){
         if(e.code == 'email-already-in-use'){
-            print("email sudah digunakan");
+            setState(() {
+              alertTextRegis ='email sudah digunakan';
+            });
             
           }
       }
@@ -243,7 +206,7 @@ class _PeternakRegisState extends State<PeternakRegis> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role});
+    ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role, 'no_hp':'', 'alamat':'', 'kota':'', 'kode_pos':'', 'usia':'', 'gender':''});
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
       return PeternakLogin();
     }));

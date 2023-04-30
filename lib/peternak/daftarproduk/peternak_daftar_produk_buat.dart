@@ -99,7 +99,15 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                                   produkFoto!,
                                   fit: BoxFit.fitWidth,
                                 ))
-                            : Container(),
+                            : Container(
+                              child: Icon(Icons.image, size: 100,),
+                              height: 200,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(10)
+                              ),
+                            ),
                         Container(
                           decoration: BoxDecoration(
                               // image: NetworkImage(),
@@ -200,11 +208,6 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                     ),
                   ),
 
-                  // TextFormField(
-                  //   keyboardType: TextInputType.number,
-                  //   controller: rekeningController,
-                  //   decoration: InputDecoration(label: Text("No. Rekening")),
-                  // ),
                   SizedBox(
                     height: 20,
                   ),
@@ -396,17 +399,14 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                           'satuan': int.tryParse(satuanController.text) ?? 0,
                           'alamat': alamatController.text,
                           'keterangan': keteranganController.text,
-                          'dana': int.tryParse(danaController.text) ?? 0,
+                          'dana': danaController.text,
                           'dana_penerima': danaNamaController.text,
-                          'bank_mandiri':
-                              int.tryParse(mandiriController.text) ?? 0,
+                          'bank_mandiri': mandiriController.text,
                           'bank_mandiri_penerima': mandiriNamaController.text,
-                          'bank_bri': int.tryParse(briController.text) ?? 0,
+                          'bank_bri': briController.text,
                           'bank_bri_penerima': briNamaController.text,
-                          'bank_lainnya':
-                              int.tryParse(bankLainController.text) ?? 0,
-                          'bank_lainnya_namabank':
-                              bankLainNamaBankController.text,
+                          'bank_lainnya': bankLainController.text,
+                          'bank_lainnya_namabank':bankLainNamaBankController.text,
                           'bank_lainnya_penerima': bankLainNamaController.text,
                           'foto_url': imageUrl,
                         });

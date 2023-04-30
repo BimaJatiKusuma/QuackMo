@@ -14,7 +14,7 @@ class PeternakLogin extends StatefulWidget {
 
 String userPeternakID = '';
 String userNamaPeternak = '';
-String alertText = ' ';
+String alertText = '';
 
 class _PeternakLoginState extends State<PeternakLogin> {
   bool _isObscure = true;
@@ -124,23 +124,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                         Text("${alertText}", style: TextStyle(color: Colors.red),),
                     
                     
-                        // Row(
-                        //   children: [
-                        //     Container(child: CheckboxListTile(
-                        //           value: isChecked,
-                        //           onChanged: (bool? value){
-                        //             setState(() {
-                        //               isChecked = value!;
-                        //             });
-                        //           },
-                        //           title: Text("Remember me"),
-                        //           ),
-                        //       width: 200,
-                        //           ),
-                            
-                        //     Text("forgot password?")
-                        //   ],
-                        // ),
+
                   
                         SizedBox(
                           width: double.infinity,
@@ -159,6 +143,9 @@ class _PeternakLoginState extends State<PeternakLogin> {
                           children: [
                             Text("Don't have an account?"),
                             TextButton(onPressed: (){
+                              setState(() {
+                                alertText = '';
+                              });
                               Navigator.push(context, MaterialPageRoute(builder: (context){
                                 return PeternakRegis();
                               }));
@@ -166,29 +153,6 @@ class _PeternakLoginState extends State<PeternakLogin> {
                           ],
                         ),
                   
-                        // Column(
-                        //   children: [
-                        //     Text('or sign in with'),
-                        //     Row(
-                        //       children: [
-                        //         ElevatedButton(onPressed: (){}, child: Text("Google")),
-                        //         ElevatedButton(onPressed: (){}, child: Text("Facebook"))
-                        //       ],
-                        //     )
-                        //   ],
-                        // ),
-                        
-                      
-                    
-                        // Visibility(
-                        //         maintainSize: true,
-                        //         maintainAnimation: true,
-                        //         maintainState: true,
-                        //         visible: visible,
-                        //         child: Container(
-                        //             child: CircularProgressIndicator(
-                        //           color: Colors.white,
-                        //         ))),
                       ],
                     ),
                   ),
@@ -216,6 +180,9 @@ class _PeternakLoginState extends State<PeternakLogin> {
                         if(documentSnapshot.get('role')=='peternak'){
                           userPeternakID = user.uid;
                           userNamaPeternak = documentSnapshot.get('nama');
+                          setState(() {
+                            alertText = '';
+                          });
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
                             return PeternakHomepage();
                           }), (route) => false);
