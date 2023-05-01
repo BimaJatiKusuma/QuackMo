@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:intl/intl.dart';
 import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi_detail_done.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -52,6 +53,37 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
         ),
       );
     }
+  }
+
+  _konfirmasi(id_kondisi){
+    if (id_kondisi == 4){
+      return
+      Container(
+        child: Row(
+          children: [
+            ElevatedButton(
+                onPressed: () {
+                  widget._referencePesanan
+                      .update({'id_kondisi': 5});
+                  Navigator.pop(context);
+                },
+                child: Text('Tolak Pembayaran')),
+            ElevatedButton(
+                onPressed: () {
+                  widget._referencePesanan
+                      .update({'id_kondisi': 6});
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) {
+                    return PeternakTransaksiDetailDone();
+                  }));
+                },
+                child: Text('Setujui Pembayaran'))
+          ],
+        ),
+      );
+    }
+
+    else {return SizedBox();};
   }
 
   @override
@@ -107,7 +139,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
                     child: Column(
                       children: [
                         Text('Detail Transaksi'),
-                        Text('${pesanan['waktu_transaksi']}'),
+                        Text(DateFormat('dd/MM/yy, HH:mm').format((pesanan['waktu_transaksi']as Timestamp).toDate())),
                         Text('${pesanan['total']}')
                       ],
                     ),
@@ -115,29 +147,8 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
 
                   _buktiFoto(pesanan['id_kondisi']),
 
-                  Container(
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                            onPressed: () {
-                              widget._referencePesanan
-                                  .update({'id_kondisi': 5});
-                              Navigator.pop(context);
-                            },
-                            child: Text('Tolak Pembayaran')),
-                        ElevatedButton(
-                            onPressed: () {
-                              widget._referencePesanan
-                                  .update({'id_kondisi': 6});
-                              Navigator.pushReplacement(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return PeternakTransaksiDetailDone();
-                              }));
-                            },
-                            child: Text('Setujui Pembayaran'))
-                      ],
-                    ),
-                  )
+                  _konfirmasi(pesanan['id_kondisi'])
+                
                 ],
               );
             }

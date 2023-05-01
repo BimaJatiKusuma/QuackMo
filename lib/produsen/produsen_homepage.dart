@@ -933,20 +933,10 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
 
                             SizedBox(height: 30,),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Container(
-                                    
-                                    width: 150,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blue),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Batal"))),
-                                Container(
-                                    
+                                    margin: EdgeInsets.only(right: 20),
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
@@ -961,9 +951,9 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
                                             'usia':usiaController.text,
                                             'gender':genderController.text,
                                           });
-                                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                                            return ProdusenHomepage();
-                                          }), (route) => false);
+                                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                                            return _ProdusenplashScreenUpdateProfil();
+                                          }));
                                         },
                                         child: Text("Simpan")))
                               ],
@@ -978,6 +968,46 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
             }
             return Center(child: CircularProgressIndicator());
           },
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+class _ProdusenplashScreenUpdateProfil extends StatefulWidget {
+  const _ProdusenplashScreenUpdateProfil({super.key});
+
+  @override
+  State<_ProdusenplashScreenUpdateProfil> createState() => __ProdusenplashScreenUpdateProfilState();
+}
+
+class __ProdusenplashScreenUpdateProfilState extends State<_ProdusenplashScreenUpdateProfil> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("PROFIL BERHASIL DIUPDATE", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
+                onPressed: (){
+                setState(() {
+                  _index = 0;
+                });
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+                  return ProdusenHomepage();
+                }), (route) => false);
+              }, child: Text("Kembali ke Homepage"))
+            ],
+          ),
         ),
       ),
     );

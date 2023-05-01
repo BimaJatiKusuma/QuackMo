@@ -65,8 +65,6 @@ class _ProdusenDaftarProdukState extends State<ProdusenDaftarProduk> {
                         title: Text(produk['nama_produk']),
                         subtitle: Column(
                           children: [
-                            Text(id_produk),
-                            Text("${produk['peternak_uid']}"),
                             Text("Stock: ${produk['stok']}"),
                             Text("Harga: ${produk['harga']} / ${produk['satuan']}  telur")
                           ],

@@ -124,7 +124,6 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
                 DocumentSnapshot? documentSnapshot = snapshot.data;
                 widget.dataPesanan = documentSnapshot!.data() as Map;
 
-                print(widget.dataPesanan['id_produk']);
                 widget._referenceProduk = FirebaseFirestore.instance
                     .collection('produk')
                     .doc(widget.dataPesanan['id_produk']);

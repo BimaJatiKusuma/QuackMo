@@ -101,9 +101,6 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                 listQueryDocumentSnapshot
                     .sort((a, b) => b['id_kondisi'].compareTo(a['id_kondisi']));
               }
-              // print(listQueryDocumentSnapshot);
-              // print(querySnapshot);
-              // print(listQueryDocumentSnapshot[1]);
 
               return ListView.builder(
                 itemCount: listQueryDocumentSnapshot.length,
@@ -114,8 +111,7 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                   print(pemesanan);
                   var id_pemesanan = pemesanan.id;
                   DateTime waktuDB = (pemesanan['waktu'] as Timestamp).toDate();
-                  String formatWaktu =
-                      DateFormat('dd/MM/yyyy, HH:mm').format(waktuDB);
+                  String formatWaktu = DateFormat('dd/MM/yyyy, HH:mm').format(waktuDB);
 
                   return InkWell(
                       onTap: () {

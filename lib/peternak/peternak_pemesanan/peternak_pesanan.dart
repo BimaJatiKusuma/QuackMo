@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi.dart';
 
@@ -11,28 +12,21 @@ class PeternakPesanan extends StatefulWidget {
 }
 
 class _PeternakPesananState extends State<PeternakPesanan> {
-  CollectionReference _pemesananList =
-      FirebaseFirestore.instance.collection('pemesanan');
-  CollectionReference _produkPeternak =
-      FirebaseFirestore.instance.collection('produk');
+  CollectionReference _pemesananList = FirebaseFirestore.instance.collection('pemesanan');
 
   late Stream<QuerySnapshot> _streamPemesananList;
-  // late Stream<QuerySnapshot> _streamProduk;
+
   List kondisi_produk = [1, 2];
+  
   void initState() {
     super.initState();
-    // _streamProduk = _produkPeternak.where('peternak_uid', isEqualTo: userPeternakID).snapshots();
-    // _getProduk = _streamProduk.
-    // _streamPemesananList = _pemesananList.where('id_peternak', isEqualTo: userPeternakID).where('id_kondisi', whereIn: List.of(kondisi_produk)).snapshots();
     _streamPemesananList = _pemesananList
         .where('id_peternak', isEqualTo: userPeternakID)
         .where('id_kondisi', whereIn: List.of(kondisi_produk))
         .snapshots();
-    // _streamPemesananList = _pemesananList.where('id_kondisi', whereIn: List.of(kondisi_produk)).snapshots();
   }
 
-
-    _textKondisi(kondisi) {
+  _textKondisi(kondisi) {
     if (kondisi == 1) {
       return Text("menunggu konfirmasi peternak 1x24 jam");
     } else if (kondisi == 2) {
@@ -41,7 +35,6 @@ class _PeternakPesananState extends State<PeternakPesanan> {
       return Text("Pesanan disetujui, Harap dibayar");
     }
   }
-
 
   _alert(id_pemesanan) {
     showDialog(
@@ -121,37 +114,86 @@ class _PeternakPesananState extends State<PeternakPesanan> {
             }
             if (snapshot.connectionState == ConnectionState.active) {
               QuerySnapshot querySnapshot = snapshot.data;
-              List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
-                  querySnapshot.docs;
+              List<QueryDocumentSnapshot> listQueryDocumentSnapshot = querySnapshot.docs;
+              
+              late DocumentReference _referenceProduk;
+              late Future<DocumentSnapshot> _futureDataProduk;
+              late Map dataProduk;
+
+              late DocumentReference _referenceProdusen;
+              late Future<DocumentSnapshot> _futureDataProdusen;
+              late Map dataProdusen;
 
               return ListView.builder(
                 itemCount: listQueryDocumentSnapshot.length,
                 itemBuilder: (context, index) {
-                  QueryDocumentSnapshot pemesanan =
-                      listQueryDocumentSnapshot[index];
+                  QueryDocumentSnapshot pemesanan = listQueryDocumentSnapshot[index];
                   var id_pemesanan = pemesanan.id;
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
-                    child: ListTile(
-                      tileColor: Colors.amber,
-                      minVerticalPadding: 10,
-                      visualDensity: VisualDensity.adaptivePlatformDensity,
-                      // leading: Image(image: NetworkImage(pemesanan['foto_url'])),
-                      subtitle: Row(
-                        children: [
-                          Column(
-                            children: [
-                              Text("${pemesanan['waktu']}"),
-                              Text("${pemesanan['quantity']} telur"),
-                              _textKondisi(pemesanan['id_kondisi'])
-                            ],
-                          ),
-                        ],
-                      ),
-                      onTap: () {
-                        _alert(id_pemesanan);
-                      },
-                    ),
+
+                  _referenceProduk = FirebaseFirestore.instance.collection('produk').doc(pemesanan['id_produk']);
+                  _futureDataProduk = _referenceProduk.get();
+
+                  _referenceProdusen = FirebaseFirestore.instance.collection('users').doc(pemesanan['id_produsen']);
+                  _futureDataProdusen = _referenceProdusen.get();
+                  print(pemesanan['id_produsen']);
+
+                  return FutureBuilder(
+                    future: _futureDataProduk,
+                    builder: (context, snapshot) {
+                      if(snapshot.hasError){
+                        return Center(child: Text('Terjadi Error ${snapshot.hasError}'),);
+                      }
+                      if(snapshot.hasData){
+                        DocumentSnapshot? documentSnapshotProduk = snapshot.data;
+                        dataProduk = documentSnapshotProduk!.data() as Map;
+                        
+                        return FutureBuilder(
+                          future: _futureDataProdusen,
+                          builder: (context, snapshotProdusen) {
+                            if (snapshotProdusen.hasError){
+                              return Center(child: Text('Terjadi error ${snapshotProdusen.hasError}'),);
+                            }
+                            if (snapshotProdusen.hasData){
+                              DocumentSnapshot? documentSnapshotProdusen = snapshotProdusen.data;
+                              dataProdusen = documentSnapshotProdusen!.data() as Map;
+                              print(dataProdusen);
+
+                              return Container(
+                                width: MediaQuery.of(context).size.width*0.9,
+                                color: Colors.blue,
+                                margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
+                                child: InkWell(
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        children: [
+                                          Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu']as Timestamp).toDate())),
+                                          Text(dataProduk['nama_produk']),
+                                          Text("Produsen Telur Asin ${dataProdusen['nama']}"),
+                                          Text("${pemesanan['quantity']} telur"),
+                                          _textKondisi(pemesanan['id_kondisi'])
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    if(pemesanan['id_kondisi']==1){
+                                      _alert(id_pemesanan);
+                                    }
+                                    
+                                  },
+                                ),
+
+                              );
+                            }
+                            return CircularProgressIndicator();
+                          },
+                        );
+
+
+                      }
+                      return CircularProgressIndicator();
+                    }
                   );
                 },
               );

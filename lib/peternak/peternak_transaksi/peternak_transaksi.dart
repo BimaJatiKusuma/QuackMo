@@ -18,45 +18,6 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
       FirebaseFirestore.instance.collection('pemesanan');
   late Stream<QuerySnapshot> _streamTransaksi;
 
-  // List listIDpemesanan = [];
-  // String listIDpemesanan2 = '';
-  //   getDataPesanan() {
-  //   var dataPesanan = FirebaseFirestore.instance
-  //       .collection('pemesanan')
-  //       .where('id_peternak', isEqualTo: userPeternakID)
-  //       .get()
-  //       .then((value){
-  //         listIDpemesanan = value.docs;
-  //         listIDpemesanan2 = value.toString();
-  //         print(listIDpemesanan[1]['quantity']);
-  //         print(value.docs);
-  //         print(value.toString());
-  //         print(value.size);
-  //       });
-  //       // print(dataPesanan);
-
-  //   //     .doc()
-  //   //     .get()
-  //   //     .then((DocumentSnapshot documentSnapshot) {
-  //   //   if (documentSnapshot.exists) {
-  //   //     setState(() {
-  //   //       id_peternak = documentSnapshot.get('id_peternak');
-  //   //       id_produk = documentSnapshot.get('id_produk');
-  //   //       quantity = documentSnapshot.get('quantity');
-  //   //     });
-
-  //   //     var dataProduk = FirebaseFirestore.instance
-  //   //         .collection('produk')
-  //   //         .doc(id_produk)
-  //   //         .get()
-  //   //         .then((DocumentSnapshot documentSnapshot) {
-  //   //       setState(() {
-  //   //         hargaProduk = documentSnapshot.get('harga') * quantity;
-  //   //       });
-  //   //     });
-  //   //   }
-  //   // });
-  // }
   List kondisi_pesanan = [3, 4, 5, 6];
   _textKondisi(kondisi) {
     if (kondisi == 3) {
@@ -132,8 +93,9 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
                       color: Colors.blue,
                       child: Column(
                         children: [
-                          Text('${pemesanan['waktu_transaksi']}'),
+                          Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
                           Text(id_pemesanan),
+                          Text(pemesanan['id_produsen']),
                           Row(
                             children: [
                               Image(

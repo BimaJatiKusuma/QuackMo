@@ -966,37 +966,55 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
 
                             SizedBox(height: 30,),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Container(
-                                    
-                                    width: 150,
-                                    child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.blue),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text("Batal"))),
-                                Container(
-                                    
+                                    margin: EdgeInsets.only(right: 20),
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: Colors.green),
                                         onPressed: () {
-                                          widget._referenceProfil.update({
-                                            'nama':namaController.text,
-                                            'no_hp':noHpController.text,
-                                            'alamat':alamatController.text,
-                                            'kota':kotaController.text,
-                                            'kode_pos':kodePosController.text,
-                                            'usia':usiaController.text,
-                                            'gender':genderController.text,
-                                          });
-                                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                                            return PeternakHomepage();
-                                          }), (route) => false);
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context){
+                                              return AlertDialog(
+                                                title: Container(color: Color.fromRGBO(225, 202, 167, 1), child: Text('Pemberitahuan', textAlign: TextAlign.center,)),
+                                                content: Text('Simpan Perubahan ?', textAlign: TextAlign.center,),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      foregroundColor: Colors.black
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text('Tidak'),
+                                                  ),
+                                                  TextButton(
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                                      foregroundColor: Colors.black
+                                                    ),
+                                                    onPressed: () async {
+                                                      widget._referenceProfil.update({
+                                                        'nama':namaController.text,
+                                                        'no_hp':noHpController.text,
+                                                        'alamat':alamatController.text,
+                                                        'kota':kotaController.text,
+                                                        'kode_pos':kodePosController.text,
+                                                        'usia':usiaController.text,
+                                                        'gender':genderController.text,
+                                                      });
+                                                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                                                        return _PeternaksplashScreenUpdateProfil();
+                                                      }));
+                                                    },
+                                                    child: Text('Ya'),
+                                                  ),
+                                                ],
+                                              );
+                                            });
                                         },
                                         child: Text("Simpan")))
                               ],
@@ -1011,6 +1029,43 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
             }
             return Center(child: CircularProgressIndicator());
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _PeternaksplashScreenUpdateProfil extends StatefulWidget {
+  const _PeternaksplashScreenUpdateProfil({super.key});
+
+  @override
+  State<_PeternaksplashScreenUpdateProfil> createState() => __PeternaksplashScreenUpdateProfilState();
+}
+
+class __PeternaksplashScreenUpdateProfilState extends State<_PeternaksplashScreenUpdateProfil> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("PROFIL BERHASIL DIUPDATE", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
+                onPressed: (){
+                setState(() {
+                  _index = 0;
+                });
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+                  return PeternakHomepage();
+                }), (route) => false);
+              }, child: Text("Kembali ke Homepage"))
+            ],
+          ),
         ),
       ),
     );

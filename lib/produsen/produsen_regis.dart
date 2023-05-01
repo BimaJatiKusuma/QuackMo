@@ -24,13 +24,6 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
 
   TextEditingController usernameController =  TextEditingController();
   TextEditingController emailController =  TextEditingController();
-  // TextEditingController noHPController =  TextEditingController();
-  // TextEditingController alamatController =  TextEditingController();
-  // TextEditingController kotaController =  TextEditingController();
-  // TextEditingController negaraController =  TextEditingController();
-  // TextEditingController kodePosController =  TextEditingController();
-  // TextEditingController usiaController =  TextEditingController();
-  // TextEditingController genderController =  TextEditingController();
   TextEditingController passwordController =  TextEditingController();
   TextEditingController konfirmasipasswordController =  TextEditingController();
 

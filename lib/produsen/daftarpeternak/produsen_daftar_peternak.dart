@@ -47,21 +47,47 @@ class _ProdusenDaftarPeternakState extends State<ProdusenDaftarPeternak> {
                   itemBuilder:(context, index) {
                     QueryDocumentSnapshot peternak=listQueryDocumentSnapshot[index];
                     var id_peternak = peternak.id;
+                    print(peternak);
+                    print(peternak['email']);
+                    print(peternak['alamat']);
                     return Container(
-                      margin: EdgeInsets.fromLTRB(5, 0, 5, 10),
-                      child: ListTile(
-                        tileColor: Colors.amber,
-                        minVerticalPadding: 10,
-                        visualDensity: VisualDensity.adaptivePlatformDensity,
-
-                        title: Text(peternak['nama']),
-                        
+                      width: MediaQuery.of(context).size.width,
+                      color: Colors.blue,
+                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      child: InkWell(
+                        child: Row(
+                          children: [
+                            Container(
+                              child: Icon(Icons.square_rounded),
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Text('Peternak Bebek ${peternak['nama']}'),
+                                Text('Alamat: ${peternak['alamat']}')
+                              ],
+                            )
+                          ],
+                        ),
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context){
                             return ProdusenDaftarProduk(id_peternak);
                           }));
                         },
                       ),
+                      // child: ListTile(
+                      //   tileColor: Colors.amber,
+                      //   minVerticalPadding: 10,
+                      //   visualDensity: VisualDensity.adaptivePlatformDensity,
+
+                      //   title: Text(peternak['nama']),
+                        
+                      //   onTap: () {
+                      //     Navigator.push(context, MaterialPageRoute(builder: (context){
+                      //       return ProdusenDaftarProduk(id_peternak);
+                      //     }));
+                      //   },
+                      // ),
                     );
                     // Text(produk['nama_produk']);
                   },

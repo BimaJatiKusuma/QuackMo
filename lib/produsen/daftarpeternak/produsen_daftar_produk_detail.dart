@@ -75,9 +75,7 @@ class _ProdusenDaftarProdukDetailState
             }
             return ListView(
               children: [
-                Text("${widget.data}"),
-                Text(widget.produkID),
-                Image(image: AssetImage('images/daftar_produk01.png')),
+                Image(image: NetworkImage(_produkData['foto_url'])),
                 Container(
                   child: Column(
                     children: [
@@ -85,11 +83,11 @@ class _ProdusenDaftarProdukDetailState
                       Container(
                         child: Column(
                           children: [
-                            Text("Kondisi: Baru"),
-                            Text("Kategori: Telur Bebek"),
-                            Text("Stock: 100 Telur"),
-                            Text("Berat Satuan: 1 Butir"),
-                            Text("Harga: Rp. 2.000 / telur"),
+                            Text("Nama: ${_produkData['nama_produk']}"),
+                            Text("Stock: ${_produkData['stok']}"),
+                            Text("Berat Satuan: ${_produkData['satuan']}"),
+                            Text("Harga: ${_produkData['harga']} / ${_produkData['satuan']} telur"),
+                            Text("Keterangan: ${_produkData['keterangan']}")
                           ],
                         ),
                       ),
