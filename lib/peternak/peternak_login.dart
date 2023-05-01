@@ -50,7 +50,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                         key: _formkey,
                         child: Column(
                           children: [
-                            Text("Log In", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 28),),
+                            Container(width: double.infinity, child: Text("Masuk", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 28),)),
                             
                             SizedBox(height: 20,),
                             
@@ -133,12 +133,13 @@ class _PeternakLoginState extends State<PeternakLogin> {
                                 signIn(emailController.text, passwordController.text);
                                 },
                                 style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
-                                child: Text("Sign In")),
+                                child: Text("Masuk")),
                             ),
                       
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don't have an account?"),
+                                Text("Belum punya akun ?"),
                                 TextButton(onPressed: (){
                                   setState(() {
                                     alertText = '';

@@ -12,16 +12,15 @@ class Start extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image(image: AssetImage('images/open_apps_01.png')),
-            Text('QUACKMO'),
-            Text('Buy and sell duck eggs easily'),
-            Text("Selamat datang di aplikasi QuackMo"),
+            Text('QUACKMO', style: TextStyle(fontWeight: FontWeight.w900),),
+            Text('Jual Beli Telur Bebek Dengan Mudah', style: TextStyle(fontWeight: FontWeight.w900),),
             ElevatedButton(onPressed: (){
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                 return Login();
               }));
             },
             style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225,202,167,1)),
-            child: Text("Get Started"))
+            child: Text("Mulai"))
           ],
         ),
       ),

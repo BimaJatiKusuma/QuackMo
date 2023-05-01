@@ -26,6 +26,7 @@ class _ProdusenDaftarPeternakState extends State<ProdusenDaftarPeternak> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(225,202,167,1),
         leading: BackButton(onPressed: () {
           Navigator.pop(context);
         },),
@@ -47,25 +48,40 @@ class _ProdusenDaftarPeternakState extends State<ProdusenDaftarPeternak> {
                   itemBuilder:(context, index) {
                     QueryDocumentSnapshot peternak=listQueryDocumentSnapshot[index];
                     var id_peternak = peternak.id;
-                    print(peternak);
-                    print(peternak['email']);
-                    print(peternak['alamat']);
                     return Container(
                       width: MediaQuery.of(context).size.width,
-                      color: Colors.blue,
-                      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: Offset(0, 3)
+                          )
+                        ]
+                      ),
+                      margin: EdgeInsets.fromLTRB(10, 30, 10, 0),
                       child: InkWell(
                         child: Row(
                           children: [
                             Container(
-                              child: Icon(Icons.square_rounded),
+                              margin: EdgeInsets.only(left: 5),
+                              child: Icon(Icons.square_rounded, color: Color.fromRGBO(225,202,167,1),),
                             ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                Text('Peternak Bebek ${peternak['nama']}'),
-                                Text('Alamat: ${peternak['alamat']}')
-                              ],
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Peternak Bebek ${peternak['nama']}', style: TextStyle(fontWeight: FontWeight.w500),),
+                                    Text('Alamat: ${peternak['alamat']}')
+                                  ],
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -75,21 +91,7 @@ class _ProdusenDaftarPeternakState extends State<ProdusenDaftarPeternak> {
                           }));
                         },
                       ),
-                      // child: ListTile(
-                      //   tileColor: Colors.amber,
-                      //   minVerticalPadding: 10,
-                      //   visualDensity: VisualDensity.adaptivePlatformDensity,
-
-                      //   title: Text(peternak['nama']),
-                        
-                      //   onTap: () {
-                      //     Navigator.push(context, MaterialPageRoute(builder: (context){
-                      //       return ProdusenDaftarProduk(id_peternak);
-                      //     }));
-                      //   },
-                      // ),
                     );
-                    // Text(produk['nama_produk']);
                   },
                 );
               }
@@ -99,35 +101,3 @@ class _ProdusenDaftarPeternakState extends State<ProdusenDaftarPeternak> {
     );
   }
 }
-
-
-
-      // ListView(
-      //   children: [
-      //     Text("Jember"),
-      //     Container(
-      //     child: Column(children: [
-      //       InkWell(
-      //         onTap: () {
-      //           Navigator.push(context, MaterialPageRoute(builder: (context) {
-      //             return ProdusenDaftarProduk();
-      //           }));
-      //         },
-      //         child: Ink(
-      //           color: Colors.blue,
-      //           child: Row(
-      //             children: [
-      //               Icon(Icons.square),
-      //               Column(children: [
-      //                 Text('Peternak Bebek Farhaz'),
-      //                 Text('PT. Jaya Abadi'),
-      //                 Text('Alamat: Jl. Mawar Merah no. 11')
-      //               ])
-      //             ],
-      //           ),
-      //         ),
-      //       ),
-      //     ]),
-      //   ),
-      //   ],
-      // ),

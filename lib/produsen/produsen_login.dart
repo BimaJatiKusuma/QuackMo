@@ -51,7 +51,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                         key: _formkey,
                         child: Column(
                           children: [
-                            Text("Log In", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 28),),
+                            Container(width: double.infinity,child: Text("Masuk", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 28),)),
                             SizedBox(height: 20,),
                             TextFormField(
                               controller: emailController,
@@ -131,8 +131,9 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                             ),
                       
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don't have an account?"),
+                                Text("Belum Punya Akun?"),
                                 TextButton(onPressed: (){
                                       setState(() {
                                         alertText = '';

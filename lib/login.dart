@@ -16,7 +16,7 @@ class Login extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text("Please choose yourself!", style: TextStyle(fontWeight: FontWeight.w600),),
+              Text("Pilih karaktermu untuk masuk ke aplikasi!", style: TextStyle(fontWeight: FontWeight.w600),),
               Text("Pilih sebagai:"),
               Row(
                 // mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +25,9 @@ class Login extends StatelessWidget {
                   Column(
                     children: [
                       Image(image: AssetImage('images/peternak_01.png')),
-                      Text("Peternak Bebek"),
+                      SizedBox(height: 10,),
+                      Text("Peternak Bebek", style: TextStyle(fontWeight: FontWeight.w600),),
+                      SizedBox(height: 10,),
                       ElevatedButton(
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){
@@ -40,7 +42,9 @@ class Login extends StatelessWidget {
                   Column(
                     children: [
                       Image(image: AssetImage('images/produsen_01.png')),
-                      Text("Produsen Telur Asin"),
+                      SizedBox(height: 10,),
+                      Text("Produsen Telur Asin", style: TextStyle(fontWeight: FontWeight.w600)),
+                      SizedBox(height: 10,),
                       ElevatedButton(
                         onPressed: (){
                           Navigator.push(context, MaterialPageRoute(builder: (context){

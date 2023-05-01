@@ -36,7 +36,7 @@ CollectionReference _pemesananList =
     } else if (kondisi == 5) {
       return Text("Pembayaran Ditolak");
     } else if (kondisi == 6) {
-      return Text("Pembayaran Disetujui");
+      return Text("Pembayaran Disetujui", style: TextStyle(color: Color.fromRGBO(111, 219, 122, 1)),);
     }
   }
 
@@ -85,29 +85,38 @@ CollectionReference _pemesananList =
                   var id_pemesanan = pemesanan.id;
                   DateTime waktuDB = (pemesanan['waktu_transaksi'] as Timestamp).toDate();
                   String formatWaktu =
-                      DateFormat('dd/MM/yyyy, HH:mm').format(waktuDB);
+                      DateFormat('dd LLLL yyyy').format(waktuDB);
 
                   return InkWell(
                 onTap: () {},
-                child: Column(
-                  children: [
-                    Text("Tanggal transaksi"),
-                    Text(formatWaktu),
-                    Card(
-                      child: Row(children: [
-                        Image(image: AssetImage('images/transaksi_02.png')),
-                        Column(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(formatWaktu),
+                      Card(
+                        color: Colors.grey[200],
+                        child: Row(
                           children: [
-                            // Text('Telur Hibrida'),
-                            // Text('PT. Jaya Abadi'),
-                            Text('Pemesanan: ${pemesanan['quantity']} butir telur'),
-                            _textKondisi(pemesanan['id_kondisi'])
-                          ],
-                        ),
-                        Text("- ${pemesanan['total']}")
-                      ]),
-                    ),
-                  ],
+                            Container(
+                              width: 25,
+                              child: Image(image: AssetImage('images/transaksi_02.png'))),
+                            Container(
+                              width: 225,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('Pemesanan: ${pemesanan['quantity']} butir telur'),
+                                  _textKondisi(pemesanan['id_kondisi'])
+                                ],
+                              ),
+                            ),
+                          Expanded(child: Text("- Rp. ${pemesanan['total']}"))
+                        ]),
+                      ),
+                    ],
+                  ),
                 ));
                 },
               );

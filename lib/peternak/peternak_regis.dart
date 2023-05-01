@@ -162,7 +162,8 @@ class _PeternakRegisState extends State<PeternakRegis> {
                           Text(alertTextRegis),
                         SizedBox(
                           width: double.infinity,
-                          child: ElevatedButton(  
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),  
                             onPressed: (){
                             signUp(usernameController.text, emailController.text, passwordController.text, role);
                           }, child: Text("Daftar")),

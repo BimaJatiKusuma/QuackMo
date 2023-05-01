@@ -75,7 +75,7 @@ class _ProdusenHomepageState extends State<ProdusenHomepage> {
           backgroundColor: Color.fromRGBO(225, 202, 167, 1),
           onTap: (int index) => setState(() => _index = index),
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Beranda'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
             BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'Keluar'),
           ],
