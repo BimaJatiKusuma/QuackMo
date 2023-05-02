@@ -63,9 +63,15 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                               ),
                               validator: (value) {
                                 if (value!.length == 0){
+                                    setState(() {
+                                      visible = false;
+                                    });
                                     return "Email tidak boleh kosong";
                                   }
                                   if (!RegExp("^[1-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                                    setState(() {
+                                      visible = false;
+                                    });
                                     return ("Masukkan email secara benar");
                                   }
                                   else {
@@ -100,10 +106,16 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                               validator: (value) {
                                 RegExp regex = RegExp(r'^.{6,}$');
                                 if (value!.isEmpty){
-                                  return "password tidak boleh kosong";
+                                  setState(() {
+                                    visible = false;
+                                  });
+                                  return "Password tidak boleh kosong";
                                 }
                                 if (!regex.hasMatch(value)){
-                                  return ("masukkan password minimal 6 karakter");
+                                  setState(() {
+                                    visible = false;
+                                  });
+                                  return ("Masukkan password minimal 6 karakter");
                                 }
                                 else {
                                   return null;
@@ -123,11 +135,11 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                                 setState(() {
                                   visible = true;
                                 });
-                                CircularProgressIndicator();
+                                // CircularProgressIndicator();
                                 signIn(emailController.text, passwordController.text);
                               },
                               style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
-                              child: Text("Sign In")),
+                              child: Text("Masuk")),
                             ),
                       
                             Row(
@@ -148,9 +160,6 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                             
                     
                             Visibility(
-                                    maintainSize: true,
-                                    maintainAnimation: true,
-                                    maintainState: true,
                                     visible: visible,
                                     child: Container(
                                         child: CircularProgressIndicator(
@@ -197,6 +206,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                         }
                         else{
                           setState(() {
+                            visible = false;
                             alertText = 'User Belum mendaftar sebagai produsen';
                           });
                           return print('User Belum mendaftar sebagai produsen');
@@ -204,6 +214,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                       }
                       else{
                         setState(() {
+                          visible = false;
                           alertText = 'Email tidak terdaftar';
                         });
                         print('Email tidak terdaftar');
@@ -224,12 +235,14 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
       on FirebaseAuthException catch (e){
         if (e.code == 'user-not-found'){
           setState(() {
+            visible = false;
             alertText = 'Email tidak terdaftar';
           });
           print('Email tidak terdaftar');
         }
         else if (e.code == 'wrong-password'){
           setState(() {
+            visible = false;
             alertText = 'Password salah';
           });
           print('Password salah');

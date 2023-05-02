@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -65,7 +67,7 @@ class _PeternakRegisState extends State<PeternakRegis> {
                       ),
                 child: ListView(
                   children: [
-                    Text('Sign Up', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 36),),
+                    Text('Daftar', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 36),),
                     Form(
                       key: _formkey,
                       child: Column(
@@ -81,7 +83,12 @@ class _PeternakRegisState extends State<PeternakRegis> {
                               hintText: 'Nama',
                             ),
                             validator: (value) {
-                              return null;
+                              if (value!.length == 0){
+                                return "Username tidak boleh kosong";
+                              }
+                              else{
+                                return null;
+                              }
                             },
                           ),
 
@@ -167,7 +174,20 @@ class _PeternakRegisState extends State<PeternakRegis> {
                             onPressed: (){
                             signUp(usernameController.text, emailController.text, passwordController.text, role);
                           }, child: Text("Daftar")),
-                        )
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Sudah punya akun ?"),
+                            TextButton(onPressed: (){
+                                  setState(() {
+                                    alertText = '';
+                                  });
+                              Navigator.pop(context);
+                            }, child: Text("Masuk"))
+                          ],
+                        ),
                         ],
                       ),
                     )
@@ -209,8 +229,46 @@ class _PeternakRegisState extends State<PeternakRegis> {
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role, 'no_hp':'', 'alamat':'', 'kota':'', 'kode_pos':'', 'usia':'', 'gender':''});
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-      return PeternakLogin();
+      return PeternakSplashScreenRegis();
     }));
   }
 
+}
+
+class PeternakSplashScreenRegis extends StatefulWidget {
+  const PeternakSplashScreenRegis({super.key});
+
+  @override
+  State<PeternakSplashScreenRegis> createState() => _PeternakSplashScreenRegisState();
+}
+
+class _PeternakSplashScreenRegisState extends State<PeternakSplashScreenRegis> {
+  @override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return PeternakLogin();
+      }), (route) => false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("AKUN BERHASIL DIBUAT", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

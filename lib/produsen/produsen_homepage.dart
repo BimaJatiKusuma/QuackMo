@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quackmo/login.dart';
@@ -355,6 +357,10 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 255, 255, 0),
+        foregroundColor: Colors.black,
+        elevation: 0,
+        centerTitle: true,
         title: Text("Profil"),
       ),
       body: Container(
@@ -398,6 +404,7 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                                   ))
                             ],
                           ),
+                          Text(widget.dataProfil['nama'], style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),),
                           Text('Produsen Telur Asin')
                         ],
                       ),
@@ -579,7 +586,7 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               mainAxisSize: MainAxisSize.max,
                               children: [
-                                Text('Gender'),
+                                Text('Jenis Kelamin'),
                                 Container(
                                   padding: EdgeInsets.all(5),
                                   width: double.infinity,
@@ -606,7 +613,8 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red),
+                                            backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                            foregroundColor: Colors.black),
                                         onPressed: () {
                                           showDialog(
                                             context: context,
@@ -635,9 +643,9 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                                                       setState(() {
                                                         _index = 0;
                                                       });
-                                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                                                        return Login();
-                                                      }), (route) => false);
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                        return _ProdusenSplashScreenHapusProfil();
+                                                      }));
                                                     },
                                                     child: Text('Ya'),
                                                   ),
@@ -667,7 +675,43 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
 
 
 
+class _ProdusenSplashScreenHapusProfil extends StatefulWidget {
+  const _ProdusenSplashScreenHapusProfil({super.key});
 
+  @override
+  State<_ProdusenSplashScreenHapusProfil> createState() => __ProdusenSplashScreenHapusProfilState();
+}
+
+class __ProdusenSplashScreenHapusProfilState extends State<_ProdusenSplashScreenHapusProfil> {
+@override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return Login();
+      }), (route) => false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("AKUN BERHASIL DI HAPUS", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 
@@ -712,6 +756,10 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 255, 255, 0),
+        foregroundColor: Colors.black,
+        elevation: 0,
+        centerTitle: true,
         title: Text("Edit Profil"),
       ),
       body: Container(
@@ -915,7 +963,7 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Text('Gender'),
+                                  Text('Jenis Kelamin'),
                                   Container(
                                     width: double.infinity,
                                     height: 35,
@@ -940,7 +988,8 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green),
+                                            backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                            foregroundColor: Colors.black),
                                         onPressed: () {
                                           widget._referenceProfil.update({
                                             'nama':namaController.text,
@@ -952,7 +1001,7 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
                                             'gender':genderController.text,
                                           });
                                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                            return _ProdusenplashScreenUpdateProfil();
+                                            return _ProdusensplashScreenUpdateProfil();
                                           }));
                                         },
                                         child: Text("Simpan")))
@@ -977,14 +1026,28 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
 
 
 
-class _ProdusenplashScreenUpdateProfil extends StatefulWidget {
-  const _ProdusenplashScreenUpdateProfil({super.key});
+class _ProdusensplashScreenUpdateProfil extends StatefulWidget {
+  const _ProdusensplashScreenUpdateProfil({super.key});
 
   @override
-  State<_ProdusenplashScreenUpdateProfil> createState() => __ProdusenplashScreenUpdateProfilState();
+  State<_ProdusensplashScreenUpdateProfil> createState() => __ProdusensplashScreenUpdateProfilState();
 }
 
-class __ProdusenplashScreenUpdateProfilState extends State<_ProdusenplashScreenUpdateProfil> {
+class __ProdusensplashScreenUpdateProfilState extends State<_ProdusensplashScreenUpdateProfil> {
+  @override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      setState(() {
+        _index = 0;
+      });
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return ProdusenHomepage();
+      }), (route) => false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -995,17 +1058,7 @@ class __ProdusenplashScreenUpdateProfilState extends State<_ProdusenplashScreenU
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.check_circle, size: 200, color: Colors.white,),
-              Text("PROFIL BERHASIL DIUPDATE", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
-                onPressed: (){
-                setState(() {
-                  _index = 0;
-                });
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                  return ProdusenHomepage();
-                }), (route) => false);
-              }, child: Text("Kembali ke Homepage"))
+              Text("PROFIL BERHASIL DI UBAH", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
             ],
           ),
         ),
@@ -1013,3 +1066,4 @@ class __ProdusenplashScreenUpdateProfilState extends State<_ProdusenplashScreenU
     );
   }
 }
+

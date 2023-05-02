@@ -15,8 +15,16 @@ class _PeternakPesananState extends State<PeternakPesanan> {
   CollectionReference _pemesananList = FirebaseFirestore.instance.collection('pemesanan');
 
   late Stream<QuerySnapshot> _streamPemesananList;
+  
+  late DocumentReference _referenceProduk;
+  late Future<DocumentSnapshot> _futureDataProduk;
+  late Map dataProduk;
 
-  List kondisi_produk = [1, 2];
+  late DocumentReference _referenceProdusen;
+  late Future<DocumentSnapshot> _futureDataProdusen;
+  late Map dataProdusen;
+
+  List kondisi_produk = [100, 300];
   
   void initState() {
     super.initState();
@@ -27,16 +35,14 @@ class _PeternakPesananState extends State<PeternakPesanan> {
   }
 
   _textKondisi(kondisi) {
-    if (kondisi == 1) {
+    if (kondisi == 100) {
       return Text("menunggu konfirmasi peternak 1x24 jam");
-    } else if (kondisi == 2) {
+    } else if (kondisi == 300) {
       return Text("Pemesanan Ditolak");
-    } else if (kondisi == 3) {
-      return Text("Pesanan disetujui, Harap dibayar");
     }
   }
 
-  _alert(id_pemesanan) {
+  _alert(id_pemesanan, total_barang) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
@@ -65,7 +71,7 @@ class _PeternakPesananState extends State<PeternakPesanan> {
                     onPressed: () {
                       _pemesananList
                           .doc(id_pemesanan)
-                          .update({'id_kondisi': 2});
+                          .update({'id_kondisi': 300});
                       Navigator.pop(context, 'Tidak');
                     },
                     child: const Text('TIDAK'),
@@ -77,7 +83,8 @@ class _PeternakPesananState extends State<PeternakPesanan> {
                     onPressed: () {
                       _pemesananList
                           .doc(id_pemesanan)
-                          .update({'id_kondisi': 3});
+                          .update({'id_kondisi': 200});
+                      _referenceProduk.update({'stok': (dataProduk['stok'] - total_barang)});
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         return PeternakTransaksi();
@@ -116,13 +123,11 @@ class _PeternakPesananState extends State<PeternakPesanan> {
               QuerySnapshot querySnapshot = snapshot.data;
               List<QueryDocumentSnapshot> listQueryDocumentSnapshot = querySnapshot.docs;
               
-              late DocumentReference _referenceProduk;
-              late Future<DocumentSnapshot> _futureDataProduk;
-              late Map dataProduk;
-
-              late DocumentReference _referenceProdusen;
-              late Future<DocumentSnapshot> _futureDataProdusen;
-              late Map dataProdusen;
+              if (listQueryDocumentSnapshot.length >= 2) {
+                listQueryDocumentSnapshot
+                    .sort((a, b) => a['id_kondisi'].compareTo(b['id_kondisi']));
+              }
+              
 
               return ListView.builder(
                 itemCount: listQueryDocumentSnapshot.length,
@@ -177,8 +182,8 @@ class _PeternakPesananState extends State<PeternakPesanan> {
                                     ],
                                   ),
                                   onTap: () {
-                                    if(pemesanan['id_kondisi']==1){
-                                      _alert(id_pemesanan);
+                                    if(pemesanan['id_kondisi']==100){
+                                      _alert(id_pemesanan, pemesanan['quantity']);
                                     }
                                     
                                   },
@@ -203,97 +208,5 @@ class _PeternakPesananState extends State<PeternakPesanan> {
             );
           },
         ));
-
-    //     // Text('${_streamProduk}'),
-    //     Text('${_pemesananList}'),
-    //     Text('${_streamPemesananList}'),
-    //     Text("Semua Pesanan"),
-    //     Column(
-    //       children: [
-    //         Text("1 April 2023"),
-    //         TextButton(
-    //         onPressed: () {
-    //           showDialog(
-    //             context: context,
-    //             builder: (BuildContext context) => AlertDialog(
-    //               title: const Text('Pemberitahuan'),
-    //               content: const Text('Pemesanan disetujui'),
-    //               actions: <Widget>[
-    //                 TextButton(
-    //                   onPressed: () => Navigator.pop(context, 'Tidak'),
-    //                   child: const Text('Tidak'),
-    //                 ),
-    //                 TextButton(
-    //                   onPressed: () => Navigator.pop(context, 'Ya'),
-    //                   child: const Text('Ya'),
-    //                 ),
-    //               ],
-    //             ),
-    //           );
-    //         },
-    //         child: Card(
-    //               child: Row(children: [
-    //                 Icon(Icons.square),
-    //                 Column(
-    //                   children: [
-    //                     Text('Telur Hibrida'),
-    //                     Text('Produsen Telur Asin Ady'),
-    //                     Text('Pemesanan: 1 butir telur'),
-    //                     Text('Menunggu konfirmasi pemesanan')
-    //                   ],
-    //                 ),
-    //                 Icon(Icons.check_circle_outline),
-    //               ]),
-    //             ),
-    //         ),
-    //       ],
-    //     ),
-
-    //     InkWell(
-    //         onTap: () {},
-    //         child: Column(
-    //           children: [
-    //             Text('1 April 2023'),
-    //             Card(
-    //               child: Row(children: [
-    //                 Icon(Icons.square),
-    //                 Column(
-    //                   children: [
-    //                     Text('Telur Hibrida'),
-    //                     Text('PT. Jaya Abadi'),
-    //                     Text('Pemesanan: 1 butir telur'),
-    //                     Text('Pemesanan telah dibatalkan')
-    //                   ],
-    //                 ),
-    //                 Icon(Icons.close_rounded),
-    //               ]),
-    //             ),
-    //           ],
-    //         )),
-
-    //     InkWell(
-    //         onTap: () {},
-    //         child: Column(
-    //           children: [
-    //             Text('1 April 2023'),
-    //             Card(
-    //               child: Row(children: [
-    //                 Icon(Icons.square),
-    //                 Column(
-    //                   children: [
-    //                     Text('Telur Hibrida'),
-    //                     Text('PT. Jaya Abadi'),
-    //                     Text('Pemesanan: 1 butir telur'),
-    //                     Text('Telah disetujui')
-    //                   ],
-    //                 ),
-    //                 Icon(Icons.check_circle),
-    //               ]),
-    //             ),
-    //           ],
-    //         )),
-
-    //   ],
-    // ));
   }
 }

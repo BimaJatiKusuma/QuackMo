@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -53,7 +55,7 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
         backgroundColor: Color.fromRGBO(225, 202, 167, 1),
       ),
       body: Container(
-        padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
+        padding: EdgeInsets.fromLTRB(0, 20, 0, 50),
         child: StreamBuilder(
           stream: _streamProdukList,
           builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -128,7 +130,9 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
                                                       ),
                                                       onPressed: () async {
                                                         await _deleteProduk(id_produk, produk['foto_url']);
-                                                        Navigator.pop(context);
+                                                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                          return _PeternakSplashScreenDaftarProdukHapus();
+                                                        }));
                                                       },
                                                       child: Text('Ya'),
                                                     ),
@@ -170,7 +174,6 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
                       ),
                     ),
                   );
-
                 },
               );
             }
@@ -190,6 +193,45 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
         backgroundColor: Color.fromRGBO(225, 202, 167, 1),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+}
+
+
+class _PeternakSplashScreenDaftarProdukHapus extends StatefulWidget {
+  const _PeternakSplashScreenDaftarProdukHapus({super.key});
+
+  @override
+  State<_PeternakSplashScreenDaftarProdukHapus> createState() => __PeternakSplashScreenDaftarProdukHapusState();
+}
+
+class __PeternakSplashScreenDaftarProdukHapusState extends State<_PeternakSplashScreenDaftarProdukHapus> {
+@override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+        return PeternakDaftarProduk();
+      }));
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("PRODUK BERHASIL DI HAPUS", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

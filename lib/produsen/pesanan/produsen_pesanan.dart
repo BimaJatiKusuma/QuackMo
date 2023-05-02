@@ -19,7 +19,7 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
       FirebaseFirestore.instance.collection('pemesanan');
 
   late Stream<QuerySnapshot> _streamPemesananList;
-  List kondisi_produk = [1, 2, 3];
+  List kondisi_produk = [100, 200, 300];
 
   String _orderBy = 'id_kondisi';
   bool _isDescending = false;
@@ -32,17 +32,17 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
   }
 
   _textKondisi(kondisi) {
-    if (kondisi == 1) {
+    if (kondisi == 100) {
       return Text("menunggu konfirmasi peternak 1x24 jam");
-    } else if (kondisi == 2) {
-      return Text("Pemesanan Ditolak");
-    } else if (kondisi == 3) {
+    } else if (kondisi == 200) {
       return Text("Pesanan disetujui, Harap dibayar");
+    } else if (kondisi == 300) {
+      return Text("Pemesanan Ditolak");
     }
   }
 
   _batalIcon(kondisi, id_pemesanan) {
-    if (kondisi == 1) {
+    if (kondisi == 100) {
       return TextButton(
           onPressed: () {
             showDialog(
@@ -100,7 +100,7 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                   querySnapshot.docs;
               if (listQueryDocumentSnapshot.length >= 2) {
                 listQueryDocumentSnapshot
-                    .sort((a, b) => b['id_kondisi'].compareTo(a['id_kondisi']));
+                    .sort((a, b) => a['id_kondisi'].compareTo(b['id_kondisi']));
               }
 
               return ListView.builder(
@@ -108,15 +108,15 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                 itemBuilder: (context, index) {
                   QueryDocumentSnapshot pemesanan =
                       listQueryDocumentSnapshot[index];
-                  print(index);
-                  print(pemesanan);
+                  // print(index);
+                  // print(pemesanan);
                   var id_pemesanan = pemesanan.id;
                   DateTime waktuDB = (pemesanan['waktu'] as Timestamp).toDate();
                   String formatWaktu = DateFormat('dd/MM/yyyy, HH:mm').format(waktuDB);
 
                   return InkWell(
                       onTap: () {
-                        if (pemesanan['id_kondisi'] == 3) {
+                        if (pemesanan['id_kondisi'] == 200) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
                             return ProdusenPembayaran(id_pemesanan);

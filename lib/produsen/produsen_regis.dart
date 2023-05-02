@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -65,7 +67,7 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                       ),
                 child: ListView(
                   children: [
-                    Text('Sign Up', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 36),),
+                    Text('Daftar', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 36),),
                     Form(
                       key: _formkey,
                       child: Column(
@@ -81,7 +83,12 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                               hintText: 'Nama',
                             ),
                             validator: (value) {
-                              return null;
+                              if (value!.isEmpty){
+                                return "Username tidak boleh kosong";
+                              }
+                              else {
+                                return null;
+                              }
                             },
                           ),
 
@@ -125,10 +132,10 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                             validator: (value) {
                               RegExp regex = RegExp(r'^.{6,}$');
                               if (value!.isEmpty){
-                                return "password tidak boleh kosong";
+                                return "Password tidak boleh kosong";
                               }
                               if (!regex.hasMatch(value)){
-                                return ("masukkan password minimal 6 karakter");
+                                return ("Masukkan password minimal 6 karakter");
                               }
                               else {
                                 return null;
@@ -167,7 +174,20 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
                             onPressed: (){
                             signUp(usernameController.text, emailController.text, passwordController.text, role);
                           }, child: Text("Daftar")),
-                        )
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("Sudah punya akun ?"),
+                            TextButton(onPressed: (){
+                                  setState(() {
+                                    alertText = '';
+                                  });
+                              Navigator.pop(context);
+                            }, child: Text("Masuk"))
+                          ],
+                        ),
                         ],
                       ),
                     )
@@ -210,7 +230,7 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
     ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role});
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-      return ProdusenLogin();
+      return ProdusenSplashScreenRegis();
     }));
   }
 
@@ -218,116 +238,40 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
 
 }
 
+class ProdusenSplashScreenRegis extends StatefulWidget {
+  const ProdusenSplashScreenRegis({super.key});
 
+  @override
+  State<ProdusenSplashScreenRegis> createState() => _ProdusenSplashScreenRegisState();
+}
 
+class _ProdusenSplashScreenRegisState extends State<ProdusenSplashScreenRegis> {
+  @override
+  void initState(){
+    super.initState();
 
+    Timer(Duration(seconds: 1), () {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return ProdusenLogin();
+      }), (route) => false);
+    });
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Scaffold(
-//       body: ListView(
-//         children: [
-//           Image(image: AssetImage('images/regis_01.png')),
-//           Container(
-//             child: Column(
-//               children: [
-//                 Text('Sign Up'),
-//                 Form(
-//                   key: _formkey,
-//                   child: Column(
-//                     children: [
-//                       TextFormField(
-//                         controller: usernameController,
-//                         decoration: InputDecoration(
-//                           hintText: 'Nama',
-//                         ),
-//                       ),
-//                       TextFormField(
-//                         controller: emailController,
-//                         decoration: InputDecoration(
-//                           hintText: 'Email',
-//                         ),
-//                         validator: (value) {
-//                           if (value!.length == 0){
-//                             return "Email tidak boleh kosong";
-//                           }
-//                           if (!RegExp("^[1-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
-//                             return ("Masukkan email secara benar");
-//                           }
-//                           else {
-//                             return null;
-//                           }
-//                         },
-//                       ),
-                      
-//                       TextFormField(
-//                         controller: passwordController,
-//                         obscureText: _obscureText,
-//                         decoration: InputDecoration(
-//                           hintText: 'Password',
-//                           suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
-//                         ),
-//                         validator: (value) {
-//                           RegExp regex = RegExp(r'^.{6,}$');
-//                           if (value!.isEmpty){
-//                             return "password tidak boleh kosong";
-//                           }
-//                           if (!regex.hasMatch(value)){
-//                             return ("masukkan password minimal 6 karakter");
-//                           }
-//                           else {
-//                             return null;
-//                           }
-//                         },
-//                       ),
-//                       TextFormField(
-//                         controller: konfirmasipasswordController,
-//                         obscureText: _obscureText,
-//                         decoration: InputDecoration(
-//                           hintText: 'Konfirmasi Password',
-//                           suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
-//                         ),
-//                         validator: (value) {
-//                           if (konfirmasipasswordController.text != passwordController.text){
-//                             return "Password tidak sama";
-//                           }
-//                           else {
-//                             return null;
-//                           }
-//                         },
-//                       ),
-//                     Text(alertTextRegis),
-//                     ElevatedButton(onPressed: (){
-//                       signUp(usernameController.text, emailController.text, passwordController.text, role);
-//                     }, child: Text("Daftar"))
-//                     ],
-//                   ),
-//                 )
-//               ],
-//             ),
-//           )
-//         ],
-//       ),
-//     );
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("AKUN BERHASIL DIBUAT", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

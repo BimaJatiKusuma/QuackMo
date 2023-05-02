@@ -36,7 +36,9 @@ class _ProdusenDaftarProdukState extends State<ProdusenDaftarProduk> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text("Daftar Produk"),
+        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+        centerTitle: true,
+        title: Text("DAFTAR PRODUK"),
         leading: BackButton(),
       ),
       body: 
@@ -50,33 +52,82 @@ class _ProdusenDaftarProdukState extends State<ProdusenDaftarProduk> {
                 QuerySnapshot querySnapshot = snapshot.data;
                 List<QueryDocumentSnapshot> listQueryDocumentSnapshot = querySnapshot.docs;
 
-                return ListView.builder(
+                return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: 0.8,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10
+                  ),
                   itemCount: listQueryDocumentSnapshot.length,
                   itemBuilder:(context, index) {
                     QueryDocumentSnapshot produk=listQueryDocumentSnapshot[index];
                     var id_produk = produk.id;
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(5, 0, 5, 10),
-                      child: ListTile(
-                        tileColor: Colors.amber,
-                        minVerticalPadding: 10,
-                        visualDensity: VisualDensity.adaptivePlatformDensity,
-                        leading: Image(image: NetworkImage(produk['foto_url'])),
-                        title: Text(produk['nama_produk']),
-                        subtitle: Column(
+                    return InkWell(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ProdusenDaftarProdukDetail(id_produk);
+                        }));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(5,10,5,0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: Offset(0, 3)
+                            )
+                          ]
+                        ),
+                        child: Column(
                           children: [
-                            Text("Stock: ${produk['stok']}"),
-                            Text("Harga: ${produk['harga']} / ${produk['satuan']}  telur")
+                            Container(
+                              width: 200,
+                              height: 100,
+                              child: Image.network(produk['foto_url'], fit: BoxFit.contain,)),
+                            SizedBox(height: 20,),
+                            Container(
+                              padding: EdgeInsets.only(left: 20),
+                              width: double.infinity,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text('${produk['nama_produk']}', style: const TextStyle(fontWeight: FontWeight.w400),),
+                                  Text("Stock: ${produk['stok']}"),
+                                  Text("Harga: ${produk['harga']} / ${produk['satuan']} telur")
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context){
-                            return ProdusenDaftarProdukDetail(id_produk);
-                          }));
-                        },
                       ),
                     );
-                    // Text(produk['nama_produk']);
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                    //   child: ListTile(
+                    //     tileColor: Colors.amber,
+                    //     minVerticalPadding: 10,
+                    //     visualDensity: VisualDensity.adaptivePlatformDensity,
+                    //     leading: Image(image: NetworkImage(produk['foto_url'])),
+                    //     title: Text(produk['nama_produk']),
+                    //     subtitle: Column(
+                    //       children: [
+                    //         Text("Stock: ${produk['stok']}"),
+                    //         Text("Harga: ${produk['harga']} / ${produk['satuan']}  telur")
+                    //       ],
+                    //     ),
+                    //     onTap: () {
+                    //       Navigator.push(context, MaterialPageRoute(builder: (context){
+                    //         return ProdusenDaftarProdukDetail(id_produk);
+                    //       }));
+                    //     },
+                    //   ),
+                    // );
+
                   },
                 );
               }

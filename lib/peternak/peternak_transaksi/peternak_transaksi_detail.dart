@@ -27,7 +27,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
   _kondisiPengiriman(id_pengiriman, alamat) {
     if (id_pengiriman == 100) {
       return Text(
-          'Pesanan akan diambil oleh produsen telur asin di  (alamat peternak) : ${alamat}');
+          'Pesanan akan diambil oleh produsen telur asin di : ${alamat}');
     }
     if (id_pengiriman == 200) {
       return Text('Peternak Mengirim barang ke alamat ${alamat}');
@@ -35,7 +35,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
   }
 
   _buktiFoto(id_kondisi) {
-    if (id_kondisi == 3) {
+    if (id_kondisi == 200) {
       return Container(
         child: Column(
           children: [
@@ -43,7 +43,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
           ],
         ),
       );
-    } else if (id_kondisi == 4 || id_kondisi==5 ||id_kondisi==6) {
+    } else if (id_kondisi == 400 || id_kondisi==500 ||id_kondisi==600) {
       return Container(
         child: Column(
           children: [
@@ -56,7 +56,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
   }
 
   _konfirmasi(id_kondisi){
-    if (id_kondisi == 4){
+    if (id_kondisi == 400){
       return
       Container(
         child: Row(
@@ -64,14 +64,14 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
             ElevatedButton(
                 onPressed: () {
                   widget._referencePesanan
-                      .update({'id_kondisi': 5});
+                      .update({'id_kondisi': 600});
                   Navigator.pop(context);
                 },
                 child: Text('Tolak Pembayaran')),
             ElevatedButton(
                 onPressed: () {
                   widget._referencePesanan
-                      .update({'id_kondisi': 6});
+                      .update({'id_kondisi': 500});
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) {
                     return PeternakTransaksiDetailDone();
@@ -159,106 +159,3 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// class PeternakTransaksiDetail extends StatelessWidget {
-//   const PeternakTransaksiDetail({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: BackButton(
-//           onPressed: (){
-//             Navigator.pop(context);
-//           },
-//         ),
-//         title: Text('Detail Transaksi'),
-//       ),
-//       body: Column(
-//         children: [
-//           Container(
-//             child: Column(
-//               children: [
-//                 Text('Transfer Rupiah'),
-//                 Text('Transfer Berhasil!'),
-//                 Text('30 April 2023 - 23:16:04 - No. Ref 193243453857')
-//               ],
-//             ),
-//           ),
-//           Container(
-//             child: Column(
-//               children: [
-//                 Text('Penerima'),
-//                 Text('Farlin Nurjananti'),
-//                 Text('Bank Mandiri - 2433539556669')
-//               ],
-//             ),
-//           ),
-//           Container(
-//             child: Column(
-//               children: [
-//                 Text('Detail Transaksi'),
-//                 Row(
-//                   children: [
-//                     Column(
-//                       children: [
-//                         Text("Metode Transfer"),
-//                         Text("Total Transaksi")
-//                       ],
-//                     ),
-//                     Column(
-//                       children: [
-//                         Text('Sesama Bank Mandiri'),
-//                         Text('Rp. 20.000')
-//                       ],
-//                     )
-//                   ],
-//                 )
-//               ],
-//             ),
-//           ),
-
-//           Container(
-//             child: Column(
-//               children: [
-//                 Text('Bukti Transaksi'),
-//                 Image(image: AssetImage('images/bukti_transaksi.png')),
-//                 ElevatedButton(onPressed: (){
-//                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-//                     return PeternakTransaksiDetailDone();
-//                   }));
-//                 }, child: Text('Setujui Pembayaran'))
-//               ],
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }

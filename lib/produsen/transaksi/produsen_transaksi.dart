@@ -18,7 +18,7 @@ CollectionReference _pemesananList =
       FirebaseFirestore.instance.collection('pemesanan');
 
   late Stream<QuerySnapshot> _streamPemesananList;
-  List kondisi_produk = [4,5,6];
+  List kondisi_produk = [400,500,600];
 
   String _orderBy = 'id_kondisi';
   bool _isDescending = false;
@@ -31,13 +31,15 @@ CollectionReference _pemesananList =
   }
 
   _textKondisi(kondisi) {
-    if (kondisi == 4) {
+    if (kondisi == 400) {
       return Text("menunggu konfirmasi peternak 1x24 jam");
-    } else if (kondisi == 5) {
-      return Text("Pembayaran Ditolak");
-    } else if (kondisi == 6) {
+    }
+    else if (kondisi == 500) {
       return Text("Pembayaran Disetujui", style: TextStyle(color: Color.fromRGBO(111, 219, 122, 1)),);
     }
+    else if (kondisi == 600) {
+      return Text("Pembayaran Ditolak");
+    } 
   }
 
 
@@ -69,7 +71,7 @@ CollectionReference _pemesananList =
               List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
                   querySnapshot.docs;
               if(listQueryDocumentSnapshot.length>=2){
-                listQueryDocumentSnapshot.sort((a,b)=> b['id_kondisi'].compareTo(a['id_kondisi']));
+                listQueryDocumentSnapshot.sort((a,b)=> a['id_kondisi'].compareTo(b['id_kondisi']));
               }
               // print(listQueryDocumentSnapshot);
               // print(querySnapshot);

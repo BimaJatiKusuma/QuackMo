@@ -64,9 +64,15 @@ class _PeternakLoginState extends State<PeternakLogin> {
                               ),
                               validator: (value) {
                                 if (value!.length == 0){
+                                    setState(() {
+                                      visible = false;
+                                    });
                                     return "Email tidak boleh kosong";
                                   }
                                   if (!RegExp("^[1-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                                    setState(() {
+                                      visible = false;
+                                    });
                                     return ("Masukkan email secara benar");
                                   }
                                   else {
@@ -102,10 +108,16 @@ class _PeternakLoginState extends State<PeternakLogin> {
                               validator: (value) {
                                 RegExp regex = RegExp(r'^.{6,}$');
                                 if (value!.isEmpty){
-                                  return "password tidak boleh kosong";
+                                    setState(() {
+                                      visible = false;
+                                    });
+                                  return "Password tidak boleh kosong";
                                 }
                                 if (!regex.hasMatch(value)){
-                                  return ("masukkan password minimal 6 karakter");
+                                    setState(() {
+                                      visible = false;
+                                    });
+                                  return ("Masukkan password minimal 6 karakter");
                                 }
                                 else {
                                   return null;
@@ -197,6 +209,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                         }
                         else{
                           setState(() {
+                            visible = false;
                             alertText = 'User Belum mendaftar sebagai peternak';
                           });
                           return print('User Belum mendaftar sebagai peternak');
@@ -204,6 +217,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                       }
                       else{
                         setState(() {
+                          visible = false;
                           alertText = 'Email tidak terdaftar';
                         });
                         print('Email tidak terdaftar');
@@ -224,12 +238,14 @@ class _PeternakLoginState extends State<PeternakLogin> {
       on FirebaseAuthException catch (e){
         if (e.code == 'user-not-found'){
           setState(() {
+            visible = false;
             alertText = 'Email tidak terdaftar';
           });
           print('Email tidak terdaftar');
         }
         else if (e.code == 'wrong-password'){
           setState(() {
+            visible = false;
             alertText = 'Password salah';
           });
           print('Password salah');
@@ -237,10 +253,6 @@ class _PeternakLoginState extends State<PeternakLogin> {
       }
     }
   }
-
-
-
-
 }
 
 

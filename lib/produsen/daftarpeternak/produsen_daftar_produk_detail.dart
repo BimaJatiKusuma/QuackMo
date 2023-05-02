@@ -56,12 +56,7 @@ class _ProdusenDaftarProdukDetailState
     //   total = _produkData['stok'];
     // }
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(),
-        title: Text("Telur Bebek Hibrida"),
-      ),
-      body: FutureBuilder<DocumentSnapshot>(
+    return FutureBuilder<DocumentSnapshot>(
         future: widget._futureData,
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -73,220 +68,151 @@ class _ProdusenDaftarProdukDetailState
             if (total > _produkData['stok']) {
               total = _produkData['stok'];
             }
-            return ListView(
-              children: [
-                Image(image: NetworkImage(_produkData['foto_url'])),
-                Container(
-                  child: Column(
-                    children: [
-                      Text("Detail Produk"),
-                      Container(
-                        child: Column(
-                          children: [
-                            Text("Nama: ${_produkData['nama_produk']}"),
-                            Text("Stock: ${_produkData['stok']}"),
-                            Text("Berat Satuan: ${_produkData['satuan']}"),
-                            Text("Harga: ${_produkData['harga']} / ${_produkData['satuan']} telur"),
-                            Text("Keterangan: ${_produkData['keterangan']}")
-                          ],
+            return Scaffold(
+              appBar: AppBar(
+                leading: BackButton(),
+                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                centerTitle: true,
+                title: Text(_produkData['nama_produk']),
+              ),
+              body: Column(
+                children: [
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    height: 200,
+                    width: 200,
+                    child: Image(image: NetworkImage(_produkData['foto_url']), fit: BoxFit.contain,)
+                    ),
+                  SizedBox(height: 20,),
+                  Container(
+                    padding: EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: Column(
+                      children: [
+                        Text("Detail Produk", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: Color.fromRGBO(225, 202, 167, 1)
+                            )
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Stock: ${_produkData['stok']}"),
+                              Text("Berat Satuan: ${_produkData['satuan']}"),
+                              Text("Harga: ${_produkData['harga']} / ${_produkData['satuan']} telur"),
+                              Text("Keterangan: ${_produkData['keterangan']}")
+                            ],
+                          ),
                         ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () async {
-                            await showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSetter setState) {
-                                      return Container(
-                                        //  height: 200,
-                                        child: Column(children: [
-                                          Row(
-                                            children: [
-                                              Container(
-                                                child: Row(
-                                                  children: [
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            _add();
-                                                          });
-                                                        },
-                                                        icon: Icon(Icons.add)),
-                                                    Text("$total"),
-                                                    IconButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            _decrease();
-                                                          });
-                                                        },
-                                                        icon:
-                                                            Icon(Icons.remove)),
-                                                  ],
-                                                ),
+                        Container(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                await showDialog(
+                                  useSafeArea: false,
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                        content: StatefulBuilder(builder:
+                                            (BuildContext context,
+                                                StateSetter setState) {
+                                          return Container(
+                                             height: 200,
+                                            child: Column(children: [
+                                              Row(
+                                                children: [
+                                                  Container(
+                                                    child: Row(
+                                                      children: [
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _add();
+                                                              });
+                                                            },
+                                                            icon: Icon(Icons.add)),
+                                                        Text("$total"),
+                                                        IconButton(
+                                                            onPressed: () {
+                                                              setState(() {
+                                                                _decrease();
+                                                              });
+                                                            },
+                                                            icon:
+                                                                Icon(Icons.remove)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                      "Stock Total: ${_produkData['stok']}")
+                                                ],
                                               ),
-                                              Text(
-                                                  "Stock Total: ${_produkData['stok']}")
-                                            ],
+                                              Row(
+                                                children: [
+                                                  Text("SubTotal:"),
+                                                  Text('${_produkData['harga'] * (total / satuan)}'),
+                                                  // Text('${hargaTotal}')
+                                                ],
+                                              )
+                                            ]),
+                                          );
+                                        }),
+                                        actions: <Widget>[
+                                          Container(
+                                            width: double.infinity,
+                                            child: TextButton(
+                                              style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
+                                              onPressed: () async {
+                                                setState(() {
+                                                  hargaTotal = (_produkData['harga'] * (total / satuan)).round();
+                                                });
+                                                CircularProgressIndicator();
+                                                await pemesanan.add({
+                                                  'id_kondisi': 100,
+                                                  'id_produk': widget.produkID,
+                                                  'id_produsen': userProdusenID,
+                                                  'id_peternak':
+                                                      _produkData['peternak_uid'],
+                                                  // 'id_transaksi': '',
+                                                  'quantity': total,
+                                                  'waktu': DateTime.now(),
+                                                  'alamat_kirim': '',
+                                                  'total': hargaTotal,
+                                                  'url_bukti_pembayaran': '',
+                                                  'waktu_transaksi': DateTime.now(),
+                                                  'id_pengiriman':0
+                                                });
+                                                                                
+                                                Navigator.pushReplacement(context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) {
+                                                  return ProdusenPesanan();
+                                                }));
+                                              },
+                                              child: const Text('Pesan Sekarang'),
+                                            ),
                                           ),
-                                          Row(
-                                            children: [
-                                              Text("SubTotal:"),
-                                              Text('${_produkData['harga'] * (total / satuan)}'),
-                                              // Text('${hargaTotal}')
-                                            ],
-                                          )
-                                        ]),
+                                        ],
                                       );
-                                    }),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () async {
-                                          setState(() {
-                                            hargaTotal = (_produkData['harga'] * (total / satuan)).round();
-                                          });
-                                          CircularProgressIndicator();
-                                          await pemesanan.add({
-                                            'id_kondisi': 1,
-                                            'id_produk': widget.produkID,
-                                            'id_produsen': userProdusenID,
-                                            'id_peternak':
-                                                _produkData['peternak_uid'],
-                                            // 'id_transaksi': '',
-                                            'quantity': total,
-                                            'waktu': DateTime.now(),
-                                            'alamat_kirim': '',
-                                            'total': hargaTotal,
-                                            'url_bukti_pembayaran': '',
-                                            'waktu_transaksi': DateTime.now(),
-                                            'id_pengiriman':0
-                                          });
-
-                                          Navigator.pushReplacement(context,
-                                              MaterialPageRoute(
-                                                  builder: (context) {
-                                            return ProdusenPesanan();
-                                          }));
-                                        },
-                                        child: const Text('Pesan Sekarang'),
-                                      ),
-                                    ],
-                                  );
-                                });
-
-                            setState(() {});
-                          },
-                          child: Text("Beli"))
-                    ],
-                  ),
-                )
-              ],
+                                    });
+                                      
+                                setState(() {});
+                              },
+                              child: Text("Beli")),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             );
           }
           return Center(
             child: CircularProgressIndicator(),
           );
         },
-      ),
-    );
-
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     leading: BackButton(
-    //       onPressed: () {
-    //         Navigator.pop(context);
-    //       },
-    //     ),
-    //     title: Text("Telur Bebek Hibrida"),
-    //   ),
-    //   body: Column(
-    //     children: [
-    //       Text('${widget.data}'),
-    //       Image(image: AssetImage('images/daftar_produk01.png')),
-    //       Container(
-    //         child: Column(
-    //           children: [
-    //             Text("Detail Produk"),
-    //             Container(
-    //               child: Column(
-    //                 children: [
-    //                   Text("Kondisi: Baru"),
-    //                   Text("Kategori: Telur Bebek"),
-    //                   Text("Stock: 100 Telur"),
-    //                   Text("Berat Satuan: 1 Butir"),
-    //                   Text("Harga: Rp. 2.000 / telur"),
-    //                 ],
-    //               ),
-    //             ),
-    //             ElevatedButton(
-    //                 onPressed: () async {
-    //                   await showDialog(
-    //                       context: context,
-    //                       builder: (context) {
-    //                         return AlertDialog(
-    //                           content: StatefulBuilder(builder:
-    //                               (BuildContext context, StateSetter setState) {
-    //                             return Container(
-    //                               //  height: 200,
-    //                               child: Column(children: [
-    //                                 Row(
-    //                                   children: [
-    //                                     Container(
-    //                                       child: Row(
-    //                                         children: [
-    //                                           IconButton(
-    //                                               onPressed: () {
-    //                                                 setState(() {
-    //                                                   _add();
-    //                                                 });
-    //                                               },
-    //                                               icon: Icon(Icons.add)),
-    //                                           Text("$total"),
-    //                                           IconButton(
-    //                                               onPressed: () {
-    //                                                 setState(() {
-    //                                                   _decrease();
-    //                                                 });
-    //                                               },
-    //                                               icon: Icon(Icons.remove)),
-    //                                         ],
-    //                                       ),
-    //                                     ),
-    //                                     Text("Stock Total: 100")
-    //                                   ],
-    //                                 ),
-    //                                 Row(
-    //                                   children: [
-    //                                     Text("SubTotal:"),
-    //                                     Text("Rp. 30.000")
-    //                                   ],
-    //                                 )
-    //                               ]),
-    //                             );
-    //                           }),
-    //                           actions: <Widget>[
-    //                             TextButton(
-    //                               onPressed: () =>
-    //                                   Navigator.pushReplacement(context,
-    //                                       MaterialPageRoute(builder: (context) {
-    //                                 return ProdusenPesanan();
-    //                               })),
-    //                               child: const Text('Pesan Sekarang'),
-    //                             ),
-    //                           ],
-    //                         );
-    //                       });
-
-    //                   setState(() {});
-    //                 },
-    //                 child: Text("Beli"))
-    //           ],
-    //         ),
-    //       )
-    //     ],
-    //   ),
-    // );
+      );
   }
 }

@@ -267,7 +267,7 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
                                 CircularProgressIndicator();
                                 await uploadBuktiFoto();
                                 await widget._referencePesanan.update({
-                                  'id_kondisi': 4,
+                                  'id_kondisi': 400,
                                   'url_bukti_pembayaran': fotoBuktiUrl,
                                   'waktu_transaksi': DateTime.now(),
                                   'total': widget.dataPesanan['total'],

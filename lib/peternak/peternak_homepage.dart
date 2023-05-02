@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
@@ -387,7 +389,11 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 255, 255, 0),
+        foregroundColor: Colors.black,
+        elevation: 0,
         title: Text("Profil"),
+        centerTitle: true,
       ),
       body: Container(
         child: FutureBuilder(
@@ -430,6 +436,7 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                                   ))
                             ],
                           ),
+                          Text(widget.dataProfil['nama'], style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),),
                           Text('Peternak Bebek')
                         ],
                       ),
@@ -638,7 +645,8 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.red),
+                                            backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                            foregroundColor: Colors.black),
                                         onPressed: () {
                                           showDialog(
                                             context: context,
@@ -667,9 +675,9 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                                                       setState(() {
                                                         _index = 0;
                                                       });
-                                                      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                                                        return Login();
-                                                      }), (route) => false);
+                                                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                                                        return _PeternakSplashScreenHapusProfil();
+                                                      }));
                                                     },
                                                     child: Text('Ya'),
                                                   ),
@@ -699,7 +707,43 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
 
 
 
+class _PeternakSplashScreenHapusProfil extends StatefulWidget {
+  const _PeternakSplashScreenHapusProfil({super.key});
 
+  @override
+  State<_PeternakSplashScreenHapusProfil> createState() => __PeternakSplashScreenHapusProfilState();
+}
+
+class __PeternakSplashScreenHapusProfilState extends State<_PeternakSplashScreenHapusProfil> {
+  @override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return Login();
+      }), (route) => false);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("AKUN BERHASIL DI HAPUS", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 
@@ -745,6 +789,10 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(255, 255, 255, 0),
+        foregroundColor: Colors.black,
+        elevation: 0,
+        centerTitle: true,
         title: Text("Edit Profil"),
       ),
       body: Container(
@@ -948,7 +996,7 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Text('Gender'),
+                                  Text('Jenis Kelamin'),
                                   Container(
                                     width: double.infinity,
                                     height: 35,
@@ -973,7 +1021,8 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
                                     width: 150,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.green),
+                                            backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                            foregroundColor: Colors.black),
                                         onPressed: () {
                                           showDialog(
                                             context: context,
@@ -1043,6 +1092,20 @@ class _PeternaksplashScreenUpdateProfil extends StatefulWidget {
 }
 
 class __PeternaksplashScreenUpdateProfilState extends State<_PeternaksplashScreenUpdateProfil> {
+   @override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      setState(() {
+        _index = 0;
+      });
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+        return PeternakHomepage();
+      }), (route) => false);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1053,17 +1116,7 @@ class __PeternaksplashScreenUpdateProfilState extends State<_PeternaksplashScree
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.check_circle, size: 200, color: Colors.white,),
-              Text("PROFIL BERHASIL DIUPDATE", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),
-                onPressed: (){
-                setState(() {
-                  _index = 0;
-                });
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                  return PeternakHomepage();
-                }), (route) => false);
-              }, child: Text("Kembali ke Homepage"))
+              Text("PROFIL BERHASIL DI UBAH", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
             ],
           ),
         ),

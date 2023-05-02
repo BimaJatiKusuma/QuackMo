@@ -18,38 +18,40 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
       FirebaseFirestore.instance.collection('pemesanan');
   late Stream<QuerySnapshot> _streamTransaksi;
 
-  List kondisi_pesanan = [3, 4, 5, 6];
+  List kondisi_pesanan = [200, 400, 500, 600];
   _textKondisi(kondisi) {
-    if (kondisi == 3) {
+    if (kondisi == 200) {
       return Text("Belum Dibayar oleh Pembeli");
     }
-    else if (kondisi == 4) {
+    else if (kondisi == 400) {
       return Text("Konfirmasi Pembayaran");
     }
-    else if (kondisi == 5) {
-      return Text("Pembayaran Ditolak");
-    } else if (kondisi == 6) {
+    else if (kondisi == 500) {
       return Text("Pembayaran Disetujui");
     }
+    else if (kondisi == 600) {
+      return Text("Pembayaran Ditolak");
+    } 
   }
 
   _iconKondisi(kondisi){
-    if(kondisi == 3){
+    if(kondisi == 200){
       return Icon(Icons.access_time_rounded);
     }
-    else if (kondisi == 4) {
+    else if (kondisi == 400) {
       return Icon(Icons.access_time_filled_outlined);
-    } else if (kondisi == 5) {
-      return Icon(Icons.close);
-    } else if (kondisi == 6) {
+    } 
+    else if (kondisi == 500) {
       return Icon(Icons.verified_rounded);
     }
+    else if (kondisi == 600) {
+      return Icon(Icons.close);
+    } 
   }
   NumberFormat formatter =
       NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 2);
   void initState() {
     super.initState();
-    // getDataPesanan();
     _streamTransaksi = _transaksiCollection
         .where('id_peternak', isEqualTo: userPeternakID)
         .where('id_kondisi', whereIn: List.of(kondisi_pesanan))
@@ -70,13 +72,17 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
           QuerySnapshot querySnapshot = snapshot.data;
           List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
               querySnapshot.docs;
-
+              print(listQueryDocumentSnapshot.length);
+              if(listQueryDocumentSnapshot.length>=2){
+                listQueryDocumentSnapshot.sort((a,b)=> a['id_kondisi'].compareTo(b['id_kondisi']));
+              }
           return ListView.builder(
             itemCount: listQueryDocumentSnapshot.length,
             itemBuilder: (context, index) {
               QueryDocumentSnapshot pemesanan =
                   listQueryDocumentSnapshot[index];
-              var id_pemesanan = pemesanan.id;
+                var id_pemesanan = pemesanan.id;
+              
               return Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 decoration:
@@ -130,6 +136,10 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
     );
   }
 }
+
+
+
+
 
 class TabDetailPenjualan extends StatelessWidget {
   const TabDetailPenjualan({super.key});
