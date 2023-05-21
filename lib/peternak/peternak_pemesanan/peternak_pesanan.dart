@@ -24,7 +24,7 @@ class _PeternakPesananState extends State<PeternakPesanan> {
   late Future<DocumentSnapshot> _futureDataProdusen;
   late Map dataProdusen;
 
-  List kondisi_produk = [100, 300];
+  List kondisi_produk = [100,200, 300];
   
   void initState() {
     super.initState();
@@ -36,61 +36,58 @@ class _PeternakPesananState extends State<PeternakPesanan> {
 
   _textKondisi(kondisi) {
     if (kondisi == 100) {
-      return Text("menunggu konfirmasi peternak 1x24 jam");
-    } else if (kondisi == 300) {
-      return Text("Pemesanan Ditolak");
+      return Text("Menunggu konfirmasi pemesanan");
+    } else if (kondisi == 200) {
+      return Text("Telah disetujui", style: TextStyle(color: Colors.green),);
+    }
+    else if (kondisi == 300) {
+      return Text("Pemesanan telah dibatalkan", style: TextStyle(color: Colors.red),);
     }
   }
 
-  _alert(id_pemesanan, total_barang) {
+  _alert(id_pemesanan, id_produk, total_barang) {
     showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Pemberitahuan'),
-        content: const Text('Pemesanan disetujui'),
+        title: Container(color: Color.fromRGBO(225, 202, 167, 1), child: Text('Pemberitahuan', textAlign: TextAlign.center,)),
+        content: const Text('Pemesanan disetujui ?'),
         actions: [
           Row(
             children: [
               Flexible(
-                child: TextButton(
-                    style: TextButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text("Kembali")),
-              ),
-              Flexible(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     style: TextButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white),
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black),
                     onPressed: () {
                       _pemesananList
                           .doc(id_pemesanan)
                           .update({'id_kondisi': 300});
                       Navigator.pop(context, 'Tidak');
                     },
-                    child: const Text('TIDAK'),
+                    child: const Text('Tidak'),
                   ),
                   TextButton(
                     style: TextButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white),
+                        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                        foregroundColor: Colors.black,
+                        elevation: 5,
+                        ),
                     onPressed: () {
                       _pemesananList
                           .doc(id_pemesanan)
                           .update({'id_kondisi': 200});
-                      _referenceProduk.update({'stok': (dataProduk['stok'] - total_barang)});
+                          FirebaseFirestore.instance.collection('produk').doc(id_produk).update({'stok': (dataProduk['stok'] - total_barang)});
+                      // _referenceProduk.update({'stok': (dataProduk['stok'] - total_barang)});
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) {
                         return PeternakTransaksi();
                       }));
                     },
-                    child: Text('YA'),
+                    child: Text('Ya'),
                   ),
                 ],
               ))
@@ -101,17 +98,30 @@ class _PeternakPesananState extends State<PeternakPesanan> {
     );
   }
 
+
+  _iconKondisi(kondisi){
+    if (kondisi == 100) {
+      return Icon(Icons.check_circle_outline);
+    } else if (kondisi == 200) {
+      return Icon(Icons.check_circle);
+    }
+    else if (kondisi == 300) {
+      return Icon(Icons.close_rounded);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _pemesananList.snapshots();
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Color.fromRGBO(225, 202, 167, 1),
           leading: BackButton(
             onPressed: () {
               Navigator.pop(context);
             },
           ),
-          title: Title(color: Colors.indigo, child: Text("Pesanan Masuk")),
+          title: Text("Pesanan Masuk"),
         ),
         body: StreamBuilder(
           stream: _streamPemesananList,
@@ -161,32 +171,54 @@ class _PeternakPesananState extends State<PeternakPesanan> {
                             if (snapshotProdusen.hasData){
                               DocumentSnapshot? documentSnapshotProdusen = snapshotProdusen.data;
                               dataProdusen = documentSnapshotProdusen!.data() as Map;
-                              print(dataProdusen);
 
                               return Container(
                                 width: MediaQuery.of(context).size.width*0.9,
-                                color: Colors.blue,
                                 margin: EdgeInsets.fromLTRB(5, 10, 5, 0),
-                                child: InkWell(
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu']as Timestamp).toDate())),
-                                          Text(dataProduk['nama_produk']),
-                                          Text("Produsen Telur Asin ${dataProdusen['nama']}"),
-                                          Text("${pemesanan['quantity']} telur"),
-                                          _textKondisi(pemesanan['id_kondisi'])
-                                        ],
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu']as Timestamp).toDate())),
+                                    InkWell(
+                                      child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            spreadRadius: 1,
+                                            blurRadius: 2,
+                                          )
+                                        ]
                                       ),
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    if(pemesanan['id_kondisi']==100){
-                                      _alert(id_pemesanan, pemesanan['quantity']);
-                                    }
-                                    
-                                  },
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Icon(Icons.square_rounded, color: Color.fromRGBO(225, 202, 167, 1),),
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(dataProduk['nama_produk']),
+                                                Text("Produsen Telur Asin ${dataProdusen['nama']}"),
+                                                Text("${pemesanan['quantity']} telur"),
+                                                _textKondisi(pemesanan['id_kondisi'])
+                                              ],
+                                            ),
+                                            Container(
+                                              child: _iconKondisi(pemesanan['id_kondisi']),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      onTap: () {
+                                        if(pemesanan['id_kondisi']==100){
+                                          _alert(id_pemesanan, pemesanan['id_produk'], pemesanan['quantity']);
+                                        }
+                                        
+                                      },
+                                    ),
+                                  ],
                                 ),
 
                               );

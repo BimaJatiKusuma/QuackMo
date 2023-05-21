@@ -90,24 +90,57 @@ class _ProdusenDaftarProdukDetailState
                       children: [
                         Text("Detail Produk", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),),
                         Container(
+                          padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                           decoration: BoxDecoration(
                             border: Border.all(
                               color: Color.fromRGBO(225, 202, 167, 1)
-                            )
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Stock: ${_produkData['stok']}"),
-                              Text("Berat Satuan: ${_produkData['satuan']}"),
-                              Text("Harga: ${_produkData['harga']} / ${_produkData['satuan']} telur"),
-                              Text("Keterangan: ${_produkData['keterangan']}")
+                              Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Color.fromRGBO(225, 202, 167, 1)))
+                                ),
+                                child: Text("Stock: ${_produkData['stok']}")
+                              ),
+                                                            Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Color.fromRGBO(225, 202, 167, 1)))
+                                ),
+                                child: Text("Berat Satuan: ${_produkData['satuan']}"),
+                              ),
+                                                            Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Color.fromRGBO(225, 202, 167, 1)))
+                                ),
+                                child: Text("Harga: ${_produkData['harga']} / ${_produkData['satuan']} telur"),
+                              ),
+                                                            Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Color.fromRGBO(225, 202, 167, 1)))
+                                ),
+                                child: Text("Keterangan: ${_produkData['keterangan']}")
+                              ),
+                              
                             ],
                           ),
                         ),
+                        SizedBox(height: 30,),
                         Container(
                           width: double.infinity,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225, 202, 167, 1), foregroundColor: Colors.black),
                               onPressed: () async {
                                 await showDialog(
                                   useSafeArea: false,
@@ -151,7 +184,7 @@ class _ProdusenDaftarProdukDetailState
                                               ),
                                               Row(
                                                 children: [
-                                                  Text("SubTotal:"),
+                                                  Text("SubTotal: Rp. "),
                                                   Text('${_produkData['harga'] * (total / satuan)}'),
                                                   // Text('${hargaTotal}')
                                                 ],

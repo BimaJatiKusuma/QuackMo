@@ -36,6 +36,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SizedBox(height: 40,),
                     Column(
                       children: [
                         Image(image: AssetImage('images/produsen_01.png')),

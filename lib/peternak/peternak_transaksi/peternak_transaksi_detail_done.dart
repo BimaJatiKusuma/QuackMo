@@ -16,9 +16,6 @@ class PeternakTransaksiDetailDone extends StatelessWidget {
           Text('TRANSAKSI BERHASIL DISETUJUI'),
           ElevatedButton(onPressed: (){
             Navigator.pop(context);
-            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-            //   return PeternakTransaksi();
-            // }));
           }, child: Text('Kembali'))
         ],
       ),

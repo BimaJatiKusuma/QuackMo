@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
+import 'package:quackmo/peternak/distribusi/peternak_distribusi.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 import 'package:quackmo/peternak/peternak_pemesanan/peternak_pesanan.dart';
 import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi.dart';
@@ -317,7 +318,11 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                               width: 100,
                               height: 100,
                               child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return PeternakDistribusi();
+                                    }));
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Color.fromRGBO(250, 250, 250, 1),

@@ -18,7 +18,8 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
       FirebaseFirestore.instance.collection('pemesanan');
   late Stream<QuerySnapshot> _streamTransaksi;
 
-  List kondisi_pesanan = [200, 400, 500, 600];
+  // List kondisi_pesanan = [200, 400, 500, 600];
+  List kondisi_pesanan = [200, 400, 500];
   _textKondisi(kondisi) {
     if (kondisi == 200) {
       return Text("Belum Dibayar oleh Pembeli");
@@ -29,9 +30,9 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
     else if (kondisi == 500) {
       return Text("Pembayaran Disetujui");
     }
-    else if (kondisi == 600) {
-      return Text("Pembayaran Ditolak");
-    } 
+    // else if (kondisi == 600) {
+    //   return Text("Pembayaran Ditolak");
+    // } 
   }
 
   _iconKondisi(kondisi){
@@ -44,12 +45,14 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
     else if (kondisi == 500) {
       return Icon(Icons.verified_rounded);
     }
-    else if (kondisi == 600) {
-      return Icon(Icons.close);
-    } 
+    // else if (kondisi == 600) {
+    //   return Icon(Icons.close);
+    // } 
   }
+
   NumberFormat formatter =
       NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 2);
+  
   void initState() {
     super.initState();
     _streamTransaksi = _transaksiCollection
@@ -200,8 +203,11 @@ class _PeternakTransaksiState extends State<PeternakTransaksi> {
                   Navigator.pop(context);
                 },
               ),
-              title: Title(color: Colors.indigo, child: Text("Transaksi")),
-              bottom: TabBar(tabs: [
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              title: Text("Transaksi"),
+              bottom: TabBar(
+                indicatorColor: Colors.black,
+                tabs: [
                 Tab(
                   child: Text("Transaksi Masuk"),
                 ),

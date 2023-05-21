@@ -104,6 +104,7 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
         leading: BackButton(
           onPressed: () {
             Navigator.pop(context);
@@ -245,24 +246,50 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
                             child: Column(
                               children: [
                                 ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                      foregroundColor: Colors.black
+                                    ),
                                     onPressed: () async {
                                       await getImage();
                                     },
                                     child: Text("Masukkan bukti pembayaran")),
                                 buktiFoto != null
-                                    ? Container(
-                                        height: 500,
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        child: Image.file(
-                                          buktiFoto!,
-                                          fit: BoxFit.cover,
-                                        ))
-                                    : Container(),
+                              ? Container(
+                                  height: 500,
+                                  color: Color.fromRGBO(225, 202, 167, 1),
+                                  width:
+                                      (MediaQuery.of(context).size.width / 1.2),
+                                  child: Image.file(
+                                    buktiFoto!,
+                                    fit: BoxFit.fitWidth,
+                                  ))
+                              : Container(
+                                child: Icon(Icons.image, size: 50,),
+                                height: 200,
+                                width: 200,
+                                
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      spreadRadius: 1,
+                                      blurRadius: 10,
+                                    )
+                                  ]
+                                ),
+                              ),
                               ],
                             ),
                           ),
+                          SizedBox(height: 40,),
                           ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                foregroundColor: Colors.black
+                              ),
                               onPressed: () async {
                                 CircularProgressIndicator();
                                 await uploadBuktiFoto();

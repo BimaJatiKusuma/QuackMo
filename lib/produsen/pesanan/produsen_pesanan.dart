@@ -66,7 +66,7 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
               ),
             );
           },
-          child: Icon(Icons.delete));
+          child: Icon(Icons.delete, color: Color.fromRGBO(225, 202, 167, 1),));
     } else {
       return Text('');
     }
@@ -114,34 +114,37 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                   DateTime waktuDB = (pemesanan['waktu'] as Timestamp).toDate();
                   String formatWaktu = DateFormat('dd/MM/yyyy, HH:mm').format(waktuDB);
 
-                  return InkWell(
-                      onTap: () {
-                        if (pemesanan['id_kondisi'] == 200) {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ProdusenPembayaran(id_pemesanan);
-                          }));
-                        }
-                      },
-                      child: Column(
-                        children: [
-                          Text(formatWaktu),
-                          Card(
-                            child: Row(children: [
-                              Icon(Icons.square),
-                              Column(
-                                children: [
-                                  Text('Telur Hibrida'),
-                                  Text(
-                                      'Pemesanan: ${pemesanan['quantity']} butir telur'),
-                                  _textKondisi(pemesanan['id_kondisi'])
-                                ],
-                              ),
-                              _batalIcon(pemesanan['id_kondisi'], id_pemesanan)
-                            ]),
-                          ),
-                        ],
-                      ));
+                  return Container(
+                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: InkWell(
+                        onTap: () {
+                          if (pemesanan['id_kondisi'] == 200) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ProdusenPembayaran(id_pemesanan);
+                            }));
+                          }
+                        },
+                        child: Column(
+                          children: [
+                            Text(formatWaktu),
+                            Card(
+                              child: Row(children: [
+                                Icon(Icons.square, color: Color.fromRGBO(225, 202, 167, 1),),
+                                Column(
+                                  children: [
+                                    Text('Telur Hibrida'),
+                                    Text(
+                                        'Pemesanan: ${pemesanan['quantity']} butir telur'),
+                                    _textKondisi(pemesanan['id_kondisi'])
+                                  ],
+                                ),
+                                _batalIcon(pemesanan['id_kondisi'], id_pemesanan)
+                              ]),
+                            ),
+                          ],
+                        )),
+                  );
                 },
               );
             }

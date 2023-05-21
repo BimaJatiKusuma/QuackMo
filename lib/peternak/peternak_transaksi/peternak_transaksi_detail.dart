@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -59,25 +61,31 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
     if (id_kondisi == 400){
       return
       Container(
+        width: double.infinity,
         child: Row(
+
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-                onPressed: () {
-                  widget._referencePesanan
-                      .update({'id_kondisi': 600});
-                  Navigator.pop(context);
-                },
-                child: Text('Tolak Pembayaran')),
-            ElevatedButton(
-                onPressed: () {
-                  widget._referencePesanan
-                      .update({'id_kondisi': 500});
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return PeternakTransaksiDetailDone();
-                  }));
-                },
-                child: Text('Setujui Pembayaran'))
+            // ElevatedButton(
+            //     onPressed: () {
+            //       widget._referencePesanan
+            //           .update({'id_kondisi': 600});
+            //       Navigator.pop(context);
+            //     },
+            //     child: Text('Tolak Pembayaran')),
+            Container(
+              child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225, 202, 167, 1), foregroundColor: Colors.black),
+                  onPressed: () {
+                    widget._referencePesanan
+                        .update({'id_kondisi': 500});
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) {
+                      return _PeternakSplashScreenTransaksiDetailDone();
+                    }));
+                  },
+                  child: Text('Setujui Pembayaran')),
+            )
           ],
         ),
       );
@@ -90,9 +98,11 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
         title: Text('Detail Transaksi'),
       ),
       body: Container(
+        padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: FutureBuilder<DocumentSnapshot>(
           future: widget._futureDataPesanan,
           builder: (context, snapshot) {
@@ -154,6 +164,45 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
             }
             return CircularProgressIndicator();
           },
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+class _PeternakSplashScreenTransaksiDetailDone extends StatefulWidget {
+  const _PeternakSplashScreenTransaksiDetailDone({super.key});
+
+  @override
+  State<_PeternakSplashScreenTransaksiDetailDone> createState() => __PeternakSplashScreenTransaksiDetailDoneState();
+}
+
+class __PeternakSplashScreenTransaksiDetailDoneState extends State<_PeternakSplashScreenTransaksiDetailDone> {
+  @override
+  void initState(){
+    super.initState();
+
+    Timer(Duration(seconds: 1), () {
+      Navigator.pop(context);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check_circle, size: 200, color: Colors.white,),
+              Text("TRANSAKSI BEERHASIL DI TAMBAHKAN", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+            ],
+          ),
         ),
       ),
     );

@@ -37,6 +37,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SizedBox(height: 40,),
                     Column(children: [
                       Image(image: AssetImage('images/peternak_01.png')),
                       Text("Peternak Bebek"),
