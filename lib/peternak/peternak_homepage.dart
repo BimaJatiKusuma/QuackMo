@@ -180,7 +180,11 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                           children: [Text("Pesanan hari ini"), Text("... produk")],
                         ),
                         ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                return PeternakPesanan();
+                              }));
+                            },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Color.fromRGBO(208, 155, 76, 1),
                                 foregroundColor: Colors.white),

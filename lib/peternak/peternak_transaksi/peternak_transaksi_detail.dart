@@ -79,6 +79,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
                   onPressed: () {
                     widget._referencePesanan
                         .update({'id_kondisi': 500});
+                        // harus menambah datetime di database
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {
                       return _PeternakSplashScreenTransaksiDetailDone();
