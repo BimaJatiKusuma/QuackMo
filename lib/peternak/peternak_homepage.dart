@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:quackmo/peternak/cuaca/cuaca.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
 import 'package:quackmo/peternak/distribusi/peternak_distribusi.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
@@ -11,6 +12,7 @@ import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi.dart';
 import 'package:quackmo/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class PeternakHomepage extends StatefulWidget {
   const PeternakHomepage({super.key});
@@ -234,7 +236,11 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                               width: 100,
                               height: 100,
                               child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return Cuaca();
+                                    }));
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Color.fromRGBO(250, 250, 250, 1),

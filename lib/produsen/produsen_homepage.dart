@@ -10,6 +10,8 @@ import 'package:quackmo/produsen/transaksi/produsen_transaksi.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'distribusi/produsen_distribusi.dart';
+
 
 
 
@@ -285,7 +287,11 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
                               width: 100,
                               height: 100,
                               child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                                      return ProdusenDistribusi();
+                                    }));
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor:
                                           Color.fromRGBO(250, 250, 250, 1),
