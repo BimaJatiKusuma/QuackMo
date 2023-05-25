@@ -3,18 +3,19 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
+import 'package:quackmo/produsen/produsen_login.dart';
 
-class PeternakAduan extends StatefulWidget {
+class ProdusenAduan extends StatefulWidget {
   String idProduk;
-  PeternakAduan({
+  ProdusenAduan({
     required this.idProduk,
     super.key});
 
   @override
-  State<PeternakAduan> createState() => _PeternakAduanState();
+  State<ProdusenAduan> createState() => _ProdusenAduanState();
 }
 
-class _PeternakAduanState extends State<PeternakAduan> {
+class _ProdusenAduanState extends State<ProdusenAduan> {
   TextEditingController chatController = TextEditingController();
   CollectionReference _chatList = FirebaseFirestore.instance.collection('chat');
   late Stream<QuerySnapshot> _streamChatList;
@@ -55,15 +56,16 @@ class _PeternakAduanState extends State<PeternakAduan> {
                         QueryDocumentSnapshot chat = listChatQuerySnapshot[index];
                         return Container(
                           width: double.infinity,
+                          margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                           decoration: BoxDecoration(
-                            color: _divider(chat["id_produsen"], chat["id_peternak"], userPeternakID),
+                            color: _divider(chat["id_peternak"], chat["id_produsen"], userProdusenID),
                           ),
                           child: Column(
                             children: [
                               Text(chat.id),
                               Text(chat["id_peternak"]),
                               Text("${chat["datetime"]}"),
-                              Text(chat["pesan"])
+                              Text("isi pesan: ${chat["pesan"]}")
                             ],
                           ),
                         );
@@ -87,7 +89,7 @@ class _PeternakAduanState extends State<PeternakAduan> {
               decoration: InputDecoration(
                 suffixIcon: IconButton(
                   onPressed: (){
-                    _sendChat(chatController.text, userPeternakID, widget.idProduk);
+                    _sendChat(chatController.text, userProdusenID, widget.idProduk);
                     chatController.text = '';
                   },
                   icon: Icon(Icons.send),
@@ -104,33 +106,26 @@ class _PeternakAduanState extends State<PeternakAduan> {
   }
 }
 
-_sendChat(text, idPeternak, idProduk){
+_sendChat(text, idProdusen, idProduk){
   FirebaseFirestore collection = FirebaseFirestore.instance;
   CollectionReference chatCollection = collection.collection('chat');
 
   chatCollection.add({
     "pesan": text,
-    "id_peternak": idPeternak,
-    "id_produsen": "",
+    "id_peternak": "",
+    "id_produsen": idProdusen,
     "id_produk": idProduk,
     "datetime": DateTime.now(),
     });
 }
 
-// _divider(id_peternak, id_produsen){
-//   if (id_produsen != ""){
-//     return Colors.green;
-//   }
-//   else {
-//     return Colors.red;
-//   }
-// }
-
-_divider(id_produsen, id_peternak, current_id_peternak){
-  if (id_peternak == current_id_peternak){
+_divider(id_peternak, id_produsen, current_id_produsen){
+  if (id_produsen == current_id_produsen){
     return Colors.green;
   }
-
+  if (id_produsen != ""){
+    return Colors.amber;
+  }
   else {
     return Colors.red;
   }

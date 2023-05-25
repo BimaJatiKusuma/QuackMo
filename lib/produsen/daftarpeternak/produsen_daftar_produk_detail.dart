@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:quackmo/produsen/aduan/produsen_aduan.dart';
 import 'package:quackmo/produsen/produsen_login.dart';
 import 'package:quackmo/produsen/pesanan/produsen_pesanan.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class ProdusenDaftarProdukDetail extends StatefulWidget {
   ProdusenDaftarProdukDetail(this.produkID, {Key? key}) : super(key: key) {
@@ -135,6 +149,15 @@ class _ProdusenDaftarProdukDetailState
                               
                             ],
                           ),
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 30,
+                          child: ElevatedButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return ProdusenAduan(idProduk: documentSnapshot.id);
+                            }));
+                          }, child: Text("Example to aduan")),
                         ),
                         SizedBox(height: 30,),
                         Container(
