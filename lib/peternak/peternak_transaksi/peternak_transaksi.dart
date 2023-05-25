@@ -144,9 +144,14 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
 
 
 
-class TabDetailPenjualan extends StatelessWidget {
+class TabDetailPenjualan extends StatefulWidget {
   const TabDetailPenjualan({super.key});
 
+  @override
+  State<TabDetailPenjualan> createState() => _TabDetailPenjualanState();
+}
+
+class _TabDetailPenjualanState extends State<TabDetailPenjualan> {
   @override
   Widget build(BuildContext context) {
     return Container(

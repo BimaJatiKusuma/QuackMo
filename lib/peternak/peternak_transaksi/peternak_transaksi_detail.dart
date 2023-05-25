@@ -78,7 +78,10 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
                   style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225, 202, 167, 1), foregroundColor: Colors.black),
                   onPressed: () {
                     widget._referencePesanan
-                        .update({'id_kondisi': 500});
+                        .update({
+                          'id_kondisi': 500,
+                          'waktu_pembayaran': DateTime.now()
+                        });
                         // harus menambah datetime di database
                     Navigator.pushReplacement(context,
                         MaterialPageRoute(builder: (context) {

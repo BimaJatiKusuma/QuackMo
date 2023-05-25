@@ -122,7 +122,7 @@ class _PeternakDistribusiState extends State<PeternakDistribusi> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(""),
+                    Text("${pemesanan["waktu_pembayaran"] ?? ""}"),
                     InkWell(
                       onTap: () {
                         _alertKonfirmasi(pemesanan["id_pengiriman"], pemesanan.id);
