@@ -117,6 +117,7 @@ class _LogoutState extends State<Logout> {
 
 
 
+
 class PeternakMainHomePage extends StatefulWidget {
   PeternakMainHomePage(this.idPeternak){
   _referenceProfil = FirebaseFirestore.instance.collection('users').doc(userPeternakID);
@@ -132,6 +133,21 @@ class PeternakMainHomePage extends StatefulWidget {
 }
 
 class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
+  // Future getTotalDataPemesananByDate()async {
+  //   QuerySnapshot snapshotPemesanan = await FirebaseFirestore.instance.collection('pemesanan').where('waktu', isLessThanOrEqualTo: DateTime.now()).where('id_kondisi', isEqualTo: 100).get();
+  //   int groupCount = snapshotPemesanan.docs.length;
+  //   print(groupCount);
+  //   return groupCount;
+  // }
+  CollectionReference _pemesananCollection = FirebaseFirestore.instance.collection('pemesanan');
+  late Stream<QuerySnapshot> _streamPemesanan;
+
+  @override
+  void initState() {
+    _streamPemesanan = _pemesananCollection.where('id_kondisi', isEqualTo: 100).snapshots();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(child: Container(
@@ -144,30 +160,40 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
           if (snapshot.hasData){
             DocumentSnapshot? documentSnapshot = snapshot.data;
             widget.dataProfil = documentSnapshot!.data() as Map;
+            _pemesananCollection.snapshots();
             return Column(
                 children: [
                   Container(
+                    height: 150,
+                    alignment: Alignment.center,
+                    width: double.infinity,
                     decoration:
                         BoxDecoration(color: Color.fromRGBO(245, 233, 215, 1)),
                     child: Row(
                       children: [
-                        Image(image: AssetImage('images/peternak_01.png')),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Text(userPeternakID),
-                            Text('Hai, Peternak'),
-                            Text(
-                              widget.dataProfil['nama'],
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        Container(
+                          width: 100,
+                          child: Image(image: AssetImage('images/peternak_01.png'))),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Text(userPeternakID),
+                              Text('Hai, Peternak'),
+                              Text(
+                                widget.dataProfil['nama'],
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     ),
                   ),
+
                   Container(
                     width: double.infinity,
                     decoration:
@@ -176,9 +202,24 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Image(image: AssetImage('images/peternak_02.png')),
-                        Column(
-                          children: [Text("Pesanan hari ini"), Text("... produk")],
+                        StreamBuilder(
+                          stream: _streamPemesanan,
+                          builder: (context, AsyncSnapshot snapshot) {
+                            if(snapshot.connectionState == ConnectionState.active && snapshot.hasData){
+                              QuerySnapshot _queryPemesanan = snapshot.data;
+                              List<QueryDocumentSnapshot> listQueryPemesanan = _queryPemesanan.docs;
+                              var totalPendingPesanan = 0;
+                              totalPendingPesanan = listQueryPemesanan.length;
+                              return Column(
+                                children: [Text("Pesanan belum dikonfirmasi: "), Text("${totalPendingPesanan} pesanan")],
+                                );
+                            }
+                            else{
+                              return CircularProgressIndicator();
+                            }
+                          },
                         ),
+                        
                         ElevatedButton(
                             onPressed: () {
                               Navigator.push(context, MaterialPageRoute(builder: (context){

@@ -37,17 +37,14 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
 
   _iconKondisi(kondisi){
     if(kondisi == 200){
-      return Icon(Icons.access_time_rounded);
+      return Icon(Icons.access_time_rounded, color: Color.fromRGBO(225, 202, 167, 1),);
     }
     else if (kondisi == 400) {
-      return Icon(Icons.access_time_filled_outlined);
+      return Icon(Icons.access_time_filled_outlined, color: Color.fromRGBO(225, 202, 167, 1));
     } 
     else if (kondisi == 500) {
-      return Icon(Icons.verified_rounded);
+      return Icon(Icons.verified_rounded, color: Color.fromRGBO(225, 202, 167, 1));
     }
-    // else if (kondisi == 600) {
-    //   return Icon(Icons.close);
-    // } 
   }
 
   NumberFormat formatter =
@@ -88,9 +85,19 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
               
               return Container(
                 margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                decoration:
-                    BoxDecoration(color: Color.fromRGBO(225, 202, 167, 1)),
+                decoration:BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      spreadRadius: 1,
+                      blurRadius: 2,
+                        )
+                      ]
+                  ),
                 child: Column(children: [
+                  Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
                   InkWell(
                     onTap: () {
                       Navigator.push(context,
@@ -99,31 +106,69 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
                       }));
                     },
                     child: Ink(
-                      color: Colors.blue,
-                      child: Column(
+                      child: Table(
+                        columnWidths: {
+                          0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(7),
+                          2: FlexColumnWidth(3)
+                        },
                         children: [
-                          Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
-                          Text(id_pemesanan),
-                          Text(pemesanan['id_produsen']),
-                          Row(
+                          TableRow(
                             children: [
-                              Image(
-                                image: AssetImage('images/transaksi_02.png'),
+                              Container(
+                                child: Image(
+                                  image: AssetImage('images/transaksi_02.png'),),
                               ),
-                              Column(children: [
-                                _textKondisi(pemesanan['id_kondisi'])
-                              ]),
-                              Column(
-                                children: [
-                                  _iconKondisi(pemesanan['id_kondisi']),
-                                  Text(
-                                      "+ ${formatter.format(pemesanan['total'])}")
-                                ],
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Transfer Rupiah"),
+                                    Text(id_pemesanan),
+                                    Text(pemesanan['id_produsen']),
+                                    _textKondisi(pemesanan['id_kondisi'])
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    _iconKondisi(pemesanan['id_kondisi']),
+                                    Text("+ ${formatter.format(pemesanan['total'])}")
+                                  ],
+                                ),
                               )
-                            ],
-                          ),
+                            ]
+                          )
                         ],
                       ),
+
+
+                      // child: Column(
+                      //   children: [
+                      //     Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
+                      //     Text(id_pemesanan),
+                      //     Text(pemesanan['id_produsen']),
+                      //     Row(
+                      //       children: [
+                      //         Image(
+                      //           image: AssetImage('images/transaksi_02.png'),
+                      //         ),
+                      //         Column(children: [
+                      //           _textKondisi(pemesanan['id_kondisi'])
+                      //         ]),
+                      //         Column(
+                      //           children: [
+                      //             _iconKondisi(pemesanan['id_kondisi']),
+                      //             Text(
+                      //                 "+ ${formatter.format(pemesanan['total'])}")
+                      //           ],
+                      //         )
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                     ),
                   ),
                 ]),

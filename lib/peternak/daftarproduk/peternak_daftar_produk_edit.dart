@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:quackmo/componen/form.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
 
 class PeternakDaftarProdukEdit extends StatefulWidget {
@@ -71,13 +72,6 @@ class _PeternakDaftarProdukEditState extends State<PeternakDaftarProdukEdit> {
 
   Future updateImage() async {
     String uniqeFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    //Reference ke storage root
-    // Reference referenceRoot = FirebaseStorage.instance.ref();
-    // Reference referenceDirFotoProduk = referenceRoot.child('foto_produk');
-
-    // //Membuat reference untuk foto yang akan diupload
-    // Reference referenceFotoProdukUpload =
-    //     referenceDirFotoProduk.child(uniqeFileName);
 
     Reference referenceFotoProdukUpdate =
         FirebaseStorage.instance.refFromURL(imageUrl);
@@ -91,7 +85,7 @@ class _PeternakDaftarProdukEditState extends State<PeternakDaftarProdukEdit> {
       print(error);
     }
   }
-
+  String alertImage = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,317 +113,177 @@ class _PeternakDaftarProdukEditState extends State<PeternakDaftarProdukEdit> {
                           ),
                           // Text("$produkFoto"),
                           Container(
-                            child: Column(
-                              children: [
-                                produkFoto != null
-                                    ? Container(
-                                        height: 500,
-                                        color: Color.fromRGBO(225, 202, 167, 1),
-                                        width: (MediaQuery.of(context)
-                                                .size
-                                                .width /
-                                            1.2),
-                                        child: Image.file(
-                                          produkFoto!,
-                                          fit: BoxFit.fitWidth,
-                                        ))
-                                    : Container(
-                                        child: Image.network(imageUrl),
-                                        height: 500,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(10),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey,
-                                                spreadRadius: 1,
-                                                blurRadius: 10,
-                                              )
-                                            ]
-                                        ),
-                                      ),
-                                Container(
-                                  decoration: BoxDecoration(),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(onPressed: () async{await getImage2();}, icon: Icon(Icons.add_a_photo),),
-                                      IconButton(onPressed: () async{await getImage();}, icon: Icon(Icons.image_search))
-                                      
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                
-                
-                          SizedBox(
-                            height: 20,
-                          ),
-                          TextFormField(
-                            controller: namaProdukController,
-                            decoration: InputDecoration(
-                              label: Text("Nama Produk"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: stokController,
-                            decoration: InputDecoration(
-                              label: Text("stok"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: hargaController,
-                                  decoration: InputDecoration(
-                                    label: Text("Harga (Rp.)"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
+                      child: Column(
+                        children: [
+                          produkFoto != null
+                              ? Container(
+                                  height: 500,
+                                  color: Color.fromRGBO(225, 202, 167, 1),
+                                  width:
+                                      (MediaQuery.of(context).size.width / 1.2),
+                                  child: Image.file(
+                                    produkFoto!,
+                                    fit: BoxFit.fitWidth,
+                                  ))
+                              : Container(
+                                child: Image.network(imageUrl),
+                                height: 500,
+                                
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey,
+                                      spreadRadius: 1,
+                                      blurRadius: 10,
+                                    )
+                                  ]
                                 ),
                               ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: satuanController,
-                                  decoration: InputDecoration(
-                                    label: Text("Satuan"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            controller: alamatController,
-                            decoration: InputDecoration(
-                              label: Text("Alamat"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                
-                          SizedBox(
-                            height: 10,
-                          ),
-                          TextFormField(
-                            controller: keteranganController,
-                            decoration: InputDecoration(
-                              label: Text("Keterangan"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
-                
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text('isi minimal salah satu metode pembayaran'),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          //Mandiri
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: mandiriController,
-                                  decoration: InputDecoration(
-                                    label: Text("No. Rekening Bank Mandiri"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  controller: mandiriNamaController,
-                                  decoration: InputDecoration(
-                                    label: Text("Atas Nama"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          //BRI
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: briController,
-                                  decoration: InputDecoration(
-                                    label: Text("No. Rekening Bank BRI"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  controller: briNamaController,
-                                  decoration: InputDecoration(
-                                    label: Text("Atas Nama"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          //Dana
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: danaController,
-                                  decoration: InputDecoration(
-                                    label: Text("Nomor Aplikasi Dana"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  controller: danaNamaController,
-                                  decoration: InputDecoration(
-                                    label: Text("Atas Nama"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text('Isi jika memiliki metode pembayaran lain'),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          //Bank Lain
+                          Text(alertImage, style: TextStyle(color: Colors.red),),
                           Container(
-                            child: Column(
+                            decoration: BoxDecoration(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                TextFormField(
-                                  controller: bankLainNamaBankController,
-                                  decoration: InputDecoration(
-                                    label: Text("Nama Bank Lain"),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Expanded(
-                                      flex: 5,
-                                      child: TextFormField(
-                                        keyboardType: TextInputType.number,
-                                        controller: bankLainController,
-                                        decoration: InputDecoration(
-                                          label: Text("No. Rekening"),
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 5,
-                                      child: TextFormField(
-                                        keyboardType: TextInputType.text,
-                                        controller: bankLainNamaController,
-                                        decoration: InputDecoration(
-                                          label: Text("Atas Nama"),
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                IconButton(onPressed: () async{await getImage2();}, icon: Icon(Icons.add_a_photo,  color: Color.fromRGBO(186, 186, 186, 1),),),
+                                IconButton(onPressed: () async{await getImage();}, icon: Icon(Icons.image_search,  color: Color.fromRGBO(186, 186, 186, 1),))
+                                
                               ],
                             ),
                           ),
+                          
+                        ],
+                      ),
+                    ),
+                    // Text(imageUrl),
+          
+                    SizedBox(
+                      height: 20,
+                    ),
+                    FormGroup(stringNamaLabel: "Nama Produk", controllerNama: namaProdukController, keyboardType: TextInputType.text),
+                    SizedBox(height: 10,),
+                    FormGroup(stringNamaLabel: "Stok", controllerNama: stokController, keyboardType: TextInputType.number),
+                    SizedBox(height: 10,),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "Harga (Rp.)", controllerNama: hargaController, keyboardType: TextInputType.number)
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "Satuan", controllerNama: satuanController, keyboardType: TextInputType.number)
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    FormGroup(stringNamaLabel: "Alamat", controllerNama: alamatController, keyboardType: TextInputType.text),
+                    SizedBox(height: 10,),
+                    FormGroup(stringNamaLabel: "Keterangan", controllerNama: keteranganController, keyboardType: TextInputType.text),
+                              
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('isi minimal salah satu metode pembayaran', style: TextStyle(color: Color.fromRGBO(164, 119, 50, 1))),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "No. Rekening Bank Mandiri", controllerNama: mandiriController, keyboardType: TextInputType.number, optionalAnswer: true,)
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: mandiriNamaController, keyboardType: TextInputType.name, optionalAnswer: true)
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    //BRI
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "No. Rekening Bank BRI", controllerNama: briController, keyboardType: TextInputType.number, optionalAnswer: true)
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: briNamaController, keyboardType: TextInputType.name, optionalAnswer: true)
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    //Dana
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "Nomor Aplikasi Dana", controllerNama: danaController, keyboardType: TextInputType.number, optionalAnswer: true)
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: danaNamaController, keyboardType: TextInputType.number, optionalAnswer: true)
+                        ),
+                      ],
+                    ),
+          
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text('Isi jika memiliki metode pembayaran lain', style: TextStyle(color: Color.fromRGBO(164, 119, 50, 1)),),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    //Bank Lain
+                    Container(
+                      child: Column(
+                        children: [
+                          FormGroup(stringNamaLabel: "Nama Bank Lain", controllerNama: bankLainNamaBankController, keyboardType: TextInputType.text, optionalAnswer: true),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Expanded(
+                                flex: 5,
+                                child: FormGroup(stringNamaLabel: "No. Rekening", controllerNama: bankLainController, keyboardType: TextInputType.number, optionalAnswer: true)                                
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: bankLainNamaController, keyboardType: TextInputType.name, optionalAnswer: true)
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                 
                 
                           SizedBox(

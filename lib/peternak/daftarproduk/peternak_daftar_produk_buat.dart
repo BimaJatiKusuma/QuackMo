@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quackmo/componen/form.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 
@@ -83,6 +84,8 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
     }
   }
 
+  String alertImage = "";
+
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -93,6 +96,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
         leading: BackButton(),
         backgroundColor: Color.fromRGBO(225, 202, 167, 1),
         title: Text("Tambah Produk"),
+        centerTitle: true,
       ),
       body: ListView(
         children: [
@@ -119,9 +123,9 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                                     fit: BoxFit.fitWidth,
                                   ))
                               : Container(
-                                child: Icon(Icons.image, size: 50,),
-                                height: 200,
-                                width: 200,
+                                child: Icon(Icons.image, size: 23, color: Color.fromRGBO(186, 186, 186, 1),),
+                                height: 70,
+                                width: 70,
                                 
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -135,13 +139,14 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                                   ]
                                 ),
                               ),
+                          Text(alertImage, style: TextStyle(color: Colors.red),),
                           Container(
                             decoration: BoxDecoration(),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                IconButton(onPressed: () async{await getImage2();}, icon: Icon(Icons.add_a_photo),),
-                                IconButton(onPressed: () async{await getImage();}, icon: Icon(Icons.image_search))
+                                IconButton(onPressed: () async{await getImage2();}, icon: Icon(Icons.add_a_photo,  color: Color.fromRGBO(186, 186, 186, 1),),),
+                                IconButton(onPressed: () async{await getImage();}, icon: Icon(Icons.image_search,  color: Color.fromRGBO(186, 186, 186, 1),))
                                 
                               ],
                             ),
@@ -155,125 +160,50 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                     SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      controller: namaProdukController,
-                      decoration: InputDecoration(
-                        label: Text("Nama Produk"),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-          
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: stokController,
-                      decoration: InputDecoration(
-                        label: Text("stok"),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-          
-                    SizedBox(
-                      height: 10,
-                    ),
+                    FormGroup(stringNamaLabel: "Nama Produk", controllerNama: namaProdukController, keyboardType: TextInputType.text),
+                    SizedBox(height: 10,),
+                    FormGroup(stringNamaLabel: "Stok", controllerNama: stokController, keyboardType: TextInputType.number),
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: hargaController,
-                            decoration: InputDecoration(
-                              label: Text("Harga (Rp.)"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "Harga (Rp.)", controllerNama: hargaController, keyboardType: TextInputType.number)
                         ),
-                        SizedBox(
-                          width: 10,
-                        ),
+                        SizedBox(width: 10),
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: satuanController,
-                            decoration: InputDecoration(
-                              label: Text("Satuan"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "Satuan", controllerNama: satuanController, keyboardType: TextInputType.number)
                         ),
                       ],
                     ),
-          
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: alamatController,
-                      decoration: InputDecoration(
-                        label: Text("Alamat"),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-          
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: keteranganController,
-                      decoration: InputDecoration(
-                        label: Text("Keterangan"),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-          
+                    SizedBox(height: 10,),
+                    FormGroup(stringNamaLabel: "Alamat", controllerNama: alamatController, keyboardType: TextInputType.text),
+                    SizedBox(height: 10,),
+                    FormGroup(stringNamaLabel: "Keterangan", controllerNama: keteranganController, keyboardType: TextInputType.text),
+                              
                     SizedBox(
                       height: 20,
                     ),
-                    Text('isi minimal salah satu metode pembayaran'),
+                    Text('isi minimal salah satu metode pembayaran', style: TextStyle(color: Color.fromRGBO(164, 119, 50, 1))),
                     SizedBox(
                       height: 10,
                     ),
-                    //Mandiri
+                    
                     Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: mandiriController,
-                            decoration: InputDecoration(
-                              label: Text("No. Rekening Bank Mandiri"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "No. Rekening Bank Mandiri", controllerNama: mandiriController, keyboardType: TextInputType.number, optionalAnswer: true,)
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.text,
-                            controller: mandiriNamaController,
-                            decoration: InputDecoration(
-                              label: Text("Atas Nama"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: mandiriNamaController, keyboardType: TextInputType.name, optionalAnswer: true)
                         ),
                       ],
                     ),
@@ -286,30 +216,14 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                       children: [
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: briController,
-                            decoration: InputDecoration(
-                              label: Text("No. Rekening Bank BRI"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "No. Rekening Bank BRI", controllerNama: briController, keyboardType: TextInputType.number, optionalAnswer: true)
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.text,
-                            controller: briNamaController,
-                            decoration: InputDecoration(
-                              label: Text("Atas Nama"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: briNamaController, keyboardType: TextInputType.name, optionalAnswer: true)
                         ),
                       ],
                     ),
@@ -322,30 +236,14 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                       children: [
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: danaController,
-                            decoration: InputDecoration(
-                              label: Text("Nomor Aplikasi Dana"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "Nomor Aplikasi Dana", controllerNama: danaController, keyboardType: TextInputType.number, optionalAnswer: true)
                         ),
                         SizedBox(
                           width: 10,
                         ),
                         Expanded(
                           flex: 5,
-                          child: TextFormField(
-                            keyboardType: TextInputType.text,
-                            controller: danaNamaController,
-                            decoration: InputDecoration(
-                              label: Text("Atas Nama"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: danaNamaController, keyboardType: TextInputType.number, optionalAnswer: true)
                         ),
                       ],
                     ),
@@ -353,7 +251,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text('Isi jika memiliki metode pembayaran lain'),
+                    Text('Isi jika memiliki metode pembayaran lain', style: TextStyle(color: Color.fromRGBO(164, 119, 50, 1)),),
                     SizedBox(
                       height: 10,
                     ),
@@ -361,14 +259,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                     Container(
                       child: Column(
                         children: [
-                          TextFormField(
-                            controller: bankLainNamaBankController,
-                            decoration: InputDecoration(
-                              label: Text("Nama Bank Lain"),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                            ),
-                          ),
+                          FormGroup(stringNamaLabel: "Nama Bank Lain", controllerNama: bankLainNamaBankController, keyboardType: TextInputType.text, optionalAnswer: true),
                           SizedBox(
                             height: 10,
                           ),
@@ -377,30 +268,14 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                             children: [
                               Expanded(
                                 flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: bankLainController,
-                                  decoration: InputDecoration(
-                                    label: Text("No. Rekening"),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10)),
-                                  ),
-                                ),
+                                child: FormGroup(stringNamaLabel: "No. Rekening", controllerNama: bankLainController, keyboardType: TextInputType.number, optionalAnswer: true)                                
                               ),
                               SizedBox(
                                 width: 10,
                               ),
                               Expanded(
                                 flex: 5,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.text,
-                                  controller: bankLainNamaController,
-                                  decoration: InputDecoration(
-                                    label: Text("Atas Nama"),
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10)),
-                                  ),
-                                ),
+                                child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: bankLainNamaController, keyboardType: TextInputType.name, optionalAnswer: true)
                               ),
                             ],
                           ),
@@ -417,44 +292,53 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225, 202, 167, 1), foregroundColor: Colors.black),
                           onPressed: () async {
-                            await uploadImage();
-                            peternak_produk.add({
-                              'peternak_uid': userPeternakID,
-                              'nama_produk': namaProdukController.text,
-                              'stok': int.tryParse(stokController.text) ?? 0,
-                              'harga': int.tryParse(hargaController.text) ?? 0,
-                              'satuan': int.tryParse(satuanController.text) ?? 0,
-                              'alamat': alamatController.text,
-                              'keterangan': keteranganController.text,
-                              'dana': danaController.text,
-                              'dana_penerima': danaNamaController.text,
-                              'bank_mandiri': mandiriController.text,
-                              'bank_mandiri_penerima': mandiriNamaController.text,
-                              'bank_bri': briController.text,
-                              'bank_bri_penerima': briNamaController.text,
-                              'bank_lainnya': bankLainController.text,
-                              'bank_lainnya_namabank':bankLainNamaBankController.text,
-                              'bank_lainnya_penerima': bankLainNamaController.text,
-                              'foto_url': imageUrl,
-                            });
-                            namaProdukController.text = '';
-                            stokController.text = '';
-                            hargaController.text = '';
-                            satuanController.text = '';
-                            alamatController.text = '';
-                            keteranganController.text = '';
-                            danaController.text = '';
-                            danaNamaController.text = '';
-                            mandiriController.text = '';
-                            mandiriNamaController.text = '';
-                            briController.text = '';
-                            briNamaController.text = '';
-                            bankLainController.text = '';
-                            bankLainNamaController.text = '';
-                            bankLainNamaBankController.text = '';
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                              return _PeternakSplashScreenDaftarProdukBuat();
-                            }));
+                            if(_formkey.currentState!.validate()){
+                              if(produkFoto != null){
+                                await uploadImage();
+                                peternak_produk.add({
+                                  'peternak_uid': userPeternakID,
+                                  'nama_produk': namaProdukController.text,
+                                  'stok': int.tryParse(stokController.text),
+                                  'harga': int.tryParse(hargaController.text),
+                                  'satuan': int.tryParse(satuanController.text),
+                                  'alamat': alamatController.text,
+                                  'keterangan': keteranganController.text,
+                                  'dana': danaController.text,
+                                  'dana_penerima': danaNamaController.text,
+                                  'bank_mandiri': mandiriController.text,
+                                  'bank_mandiri_penerima': mandiriNamaController.text,
+                                  'bank_bri': briController.text,
+                                  'bank_bri_penerima': briNamaController.text,
+                                  'bank_lainnya': bankLainController.text,
+                                  'bank_lainnya_namabank':bankLainNamaBankController.text,
+                                  'bank_lainnya_penerima': bankLainNamaController.text,
+                                  'foto_url': imageUrl,
+                                });
+                                namaProdukController.text = '';
+                                stokController.text = '';
+                                hargaController.text = '';
+                                satuanController.text = '';
+                                alamatController.text = '';
+                                keteranganController.text = '';
+                                danaController.text = '';
+                                danaNamaController.text = '';
+                                mandiriController.text = '';
+                                mandiriNamaController.text = '';
+                                briController.text = '';
+                                briNamaController.text = '';
+                                bankLainController.text = '';
+                                bankLainNamaController.text = '';
+                                bankLainNamaBankController.text = '';
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                                  return _PeternakSplashScreenDaftarProdukBuat();
+                                }));
+                              }
+                              else {
+                                setState(() {
+                                  alertImage = "foto produk harus diisi";
+                                });
+                              }
+                            }
                           },
                           child: Text("Tambahkan", style: TextStyle(fontWeight: FontWeight.w600),)),
                     ),
@@ -470,6 +354,11 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
     );
   }
 }
+
+
+
+
+
 
 
 class _PeternakSplashScreenDaftarProdukBuat extends StatefulWidget {

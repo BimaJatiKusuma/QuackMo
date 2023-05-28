@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 
 class PeternakDistribusi extends StatefulWidget {
@@ -119,10 +120,12 @@ class _PeternakDistribusiState extends State<PeternakDistribusi> {
               itemBuilder: (context, index) {
                 QueryDocumentSnapshot pemesanan = listQueryDocumentSnapshot[index];
                 return Container(
+                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("${pemesanan["waktu_pembayaran"] ?? ""}"),
+                    // Text("${pemesanan["waktu_pembayaran"] ?? ""}"),
+                    Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan["waktu_pembayaran"] as Timestamp).toDate())),
                     InkWell(
                       onTap: () {
                         _alertKonfirmasi(pemesanan["id_pengiriman"], pemesanan.id);

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
-import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi_detail_done.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PeternakTransaksiDetail extends StatefulWidget {

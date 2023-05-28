@@ -69,35 +69,6 @@ class _CuacaState extends State<Cuaca> {
       ),
       body: Column(
         children: [
-          // Container(
-          //   padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          //   width: double.infinity,
-          //   height: 70,
-          //   alignment: Alignment.center,
-          //   decoration: BoxDecoration(
-          //     // color: Colors.red
-          //   ),
-          //   child: TextFormField(
-          //     controller: kotaController,
-          //     decoration: InputDecoration(
-
-          //       suffix: ElevatedButton(onPressed: (){
-          //         setState(() {
-          //           namaKota = kotaController.text.toLowerCase();
-          //         });
-          //         _data = getDataCuaca();
-          //       },child: Text("cari")),
-
-          //       filled: true,
-          //       fillColor: Color.fromRGBO(234, 234, 248, 1),
-          //       // contentPadding: EdgeInsets.fromLTRB(20, 20, 20,20),
-          //       border: OutlineInputBorder(
-          //           borderRadius: BorderRadius.circular(20),
-          //           borderSide: BorderSide.none),
-          //       hintText: "cari nama kota ...",
-          //       ),
-          //   ),
-          // ),
           FutureBuilder(
             future: _data,
             builder: (context, snapshot){
@@ -127,7 +98,8 @@ class _CuacaState extends State<Cuaca> {
                             var current_data = newData_new[index];
                             var waktu = current_data["dt"];
                             var temp = (current_data["main"]["temp"] - 273);
-                            var date = DateFormat('hh:mm d MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(waktu * 1000).add(Duration(seconds: timezone)));
+                            var date = DateFormat('HH:mm d MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(waktu * 1000));
+                            // var date = DateFormat('HH:mm d MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(waktu * 1000).add(Duration(seconds: timezone)));
                             return Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
