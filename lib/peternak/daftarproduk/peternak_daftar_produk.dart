@@ -76,7 +76,7 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
                   return InkWell(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return PeternakAduan(idProduk: id_produk,);
+                        return PeternakAduan(idProduk: id_produk);
                       }));
                     },
                     child: Container(

@@ -5,6 +5,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:quackmo/peternak/cuaca/cuaca.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk.dart';
 import 'package:quackmo/peternak/distribusi/peternak_distribusi.dart';
+import 'package:quackmo/peternak/go_premium/premium.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 import 'package:quackmo/peternak/peternak_pemesanan/peternak_pesanan.dart';
 import 'package:quackmo/peternak/peternak_transaksi/peternak_transaksi.dart';
@@ -133,12 +134,7 @@ class PeternakMainHomePage extends StatefulWidget {
 }
 
 class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
-  // Future getTotalDataPemesananByDate()async {
-  //   QuerySnapshot snapshotPemesanan = await FirebaseFirestore.instance.collection('pemesanan').where('waktu', isLessThanOrEqualTo: DateTime.now()).where('id_kondisi', isEqualTo: 100).get();
-  //   int groupCount = snapshotPemesanan.docs.length;
-  //   print(groupCount);
-  //   return groupCount;
-  // }
+
   CollectionReference _pemesananCollection = FirebaseFirestore.instance.collection('pemesanan');
   late Stream<QuerySnapshot> _streamPemesanan;
 
@@ -493,7 +489,12 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                             ],
                           ),
                           Text(widget.dataProfil['nama'], style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),),
-                          Text('Peternak Bebek')
+                          Text('Peternak Bebek'),
+                          ElevatedButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return PeternakPremium(idPeternak: userPeternakID,);
+                            }));
+                          }, child: Text("Akun Biasa"))
                         ],
                       ),
                     ),
