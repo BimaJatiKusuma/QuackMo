@@ -45,7 +45,7 @@ class _PeternakPremiumState extends State<PeternakPremium> {
                 children: [
                   Text("Cara Pembayaran Akun Premium", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16), textAlign: TextAlign.center,),
                   SizedBox(height: 20,),
-                  Text("Rp. 59. 000", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800), textAlign: TextAlign.center,),
+                  Text("Rp. 109.000", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800), textAlign: TextAlign.center,),
                   SizedBox(height: 20,),
                   Text("Pembayaran Melalui Transfer Rekening Mandiri", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
                   Text(
