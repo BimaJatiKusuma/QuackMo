@@ -437,6 +437,27 @@ class PeternakProfilPage extends StatefulWidget {
 }
 
 class _PeternakProfilPageState extends State<PeternakProfilPage> {
+  _jenisAkun(premium){
+    if (premium == "y"){
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.amber
+        ),
+        onPressed: (){},
+        child: Text("Akun Premium"));
+    }
+    else{
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.grey
+        ),
+        onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return PeternakPremium(idPeternak: userPeternakID,);
+        }));
+      }, child: Text("Akun Biasa"));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -490,11 +511,7 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                           ),
                           Text(widget.dataProfil['nama'], style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),),
                           Text('Peternak Bebek'),
-                          ElevatedButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return PeternakPremium(idPeternak: userPeternakID,);
-                            }));
-                          }, child: Text("Akun Biasa"))
+                          _jenisAkun(widget.dataProfil['premium']),
                         ],
                       ),
                     ),

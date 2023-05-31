@@ -100,6 +100,7 @@ class _CuacaState extends State<Cuaca> {
                             var temp = (current_data["main"]["temp"] - 273);
                             var date = DateFormat('HH:mm d MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(waktu * 1000));
                             // var date = DateFormat('HH:mm d MMMM yyyy').format(DateTime.fromMillisecondsSinceEpoch(waktu * 1000).add(Duration(seconds: timezone)));
+
                             return Container(
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -110,7 +111,8 @@ class _CuacaState extends State<Cuaca> {
                               child: Column(
                                 children: [
                                   Text("${date}"),
-                                  Text(current_data["weather"][0]["main"]),
+                                  Image.network('http://openweathermap.org/img/w/${current_data["weather"][0]["icon"]}.png',),
+                                  Text("${current_data["weather"][0]["main"]} : ${current_data["weather"][0]["description"]}"),
                                   Text("Suhu: ${double.parse((temp).toStringAsFixed(2))} Celcius")
                                 ],
                               ),

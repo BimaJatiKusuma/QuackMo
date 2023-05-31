@@ -25,13 +25,18 @@ class PeternakTransaksiDetail extends StatefulWidget {
 class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
   late Map pesanan = widget.dataPesanan;
 
-  _kondisiPengiriman(id_pengiriman, alamat) {
-    if (id_pengiriman == 100) {
-      return Text(
-          'Pesanan akan diambil oleh produsen telur asin di : ${alamat}');
+  _kondisiPengiriman(id_kondisi, id_pengiriman, alamat) {
+    if(id_kondisi!=200){
+      if (id_pengiriman == 100) {
+        return Text(
+            'Pesanan akan diambil oleh produsen telur asin di ${alamat}');
+      }
+      if (id_pengiriman == 200) {
+        return Text('Peternak Mengirim barang ke alamat ${alamat}');
+      }
     }
-    if (id_pengiriman == 200) {
-      return Text('Peternak Mengirim barang ke alamat ${alamat}');
+    else {
+      return Text("");
     }
   }
 
@@ -40,21 +45,63 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
       return Container(
         child: Column(
           children: [
-            Text('Belum ada Bukti Pembayaran'),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Text('Belum ada bukti Pembayaran', style: TextStyle(fontWeight: FontWeight.w600),)),
+            Container(
+              width: double.infinity,
+              height: 300,
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Color.fromRGBO(255, 202, 167, 1)
+              ),
+              child: Icon(Icons.image, color: Colors.grey, size: 150,),
+            )
+            
           ],
         ),
       );
+
     } else if (id_kondisi == 400 || id_kondisi==500 ||id_kondisi==600) {
       return Container(
         child: Column(
           children: [
-            Text('Bukti Transaksi'),
-            Image(image: NetworkImage(pesanan['url_bukti_pembayaran'])),
+            Container(
+              margin: EdgeInsets.only(left: 10),
+              child: Text('Bukti Transaksi', style: TextStyle(fontWeight: FontWeight.w600),)),
+            Container(
+              width: double.infinity,
+              height: 300,
+              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              padding: EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: Color.fromRGBO(255, 202, 167, 1)
+              ),
+              child: Image(image: NetworkImage(pesanan['url_bukti_pembayaran'])),
+            )
+            
           ],
         ),
       );
     }
   }
+
+  _AlertDetail(id_kondisi) {
+    if (id_kondisi == 200) {
+      return Text("Belum Dibayar");
+
+    }
+    else if (id_kondisi == 400) {
+      return Text("Menunggu Konfirmasi Peternak");
+    }
+    else if (id_kondisi==500 ||id_kondisi==600) {
+      return Text("Transfer Berhasil!");
+    }
+  }
+
 
   _konfirmasi(id_kondisi){
     if (id_kondisi == 400){
@@ -120,43 +167,80 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
 
               return ListView(
                 children: [
+                  // Container(
+                  //   child: Column(
+                  //     children: [
+                  //       Text("ID Produsen Telur Asin"),
+                  //       Text(pesanan['id_produsen']),
+                  //     ],
+                  //   ),
+                  // ),
 
-                  Container(
-                    child: Column(
-                      children: [
-                        Text("ID Produsen Telur Asin"),
-                        Text(pesanan['id_produsen']),
-                      ],
-                    ),
-                  ),
-
-                  Container(
-                    child: Column(
-                      children: [
-                        Text("ID Peternak"),
-                        Text(pesanan['id_peternak']),
-                      ],
-                    ),
-                  ),
-
-                  Container(
-                    child: _kondisiPengiriman(
-                        pesanan['id_pengiriman'], pesanan['alamat_kirim']),
-                  ),
-
+                  // Container(
+                  //   child: Column(
+                  //     children: [
+                  //       Text("ID Peternak"),
+                  //       Text(pesanan['id_peternak']),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
 
                   Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          spreadRadius: 1,
+                          blurRadius: 2,
+                            )
+                          ]
+                    ),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Detail Transaksi'),
-                        Text(DateFormat('dd/MM/yy, HH:mm').format((pesanan['waktu_transaksi']as Timestamp).toDate())),
-                        Text('${pesanan['total']}')
+                        Text('Transfer Rupiah'),
+                        _AlertDetail(pesanan['id_kondisi']),
+                        Text(DateFormat('dd MMMM yyyy, HH:mm:ss').format((pesanan['waktu_transaksi']as Timestamp).toDate())),
+                        Text("No. Ref ${widget.pesananID}"),
                       ],
                     ),
                   ),
+
+                  SizedBox(height: 15,),
+
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          spreadRadius: 1,
+                          blurRadius: 2,
+                            )
+                          ]
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Total harga = Rp.${pesanan['total']}'),
+                        Text('alamat kirim:'),
+                        _kondisiPengiriman(pesanan['id_kondisi'], pesanan['id_pengiriman'], pesanan['alamat_kirim']),
+
+                      ],
+                    )
+                  ),
+
+                  SizedBox(height: 20,),
 
                   _buktiFoto(pesanan['id_kondisi']),
 
@@ -165,7 +249,7 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
                 ],
               );
             }
-            return CircularProgressIndicator();
+            return Center(child: CircularProgressIndicator());
           },
         ),
       ),

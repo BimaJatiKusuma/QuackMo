@@ -119,80 +119,106 @@ class _PeternakDistribusiState extends State<PeternakDistribusi> {
               itemCount: listQueryDocumentSnapshot.length,
               itemBuilder: (context, index) {
                 QueryDocumentSnapshot pemesanan = listQueryDocumentSnapshot[index];
-                return Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Text("${pemesanan["waktu_pembayaran"] ?? ""}"),
-                    Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan["waktu_pembayaran"] as Timestamp).toDate())),
-                    InkWell(
-                      onTap: () {
-                        _alertKonfirmasi(pemesanan["id_pengiriman"], pemesanan.id);
-                      },
-                      splashColor: Color.fromRGBO(225, 202, 167, 1),
-                      child: Ink(
-                        padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                        decoration: BoxDecoration(
-                          color: Color.fromRGBO(241, 241, 241, 1),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurRadius: 5
-                            )
-                          ]
-                        ),
-                        child: Table(
-                          columnWidths: {1:FractionColumnWidth(.8)},
-                          children: [
-                            TableRow(
-                              children: [
-                                Container(
-                                  // color: Colors.blue,
-                                  child: Image(image: AssetImage("images/distribution.png"))),
-                                Container(
-                                  // color: Colors.amber,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text("Produsen Telur Asin ${pemesanan["id_peternak"]}", style: TextStyle(fontWeight: FontWeight.w600),),
-                                      // Text("Pengantar: ${pemesanan["id_produsen"]}"),
-                                      Text("Produk: ${pemesanan["id_produk"]}"),
-                                      Text("Jumlah: ${pemesanan["quantity"]}")
-                                    ],
+                
+                late Future<DocumentSnapshot<Map<String, dynamic>>>  _futureDataProduk = FirebaseFirestore.instance.collection('produk').doc(pemesanan['id_produk']).get();
+                late Future<DocumentSnapshot<Map<String, dynamic>>>  _futureDataUsers = FirebaseFirestore.instance.collection('users').doc(pemesanan['id_produsen']).get();
+                late Map dataProduk;
+                late Map dataUsers;
+                return FutureBuilder(
+                  future: _futureDataProduk,
+                  builder: (context, snapshot) {
+                    if(snapshot.hasData){
+                      dataProduk = snapshot.data!.data() as Map;
+                      return FutureBuilder(
+                        future: _futureDataUsers,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData){
+                            dataUsers = snapshot.data!.data() as Map;
+
+                            return 
+                              Container(
+                                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Text("${pemesanan["waktu_pembayaran"] ?? ""}"),
+                                  Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan["waktu_pembayaran"] as Timestamp).toDate())),
+                                  InkWell(
+                                    onTap: () {
+                                      _alertKonfirmasi(pemesanan["id_pengiriman"], pemesanan.id);
+                                    },
+                                    splashColor: Color.fromRGBO(225, 202, 167, 1),
+                                    child: Ink(
+                                      padding: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                      decoration: BoxDecoration(
+                                        color: Color.fromRGBO(241, 241, 241, 1),
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            blurRadius: 5
+                                          )
+                                        ]
+                                      ),
+                                      child: Table(
+                                        columnWidths: {1:FractionColumnWidth(.8)},
+                                        children: [
+                                          TableRow(
+                                            children: [
+                                              Container(
+                                                // color: Colors.blue,
+                                                child: Image(image: AssetImage("images/distribution.png"))),
+                                              Container(
+                                                // color: Colors.amber,
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text("Produsen Telur Asin ${dataUsers["nama"]}", style: TextStyle(fontWeight: FontWeight.w600),),
+                                                    // Text("Pengantar: ${pemesanan["id_produsen"]}"),
+                                                    Text("Produk: ${dataProduk["nama_produk"]}"),
+                                                    Text("Jumlah: ${pemesanan["quantity"]}")
+                                                  ],
+                                                ),
+                                              ),
+                                              _icon(pemesanan["id_pengiriman"])
+                                              // Icon(Icons.check_circle_outline_rounded, color: Color.fromRGBO(225, 202, 167, 1),)
+                                            ]
+                                          ),
+                                          
+                                          TableRow(
+                                            children: [
+                                              Icon(Icons.location_on),
+                                              TableCell(
+                                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                                child: Text("${pemesanan["alamat_kirim"]}",)),
+                                              Container(), 
+                                            ]
+                                          ),
+                                          TableRow(
+                                            children: [
+                                              Icon(Icons.access_time_filled_rounded),
+                                              TableCell(
+                                                verticalAlignment: TableCellVerticalAlignment.middle,
+                                                child: _textKondisiPengiriman(pemesanan["id_pengiriman"])),
+                                              Container(),
+                                            ]
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                _icon(pemesanan["id_pengiriman"])
-                                // Icon(Icons.check_circle_outline_rounded, color: Color.fromRGBO(225, 202, 167, 1),)
-                              ]
-                            ),
-                            
-                            TableRow(
-                              children: [
-                                Icon(Icons.location_on),
-                                TableCell(
-                                  verticalAlignment: TableCellVerticalAlignment.middle,
-                                  child: Text("${pemesanan["alamat_kirim"]}",)),
-                                Container(), 
-                              ]
-                            ),
-                            TableRow(
-                              children: [
-                                Icon(Icons.access_time_filled_rounded),
-                                TableCell(
-                                  verticalAlignment: TableCellVerticalAlignment.middle,
-                                  child: _textKondisiPengiriman(pemesanan["id_pengiriman"])),
-                                Container(),
-                              ]
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+                                ],
+                              ),
+                            );
+                          }
+                          return CircularProgressIndicator();
+                        },
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  },
+                );
+                
               },
             );
           }

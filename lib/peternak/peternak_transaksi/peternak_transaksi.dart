@@ -79,101 +79,92 @@ class _TabTransaksiMasukState extends State<TabTransaksiMasuk> {
           return ListView.builder(
             itemCount: listQueryDocumentSnapshot.length,
             itemBuilder: (context, index) {
-              QueryDocumentSnapshot pemesanan =
-                  listQueryDocumentSnapshot[index];
-                var id_pemesanan = pemesanan.id;
-              
-              return Container(
-                margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                decoration:BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      spreadRadius: 1,
-                      blurRadius: 2,
-                        )
-                      ]
-                  ),
-                child: Column(children: [
-                  Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return PeternakTransaksiDetail(id_pemesanan);
-                      }));
-                    },
-                    child: Ink(
-                      child: Table(
-                        columnWidths: {
-                          0: FlexColumnWidth(1),
-                          1: FlexColumnWidth(7),
-                          2: FlexColumnWidth(3)
-                        },
-                        children: [
-                          TableRow(
-                            children: [
-                              Container(
-                                child: Image(
-                                  image: AssetImage('images/transaksi_02.png'),),
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("Transfer Rupiah"),
-                                    Text(id_pemesanan),
-                                    Text(pemesanan['id_produsen']),
-                                    _textKondisi(pemesanan['id_kondisi'])
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    _iconKondisi(pemesanan['id_kondisi']),
-                                    Text("+ ${formatter.format(pemesanan['total'])}")
-                                  ],
-                                ),
-                              )
-                            ]
-                          )
-                        ],
-                      ),
+              QueryDocumentSnapshot pemesanan = listQueryDocumentSnapshot[index];
+              var id_pemesanan = pemesanan.id;
+              late Map dataProdusen;
+              late var _futureDataProdusen;
 
+              _futureDataProdusen = FirebaseFirestore.instance.collection('users').doc(pemesanan['id_produsen']).get();
+              return FutureBuilder(
+                future: _futureDataProdusen,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if(snapshot.hasError){
+                    return Center(child: Text("${snapshot.hasError}"),);
+                  }
+                  if(snapshot.hasData){
+                    DocumentSnapshot? documentSnapshotProdusen = snapshot.data;
+                    dataProdusen = documentSnapshotProdusen!.data() as Map;
+                    return 
+                      Container(
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                        decoration:BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                                )
+                              ]
+                          ),
+                        child: Column(children: [
+                          Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return PeternakTransaksiDetail(id_pemesanan);
+                              }));
+                            },
+                            child: Ink(
+                              child: Table(
+                                columnWidths: {
+                                  0: FlexColumnWidth(1),
+                                  1: FlexColumnWidth(7),
+                                  2: FlexColumnWidth(3)
+                                },
+                                children: [
+                                  TableRow(
+                                    children: [
+                                      Container(
+                                        child: Image(
+                                          image: AssetImage('images/transaksi_02.png'),),
+                                      ),
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text("Transfer Rupiah"),
+                                            Text("id: ${id_pemesanan}"),
+                                            Text("atas nama: ${dataProdusen['nama']}", style: TextStyle(fontWeight: FontWeight.w600),),
+                                            _textKondisi(pemesanan['id_kondisi'])
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          children: [
+                                            _iconKondisi(pemesanan['id_kondisi']),
+                                            Text("+ ${formatter.format(pemesanan['total'])}")
+                                          ],
+                                        ),
+                                      )
+                                    ]
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ]),
+                      );
 
-                      // child: Column(
-                      //   children: [
-                      //     Text(DateFormat('dd/MM/yy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
-                      //     Text(id_pemesanan),
-                      //     Text(pemesanan['id_produsen']),
-                      //     Row(
-                      //       children: [
-                      //         Image(
-                      //           image: AssetImage('images/transaksi_02.png'),
-                      //         ),
-                      //         Column(children: [
-                      //           _textKondisi(pemesanan['id_kondisi'])
-                      //         ]),
-                      //         Column(
-                      //           children: [
-                      //             _iconKondisi(pemesanan['id_kondisi']),
-                      //             Text(
-                      //                 "+ ${formatter.format(pemesanan['total'])}")
-                      //           ],
-                      //         )
-                      //       ],
-                      //     ),
-                      //   ],
-                      // ),
-                    ),
-                  ),
-                ]),
+                  }
+                  return CircularProgressIndicator();
+                },
               );
-              // Text(produk['nama_produk']);
+              
             },
           );
         }
@@ -213,16 +204,12 @@ class _TabDetailPenjualanState extends State<TabDetailPenjualan> {
                     Image(image: AssetImage('images/transaksi_02.png')),
                     Column(
                       children: [
-                        Text('Pengeluaran'),
                         Text('Pendapatan'),
-                        Text('Untung')
                       ],
                     ),
                     Column(
                       children: [
-                        Text("- Rp. 100.0000"),
                         Text("+ Rp. 200.0000"),
-                        Text("+ Rp. 100.0000")
                       ],
                     )
                   ]),

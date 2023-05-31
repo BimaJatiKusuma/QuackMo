@@ -90,22 +90,32 @@ class _PeternakAduanState extends State<PeternakAduan> {
                                     return 
                                       Container(
                                         // width: double.infinity,
-                                        constraints: BoxConstraints(
-                                          maxWidth: 150,
-                                          minWidth: 50
-                                        ),
-                                        margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                        decoration: BoxDecoration(
-                                          color: _divider_color(chat["id_produsen"], chat["id_peternak"], userPeternakID),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
+                                        // margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                        // padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                        // decoration: BoxDecoration(
+                                        //   color: _divider_color(chat["id_produsen"], chat["id_peternak"], userPeternakID),
+                                        //   borderRadius: BorderRadius.circular(10),
+                                        // ),
                                         child: Column(
                                           crossAxisAlignment: _divider_CrossAlignment(chat["id_produsen"], chat["id_peternak"], userPeternakID),
                                           children: [
-                                            Text(DateFormat('dd MMMM yyyy, HH:mm').format((chat['datetime']as Timestamp).toDate())),
-                                            Text(dataUser["nama"], style: TextStyle(fontWeight: FontWeight.w600),),
-                                            Text(chat["pesan"])
+                                            Container(
+                                              margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                                              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                              decoration: BoxDecoration(
+                                                color: _divider_color(chat["id_produsen"], chat["id_peternak"], userPeternakID),
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              constraints: BoxConstraints(maxWidth: 200),
+                                              child: Column(
+                                                crossAxisAlignment: _divider_CrossAlignment(chat["id_produsen"], chat["id_peternak"], userPeternakID),
+                                                children: [
+                                                  Text(DateFormat('dd MMMM yyyy, HH:mm').format((chat['datetime']as Timestamp).toDate())),
+                                                  Text(dataUser["nama"], style: TextStyle(fontWeight: FontWeight.w600),),
+                                                  Text(chat["pesan"])
+                                                ],
+                                              ),
+                                            )
                                           ],
                                         ),
                                       );
@@ -172,8 +182,13 @@ class _PeternakAduanState extends State<PeternakAduan> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Fitur ini hanya untuk akun premium"),
-                  ElevatedButton(onPressed: (){
+                  Text("Fitur ini hanya untuk akun premium", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                      foregroundColor: Colors.black
+                    ),
+                    onPressed: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context){
                       return PeternakPremium(idPeternak: userPeternakID);
                     }));
