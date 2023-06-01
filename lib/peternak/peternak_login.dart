@@ -14,7 +14,7 @@ class PeternakLogin extends StatefulWidget {
 
 String userPeternakID = '';
 String alertText = '';
-String premium = '';
+String premiumPeternak = '';
 
 class _PeternakLoginState extends State<PeternakLogin> {
   bool _isObscure = true;
@@ -204,7 +204,7 @@ class _PeternakLoginState extends State<PeternakLogin> {
                           userPeternakID = user.uid;
                           setState(() {
                             alertText = '';
-                            premium = documentSnapshot.get('premium');
+                            premiumPeternak = documentSnapshot.get('premium');
                           });
                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
                             return PeternakHomepage();

@@ -13,6 +13,7 @@ class ProdusenLogin extends StatefulWidget {
 
 String userProdusenID = '';
 String alertText = ' ';
+String premiumProdusen = '';
 
 class _ProdusenLoginState extends State<ProdusenLogin> {
   bool _isObscure = true;

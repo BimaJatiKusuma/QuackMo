@@ -38,8 +38,8 @@ class _PeternakAduanState extends State<PeternakAduan> {
       builder:(context, AsyncSnapshot snapshot) {
         if(snapshot.connectionState == ConnectionState.active){
           DocumentSnapshot usersSnapshot = snapshot.data;
-          premium = usersSnapshot.get('premium');
-          if(premium == 'y')
+          premiumPeternak = usersSnapshot.get('premium');
+          if(premiumPeternak == 'y')
           {return Scaffold(
             backgroundColor: Color.fromRGBO(249, 239, 224, 1),
             appBar: AppBar(
@@ -89,13 +89,6 @@ class _PeternakAduanState extends State<PeternakAduan> {
                                     
                                     return 
                                       Container(
-                                        // width: double.infinity,
-                                        // margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                                        // padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                        // decoration: BoxDecoration(
-                                        //   color: _divider_color(chat["id_produsen"], chat["id_peternak"], userPeternakID),
-                                        //   borderRadius: BorderRadius.circular(10),
-                                        // ),
                                         child: Column(
                                           crossAxisAlignment: _divider_CrossAlignment(chat["id_produsen"], chat["id_peternak"], userPeternakID),
                                           children: [

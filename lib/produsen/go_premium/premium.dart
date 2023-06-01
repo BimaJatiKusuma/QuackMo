@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quackmo/peternak/peternak_login.dart';
+import 'package:quackmo/produsen/produsen_login.dart';
 
-class PeternakPremium extends StatefulWidget {
-  final idPeternak;
-  const PeternakPremium({
-    required this.idPeternak,
+class ProdusenPremium extends StatefulWidget {
+  final idProdusen;
+  const ProdusenPremium({
+    required this.idProdusen,
     super.key
     });
 
   @override
-  State<PeternakPremium> createState() => _PeternakPremiumState();
+  State<ProdusenPremium> createState() => _ProdusenPremiumState();
 }
 
-class _PeternakPremiumState extends State<PeternakPremium> {
+class _ProdusenPremiumState extends State<ProdusenPremium> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,11 +79,11 @@ class _PeternakPremiumState extends State<PeternakPremium> {
                     foregroundColor: Colors.black
                   ),
                   onPressed: (){
-                  FirebaseFirestore.instance.collection('users').doc(widget.idPeternak).update({
+                  FirebaseFirestore.instance.collection('users').doc(widget.idProdusen).update({
                     'premium':"y"
                   }).then((value){
-                    FirebaseFirestore.instance.collection('users').doc(widget.idPeternak).get().then((value){
-                        premiumPeternak = value.get('premium');
+                    FirebaseFirestore.instance.collection('users').doc(widget.idProdusen).get().then((value){
+                        premiumProdusen = value.get('premium');
                         Navigator.pop(context);
                     });
                   });

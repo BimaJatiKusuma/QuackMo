@@ -6,17 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 class ProdusenDaftarProdukDetail extends StatefulWidget {
   ProdusenDaftarProdukDetail(this.produkID, {Key? key}) : super(key: key) {
     _reference = FirebaseFirestore.instance.collection('produk').doc(produkID);
@@ -29,12 +18,81 @@ class ProdusenDaftarProdukDetail extends StatefulWidget {
   late Map data;
 
   @override
-  State<ProdusenDaftarProdukDetail> createState() =>
-      _ProdusenDaftarProdukDetailState();
+  State<ProdusenDaftarProdukDetail> createState() => _ProdusenDaftarProdukDetailState();
 }
 
-class _ProdusenDaftarProdukDetailState
-    extends State<ProdusenDaftarProdukDetail> {
+class _ProdusenDaftarProdukDetailState extends State<ProdusenDaftarProdukDetail> {
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: widget._futureData,
+      builder: (context, AsyncSnapshot snapshot) {
+        if (snapshot.hasError){
+          return Text("${snapshot.hasError}");
+        }
+        else if (snapshot.hasData){
+          widget.data = snapshot.data!.data() as Map;
+          return 
+            DefaultTabController(
+              length: 2,
+              child: Scaffold(appBar: AppBar(
+                leading: BackButton(),
+                title: Text(widget.data['nama_produk']),
+                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                bottom: TabBar(
+                  indicatorColor: Colors.black,
+                  tabs: [
+                    Tab(
+                      child: Text("Detail Produk"),
+                    ),
+                    Tab(
+                      child: Text("Aduan"),
+                    )
+                  ],
+                ),
+              ),
+              body: TabBarView(children: [
+                TabProdusenDaftarProdukDetail(widget.produkID),
+                ProdusenAduan(idProduk: widget.produkID)
+              ]),
+              ));
+        }
+        
+        return CircularProgressIndicator();
+      },
+    );
+    
+  }
+}
+
+
+
+
+
+
+
+
+
+class TabProdusenDaftarProdukDetail extends StatefulWidget {
+  TabProdusenDaftarProdukDetail(this.produkID, {Key? key}) : super(key: key) {
+    _reference = FirebaseFirestore.instance.collection('produk').doc(produkID);
+    _futureData = _reference.get();
+  }
+
+  String produkID;
+  late DocumentReference _reference;
+  late Future<DocumentSnapshot> _futureData;
+  late Map data;
+
+  @override
+  State<TabProdusenDaftarProdukDetail> createState() =>
+      _TabProdusenDaftarProdukDetailState();
+}
+
+class _TabProdusenDaftarProdukDetailState
+    extends State<TabProdusenDaftarProdukDetail> {
   late var _produkData = widget.data;
   late int satuan = _produkData['satuan'];
   late int total = satuan;
@@ -66,10 +124,6 @@ class _ProdusenDaftarProdukDetailState
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference pemesanan = firestore.collection('pemesanan');
 
-    // if(total>_produkData['stok']){
-    //   total = _produkData['stok'];
-    // }
-
     return FutureBuilder<DocumentSnapshot>(
         future: widget._futureData,
         builder: (context, snapshot) {
@@ -83,12 +137,6 @@ class _ProdusenDaftarProdukDetailState
               total = _produkData['stok'];
             }
             return Scaffold(
-              appBar: AppBar(
-                leading: BackButton(),
-                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-                centerTitle: true,
-                title: Text(_produkData['nama_produk']),
-              ),
               body: Column(
                 children: [
                   Container(
@@ -149,15 +197,6 @@ class _ProdusenDaftarProdukDetailState
                               
                             ],
                           ),
-                        ),
-                        Container(
-                          width: double.infinity,
-                          height: 30,
-                          child: ElevatedButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return ProdusenAduan(idProduk: documentSnapshot.id);
-                            }));
-                          }, child: Text("Example to aduan")),
                         ),
                         SizedBox(height: 30,),
                         Container(
