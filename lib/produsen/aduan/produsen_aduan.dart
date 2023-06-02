@@ -168,11 +168,6 @@ class _ProdusenAduanState extends State<ProdusenAduan> {
           }
           else {
             return Scaffold(
-            appBar: AppBar(
-              title: Text("Aduan"),
-              centerTitle: true,
-              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-              ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

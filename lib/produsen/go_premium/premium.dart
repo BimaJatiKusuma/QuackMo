@@ -14,6 +14,52 @@ class ProdusenPremium extends StatefulWidget {
 }
 
 class _ProdusenPremiumState extends State<ProdusenPremium> {
+  bool terbayar = false;
+  _konfirmasi(){
+    return showDialog(
+      context: context,
+              builder: (_){
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  titlePadding: EdgeInsets.zero,
+                  backgroundColor: Color.fromRGBO(250, 250, 250, 1),
+                  title: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+                      color: Color.fromRGBO(225, 202, 167, 1),
+                    ),
+                    alignment: Alignment.center,
+                    height: 30,
+                    child: Text("Pemberitahuan", textAlign: TextAlign.center,),
+                  ),
+                  content: Text("Lanjutkan Pembayaran ?", textAlign: TextAlign.center,),
+                  actions: [
+                    ElevatedButton(onPressed: (){
+                      Navigator.pop(context);
+                    }, child: Text("Tidak"), style: ElevatedButton.styleFrom(backgroundColor: Colors.white, foregroundColor: Colors.black),),
+                    ElevatedButton(onPressed: (){
+                      
+                      FirebaseFirestore.instance.collection('users').doc(widget.idProdusen).update({
+                        'premium':"y"
+                      }).then((value){
+                        FirebaseFirestore.instance.collection('users').doc(widget.idProdusen).get().then((value){
+                            premiumProdusen = value.get('premium');
+                            terbayar = true;
+                            setState(() {});
+                            Navigator.pop(context);
+                            return Navigator.pop(context);
+                        });
+                      });
+                    }, child: Text("Ya"), style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(225, 207, 167, 1), foregroundColor: Colors.black),)
+                  ],
+                  actionsAlignment: MainAxisAlignment.spaceAround,
+                );
+              }
+            );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,14 +125,8 @@ class _ProdusenPremiumState extends State<ProdusenPremium> {
                     foregroundColor: Colors.black
                   ),
                   onPressed: (){
-                  FirebaseFirestore.instance.collection('users').doc(widget.idProdusen).update({
-                    'premium':"y"
-                  }).then((value){
-                    FirebaseFirestore.instance.collection('users').doc(widget.idProdusen).get().then((value){
-                        premiumProdusen = value.get('premium');
-                        Navigator.pop(context);
-                    });
-                  });
+                    _konfirmasi();
+                  
                   // print(premium);
                 }, child: Text("Bayar")),
               ],

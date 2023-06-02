@@ -194,6 +194,14 @@ class _TabProdusenDaftarProdukDetailState
                                 ),
                                 child: Text("Keterangan: ${_produkData['keterangan']}")
                               ),
+                                                                                          Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 0, 5),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Color.fromRGBO(225, 202, 167, 1)))
+                                ),
+                                child: Text("Alamat: ${_produkData['alamat']}")
+                              ),
                               
                             ],
                           ),

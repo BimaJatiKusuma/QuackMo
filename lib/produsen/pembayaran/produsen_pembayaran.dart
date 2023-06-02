@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:quackmo/produsen/pembayaran/produsen_pembayaran_detail.dart';
 import 'package:quackmo/produsen/produsen_login.dart';
 import 'package:quackmo/produsen/transaksi/produsen_transaksi.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -12,8 +13,7 @@ enum SingingCharacter { lafayette, jefferson }
 
 class ProdusenPembayaran extends StatefulWidget {
   ProdusenPembayaran(this.pesananID) {
-    _referencePesanan =
-        FirebaseFirestore.instance.collection('pemesanan').doc(pesananID);
+    _referencePesanan = FirebaseFirestore.instance.collection('pemesanan').doc(pesananID);
     _futureData1 = _referencePesanan.get();
   }
 
@@ -38,37 +38,37 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
   final _formKey = GlobalKey<FormState>();
   MetodeKirim? _metodeKirim = MetodeKirim.Diantar;
 
-  File? buktiFoto;
-  String fotoPath = '';
-  String fotoBuktiUrl = '';
+  // File? buktiFoto;
+  // String fotoPath = '';
+  // String fotoBuktiUrl = '';
+  // String _alertFoto = '';
   int id_pengiriman = 0;
-  String _alertFoto = '';
   String _alertAlamat = '';
 
-  Future getImage() async {
-    final ImagePicker foto = ImagePicker();
-    final XFile? fotoBukti = await foto.pickImage(source: ImageSource.gallery);
-    if (buktiFoto == null) return;
-    fotoPath = fotoBukti!.path;
-    buktiFoto = File(fotoBukti.path);
-    setState(() {});
-  }
+  // Future getImage() async {
+  //   final ImagePicker foto = ImagePicker();
+  //   final XFile? fotoBukti = await foto.pickImage(source: ImageSource.gallery);
+  //   if (fotoBukti == null) return;
+  //   fotoPath = fotoBukti.path;
+  //   buktiFoto = File(fotoBukti.path);
+  //   setState(() {});
+  // }
 
-  Future uploadBuktiFoto() async {
-    String uniqeFileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference referenceDirFotoBukti = referenceRoot.child('foto_bukti');
+  // Future uploadBuktiFoto() async {
+  //   String uniqeFileName = DateTime.now().millisecondsSinceEpoch.toString();
+  //   Reference referenceRoot = FirebaseStorage.instance.ref();
+  //   Reference referenceDirFotoBukti = referenceRoot.child('foto_bukti');
 
-    Reference referenceFotoBuktiUpload =
-        referenceDirFotoBukti.child(uniqeFileName);
+  //   Reference referenceFotoBuktiUpload =
+  //       referenceDirFotoBukti.child(uniqeFileName);
 
-    try {
-      await referenceFotoBuktiUpload.putFile(File(fotoPath));
-      fotoBuktiUrl = await referenceFotoBuktiUpload.getDownloadURL();
-    } catch (error) {
-      print(error);
-    }
-  }
+  //   try {
+  //     await referenceFotoBuktiUpload.putFile(File(fotoPath));
+  //     fotoBuktiUrl = await referenceFotoBuktiUpload.getDownloadURL();
+  //   } catch (error) {
+  //     print(error);
+  //   }
+  // }
 
   TextEditingController alamat_kirimController = TextEditingController();
 
@@ -117,38 +117,79 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
     } else if (x == MetodeKirim.TidakDiantar) {
       alamat_kirimController.text = '${widget.dataProduk['alamat']}';
       id_pengiriman = 100;
-      return Container(
-        padding: EdgeInsets.fromLTRB(0,5,5,5),
-        decoration: BoxDecoration(
-          border: Border.all(),
-          borderRadius: BorderRadius.circular(5)
-        ),
-        child: Table(
-          columnWidths: {
-            0: FlexColumnWidth(1),
-            1: FlexColumnWidth(5)
-          },
+      return
+      Container(
+        child: Column(
           children: [
-            TableRow(
-              children: [
-                TableCell(
-                  verticalAlignment: TableCellVerticalAlignment.middle,
-                  child: Icon(Icons.location_on),
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    Text("Dapat diambil di"),
-                    Text(widget.dataProduk['alamat'])
-                    ],
-                  ),
-                )
-              ]
-            )
+            Form(
+                key: _formKey,
+                child: TextFormField(
+                  readOnly: true,
+                  controller: alamat_kirimController,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length == 0){
+                      return "Alamat kirim harus diisi";
+                    }
+                    return null;
+                  },
+                  onSaved:(newValue) {
+                    alamat_kirimController.text = newValue!;
+                  },
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color:  Colors.grey)
+                    ),
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.all(2),
+                      child: Icon(Icons.location_on),
+                    ),
+                    hintText: 'masukkan alamat anda'),
+                )),
+            Text(_alertAlamat)
           ],
-        )
+        ),
       );
+      // Container(
+      //   padding: EdgeInsets.fromLTRB(0,5,5,5),
+      //   decoration: BoxDecoration(
+      //     border: Border.all(),
+      //     borderRadius: BorderRadius.circular(5)
+      //   ),
+      //   child: Table(
+      //     columnWidths: {
+      //       0: FlexColumnWidth(1),
+      //       1: FlexColumnWidth(5)
+      //     },
+      //     children: [
+      //       TableRow(
+      //         children: [
+      //           TableCell(
+      //             verticalAlignment: TableCellVerticalAlignment.middle,
+      //             child: Icon(Icons.location_on),
+      //           ),
+      //           Container(
+      //             child: Column(
+      //               crossAxisAlignment: CrossAxisAlignment.start,
+      //               children: [
+      //               Text("Dapat diambil di"),
+      //               Text(widget.dataProduk['alamat'])
+      //               ],
+      //             ),
+      //           )
+      //         ]
+      //       )
+      //     ],
+      //   )
+      // );
     }
   }
 
@@ -293,50 +334,50 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
                                 ],
                               ),
                             ),
-                            Container(
-                              child: Column(
-                                children: [
-                                  ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-                                        foregroundColor: Colors.black
-                                      ),
-                                      onPressed: () async {
-                                        await getImage();
-                                      },
-                                      child: Text("Masukkan bukti pembayaran")),
-                                  buktiFoto != null
-                                ? Container(
-                                    height: 500,
-                                    color: Color.fromRGBO(225, 202, 167, 1),
-                                    width:
-                                        (MediaQuery.of(context).size.width / 1.2),
-                                    child: Image.file(
-                                      buktiFoto!,
-                                      fit: BoxFit.fitWidth,
-                                    ))
-                                : Container(
-                                  child: Icon(Icons.image, size: 50,),
-                                  height: 200,
-                                  width: 200,
+                            // Container(
+                            //   child: Column(
+                            //     children: [
+                            //       ElevatedButton(
+                            //           style: ElevatedButton.styleFrom(
+                            //             backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                            //             foregroundColor: Colors.black
+                            //           ),
+                            //           onPressed: () async {
+                            //             await getImage();
+                            //           },
+                            //           child: Text("Masukkan bukti pembayaran")),
+                            //       buktiFoto != null
+                            //     ? Container(
+                            //         height: 500,
+                            //         color: Color.fromRGBO(225, 202, 167, 1),
+                            //         width:
+                            //             (MediaQuery.of(context).size.width / 1.2),
+                            //         child: Image.file(
+                            //           buktiFoto!,
+                            //           fit: BoxFit.fitWidth,
+                            //         ))
+                            //     : Container(
+                            //       child: Icon(Icons.image, size: 50,),
+                            //       height: 200,
+                            //       width: 200,
                                   
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        spreadRadius: 1,
-                                        blurRadius: 10,
-                                      )
-                                    ]
-                                  ),
-                                ),
-                                SizedBox(height: 5,),
-                                Text(_alertFoto, style: TextStyle(color: Colors.red),),
-                                ],
-                              ),
-                            ),
+                            //       decoration: BoxDecoration(
+                            //         color: Colors.white,
+                            //         borderRadius: BorderRadius.circular(10),
+                            //         boxShadow: [
+                            //           BoxShadow(
+                            //             color: Colors.grey,
+                            //             spreadRadius: 1,
+                            //             blurRadius: 10,
+                            //           )
+                            //         ]
+                            //       ),
+                            //     ),
+                            //     SizedBox(height: 5,),
+                            //     Text(_alertFoto, style: TextStyle(color: Colors.red),),
+                            //     ],
+                            //   ),
+                            // ),
                             SizedBox(height: 40,),
                             ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -344,34 +385,35 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
                                   foregroundColor: Colors.black
                                 ),
                                 onPressed: () async {
-                                  if(_formKey.currentState == null){
-                                    _alertAlamat = "alamat harus diisi 222";
-                                    return;
-                                  }
+                                  print(_formKey.currentState!.validate());
                                   if(_formKey.currentState!.validate()){
-                                    if(buktiFoto != null){
-                                      await uploadBuktiFoto();
-                                      await widget._referencePesanan.update({
-                                        'id_kondisi': 400,
-                                        'url_bukti_pembayaran': fotoBuktiUrl,
-                                        'waktu_transaksi': DateTime.now(),
-                                        'total': widget.dataPesanan['total'],
-                                        'alamat_kirim': alamat_kirimController.text,
-                                        'id_pengiriman': id_pengiriman
-                                      });
-                                      Navigator.pushReplacement(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return ProdusenTransaksi();
+                                  print(_formKey.currentState!.validate());
+                                    // if(buktiFoto != null){
+                                    //   await uploadBuktiFoto();
+                                    //   await widget._referencePesanan.update({
+                                    //     'id_kondisi': 400,
+                                    //     'url_bukti_pembayaran': fotoBuktiUrl,
+                                    //     'waktu_transaksi': DateTime.now(),
+                                    //     'total': widget.dataPesanan['total'],
+                                    //     'alamat_kirim': alamat_kirimController.text,
+                                    //     'id_pengiriman': id_pengiriman
+                                    //   });
+                                    //   Navigator.pushReplacement(context,
+                                    //       MaterialPageRoute(builder: (context) {
+                                    //     return ProdusenTransaksi();
+                                    //   }));
+                                    // }
+                                    // else {
+                                    //   setState(() {
+                                    //     _alertFoto = "Bukti foto harus diisi!";
+                                    //   });
+                                    // }
+                                     Navigator.push(context, MaterialPageRoute(builder: (context){
+                                        return ProdusenPembayaranDetail(pesananID: widget.pesananID, total: widget.dataPesanan['total'], alamat_kirim: alamat_kirimController.text, id_pengiriman: id_pengiriman);
                                       }));
-                                    }
-                                    else {
-                                      setState(() {
-                                        _alertFoto = "Bukti foto harus diisi!";
-                                      });
-                                    }
                                   }
                                 },
-                                child: Text("Bayar"))
+                                child: Text("Detail Pembayaran"))
                           ],
                         ),
                       );
