@@ -228,7 +228,7 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     var user = _auth.currentUser;
     CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role});
+    ref.doc(user!.uid).set({'nama':usernameController.text, 'email':emailController.text, 'role': role, 'no_hp':'', 'alamat':'', 'kota':'', 'kode_pos':'', 'usia':'', 'gender':'', 'premium':'n'});
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
       return ProdusenSplashScreenRegis();
     }));

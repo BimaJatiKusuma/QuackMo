@@ -88,7 +88,7 @@ class _FormGroupState extends State<FormGroup> {
                   return "Password tidak cocok";
                 }
               }
-              else {return null;};
+              else {return null;}
             },
             onSaved:(newValue) {
               widget.controllerNama.text = newValue!;

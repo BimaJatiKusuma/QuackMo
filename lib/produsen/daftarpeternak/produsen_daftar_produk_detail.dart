@@ -268,16 +268,15 @@ class _TabProdusenDaftarProdukDetailState
                                                   'id_kondisi': 100,
                                                   'id_produk': widget.produkID,
                                                   'id_produsen': userProdusenID,
-                                                  'id_peternak':
-                                                      _produkData['peternak_uid'],
-                                                  // 'id_transaksi': '',
+                                                  'id_peternak':_produkData['peternak_uid'],
                                                   'quantity': total,
                                                   'waktu': DateTime.now(),
                                                   'alamat_kirim': '',
                                                   'total': hargaTotal,
                                                   'url_bukti_pembayaran': '',
                                                   'waktu_transaksi': DateTime.now(),
-                                                  'id_pengiriman':0
+                                                  'id_pengiriman':0,
+                                                  'waktu_pembayaran': DateTime.now(),
                                                 });
                                                                                 
                                                 Navigator.pushReplacement(context,

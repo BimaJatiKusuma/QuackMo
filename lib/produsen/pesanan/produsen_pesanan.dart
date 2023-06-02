@@ -15,8 +15,7 @@ class ProdusenPesanan extends StatefulWidget {
 }
 
 class _ProdusenPesananState extends State<ProdusenPesanan> {
-  CollectionReference _pemesananList =
-      FirebaseFirestore.instance.collection('pemesanan');
+  CollectionReference _pemesananList = FirebaseFirestore.instance.collection('pemesanan');
 
   late Stream<QuerySnapshot> _streamPemesananList;
   List kondisi_produk = [100, 200, 300];
@@ -35,9 +34,9 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
     if (kondisi == 100) {
       return Text("menunggu konfirmasi peternak 1x24 jam");
     } else if (kondisi == 200) {
-      return Text("Pesanan disetujui, Harap dibayar");
+      return Text("Pesanan disetujui, Harap dibayar", style: TextStyle(color: Colors.green),);
     } else if (kondisi == 300) {
-      return Text("Pemesanan Ditolak");
+      return Text("Pemesanan Ditolak", style: TextStyle(color: Colors.red));
     }
   }
 
@@ -48,14 +47,34 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
             showDialog(
               context: context,
               builder: (BuildContext context) => AlertDialog(
-                title: const Text('Pemberitahuan'),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                title: Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromRGBO(225, 202, 167, 1),
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
+                  ),
+                  child: Text('Pemberitahuan', textAlign: TextAlign.center,)),
                 content: const Text('Hapus pemesanan'),
+                titlePadding: EdgeInsets.zero,
+                actionsAlignment: MainAxisAlignment.spaceAround,
                 actions: <Widget>[
                   TextButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                        foregroundColor: Colors.black,
+                        elevation: 5,
+                        ),
                     onPressed: () => Navigator.pop(context, 'Tidak'),
                     child: const Text('Tidak'),
                   ),
                   TextButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                        foregroundColor: Colors.black,
+                        elevation: 5,
+                        ),
                     onPressed: () {
                       _pemesananList.doc(id_pemesanan).delete();
                       Navigator.pop(context, 'Ya');
@@ -96,11 +115,9 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
             }
             if (snapshot.connectionState == ConnectionState.active) {
               QuerySnapshot querySnapshot = snapshot.data;
-              List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
-                  querySnapshot.docs;
+              List<QueryDocumentSnapshot> listQueryDocumentSnapshot = querySnapshot.docs;
               if (listQueryDocumentSnapshot.length >= 2) {
-                listQueryDocumentSnapshot
-                    .sort((a, b) => a['id_kondisi'].compareTo(b['id_kondisi']));
+                listQueryDocumentSnapshot.sort((a, b) => a['id_kondisi'].compareTo(b['id_kondisi']));
               }
 
               return ListView.builder(
@@ -113,37 +130,82 @@ class _ProdusenPesananState extends State<ProdusenPesanan> {
                   var id_pemesanan = pemesanan.id;
                   DateTime waktuDB = (pemesanan['waktu'] as Timestamp).toDate();
                   String formatWaktu = DateFormat('dd/MM/yyyy, HH:mm').format(waktuDB);
+                  late var _futureDataProduk;
+                  late Map dataProduk;
+                  _futureDataProduk = FirebaseFirestore.instance.collection('produk').doc(pemesanan['id_produk']).get();
 
-                  return Container(
-                    margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                    child: InkWell(
-                        onTap: () {
-                          if (pemesanan['id_kondisi'] == 200) {
-                            Navigator.push(context,
-                                MaterialPageRoute(builder: (context) {
-                              return ProdusenPembayaran(id_pemesanan);
-                            }));
-                          }
-                        },
-                        child: Column(
-                          children: [
-                            Text(formatWaktu),
-                            Card(
-                              child: Row(children: [
-                                Icon(Icons.square, color: Color.fromRGBO(225, 202, 167, 1),),
-                                Column(
-                                  children: [
-                                    Text('Telur Hibrida'),
-                                    Text(
-                                        'Pemesanan: ${pemesanan['quantity']} butir telur'),
-                                    _textKondisi(pemesanan['id_kondisi'])
-                                  ],
+                  return FutureBuilder(
+                    future: _futureDataProduk,
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if(snapshot.hasError){
+                        return Text("${snapshot.hasError}");
+                      }
+                      if(snapshot.hasData){
+                        dataProduk = snapshot.data!.data() as Map;
+                        return 
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                            child: Column(
+                              children: [
+                                Container(
+                                  child: Text(formatWaktu),
                                 ),
-                                _batalIcon(pemesanan['id_kondisi'], id_pemesanan)
-                              ]),
+                                InkWell(
+                                  splashColor: Colors.grey,
+                                    onTap: () {
+                                      if (pemesanan['id_kondisi'] == 200) {
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (context) {
+                                          return ProdusenPembayaran(id_pemesanan);
+                                        }));
+                                      }
+                                    },
+                                    child: Ink(
+                                      decoration:BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            spreadRadius: 1,
+                                            blurRadius: 2,
+                                              )
+                                            ]
+                                        ),
+                                      child: Table(
+                                        columnWidths: {
+                                          0: FlexColumnWidth(1),
+                                          1: FlexColumnWidth(7),
+                                          2: FlexColumnWidth(1)
+                                        },
+                                        children: [
+                                          TableRow(
+                                            children: [
+                                              Icon(Icons.square, color: Color.fromRGBO(225, 202, 167, 1),),
+                                              Container(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(dataProduk['nama_produk']),
+                                                    Text(
+                                                        'Pemesanan: ${pemesanan['quantity']} butir telur'),
+                                                    _textKondisi(pemesanan['id_kondisi'])
+                                                  ],
+                                                ),
+                                              ),
+                                              _batalIcon(pemesanan['id_kondisi'], id_pemesanan)
+                                            ]
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                ),
+                              ],
                             ),
-                          ],
-                        )),
+                          );
+                      }
+                      return Center(child: CircularProgressIndicator(),);
+                    },
                   );
                 },
               );

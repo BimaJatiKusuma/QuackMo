@@ -35,22 +35,22 @@ enum MetodeKirim { Diantar, TidakDiantar }
 // enum MetodeBayar { Dana, BankMandiri, PembayaranDitempat }
 
 class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
-  final formKey = GlobalKey<FormState>();
-  String alamat = "";
+  final _formKey = GlobalKey<FormState>();
   MetodeKirim? _metodeKirim = MetodeKirim.Diantar;
-  // MetodeBayar? _metodeBayar = MetodeBayar.Dana;
 
   File? buktiFoto;
   String fotoPath = '';
   String fotoBuktiUrl = '';
   int id_pengiriman = 0;
+  String _alertFoto = '';
+  String _alertAlamat = '';
 
   Future getImage() async {
     final ImagePicker foto = ImagePicker();
     final XFile? fotoBukti = await foto.pickImage(source: ImageSource.gallery);
+    if (buktiFoto == null) return;
     fotoPath = fotoBukti!.path;
     buktiFoto = File(fotoBukti.path);
-    if (buktiFoto == null) return;
     setState(() {});
   }
 
@@ -76,29 +76,83 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
     if (x == MetodeKirim.Diantar) {
       id_pengiriman = 200;
       return Container(
-        child: Form(
-            key: formKey,
-            child: TextFormField(
-              controller: alamat_kirimController,
-              decoration: InputDecoration(
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(2),
-                    child: Icon(Icons.location_on),
-                  ),
-                  hintText: 'masukkan alamat anda'),
-            )),
+        child: Column(
+          children: [
+            Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: alamat_kirimController,
+                  validator: (value) {
+                    if (value!.isEmpty || value.length == 0){
+                      return "Alamat kirim harus diisi";
+                    }
+                    return null;
+                  },
+                  onSaved:(newValue) {
+                    alamat_kirimController.text = newValue!;
+                  },
+                  decoration: InputDecoration(
+                    fillColor: Colors.white,
+                    filled: true,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey)
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color:  Colors.grey)
+                    ),
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.all(2),
+                      child: Icon(Icons.location_on),
+                    ),
+                    hintText: 'masukkan alamat anda'),
+                )),
+            Text(_alertAlamat)
+          ],
+        ),
       );
     } else if (x == MetodeKirim.TidakDiantar) {
       alamat_kirimController.text = '${widget.dataProduk['alamat']}';
       id_pengiriman = 100;
       return Container(
-        child: Text(widget.dataProduk['alamat']),
+        padding: EdgeInsets.fromLTRB(0,5,5,5),
+        decoration: BoxDecoration(
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(5)
+        ),
+        child: Table(
+          columnWidths: {
+            0: FlexColumnWidth(1),
+            1: FlexColumnWidth(5)
+          },
+          children: [
+            TableRow(
+              children: [
+                TableCell(
+                  verticalAlignment: TableCellVerticalAlignment.middle,
+                  child: Icon(Icons.location_on),
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    Text("Dapat diambil di"),
+                    Text(widget.dataProduk['alamat'])
+                    ],
+                  ),
+                )
+              ]
+            )
+          ],
+        )
       );
     }
   }
 
-  NumberFormat formatter =
-      NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 2);
+  NumberFormat formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 2);
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +165,6 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
           },
         ),
         title: Text("Pembayaran"),
-        // backgroundColor: Colors.deepOrangeAccent,
       ),
       body: Container(
         child: FutureBuilder<DocumentSnapshot>(
@@ -140,181 +193,194 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
                     if (snapshot.hasData) {
                       DocumentSnapshot? documentSnapshot2 = snapshot.data;
                       widget.dataProduk = documentSnapshot2!.data() as Map;
-                      return ListView(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Text(
-                                    'harga produk total adalah ${formatter.format(widget.dataPesanan['total'])}'),
-                                Text(alamat),
-                                Text(
-                                  "Metode Pengiriman",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                // Divider(),
-                                RadioListTile(
-                                  title: Text("Diantar"),
-                                  value: MetodeKirim.Diantar,
-                                  groupValue: _metodeKirim,
-                                  onChanged: (MetodeKirim? value) {
-                                    setState(() {
-                                      _metodeKirim = value;
-                                    });
-                                  },
-                                ),
-                                RadioListTile(
-                                  title: Text("Diambil Sendiri"),
-                                  value: MetodeKirim.TidakDiantar,
-                                  groupValue: _metodeKirim,
-                                  onChanged: (MetodeKirim? value) {
-                                    setState(() {
-                                      _metodeKirim = value;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          _alamatPengiriman(_metodeKirim),
-                          Container(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              children: [
-                                Text(
-                                  "Metode Pembayaran",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                //mandiri
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Text('Bank Mandiri'),
-                                      Text(
-                                          '${widget.dataProduk['bank_mandiri']} atas nama ${widget.dataProduk['bank_mandiri_penerima']}'),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                //bri
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Text('Bank BRI'),
-                                      Text(
-                                          '${widget.dataProduk['bank_bri']} atas nama ${widget.dataProduk['bank_bri_penerima']}'),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Text('DANA'),
-                                      Text(
-                                          '${widget.dataProduk['dana']} atas nama ${widget.dataProduk['dana_penerima']}'),
-                                    ],
-                                  ),
-                                ),
-
-                                SizedBox(
-                                  height: 20,
-                                ),
-
-                                Container(
-                                  child: Column(
-                                    children: [
-                                      Text(widget
-                                          .dataProduk['bank_lainnya_namabank']),
-                                      Text(
-                                          '${widget.dataProduk['bank_lainnya']} atas nama ${widget.dataProduk['bank_lainnya_penerima']}'),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Column(
-                              children: [
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-                                      foregroundColor: Colors.black
-                                    ),
-                                    onPressed: () async {
-                                      await getImage();
-                                    },
-                                    child: Text("Masukkan bukti pembayaran")),
-                                buktiFoto != null
-                              ? Container(
-                                  height: 500,
-                                  color: Color.fromRGBO(225, 202, 167, 1),
-                                  width:
-                                      (MediaQuery.of(context).size.width / 1.2),
-                                  child: Image.file(
-                                    buktiFoto!,
-                                    fit: BoxFit.fitWidth,
-                                  ))
-                              : Container(
-                                child: Icon(Icons.image, size: 50,),
-                                height: 200,
-                                width: 200,
-                                
+                      return Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height,
+                        margin: EdgeInsets.all(20),
+                        child: ListView(
+                          children: [
+                              Container(
+                                padding: EdgeInsets.all(20),
+                                child: Container(
+                                  padding: EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.grey,
-                                      spreadRadius: 1,
-                                      blurRadius: 10,
+                                      blurRadius: 5
                                     )
                                   ]
                                 ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("${widget.dataProduk["nama_produk"]}"),
+                                    Text("Jumlah: ${widget.dataPesanan["quantity"]}"),
+                                    Text('harga produk total adalah ${formatter.format(widget.dataPesanan['total'])}'),
+                                  ],
+                                ),
+                                                          ),
                               ),
-                              ],
+                            Container(
+                                    padding: EdgeInsets.all(20),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Metode Pengiriman",
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(10),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey,
+                                                blurRadius: 5
+                                              )
+                                            ]
+                                          ),                                  
+                                          child: Column(
+                                            children: [
+                                              RadioListTile(
+                                                title: Text("Diantar"),
+                                                value: MetodeKirim.Diantar,
+                                                groupValue: _metodeKirim,
+                                                onChanged: (MetodeKirim? value) {
+                                                  alamat_kirimController.text ='';
+                                                  setState(() {
+                                                    _metodeKirim = value;
+                                                  });
+                                                },
+                                              ),
+                                              RadioListTile(
+                                                title: Text("Diambil Sendiri"),
+                                                value: MetodeKirim.TidakDiantar,
+                                                groupValue: _metodeKirim,
+                                                onChanged: (MetodeKirim? value) {
+                                                  alamat_kirimController.text ='';
+                                                  setState(() {
+                                                    _metodeKirim = value;
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 20,),
+                                        _alamatPengiriman(_metodeKirim),
+                                      ],
+                                    ),
+                                  ),
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "Metode Pembayaran",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  SizedBox(
+                                    height: 20,
+                                  ),
+                                  
+                                  ListMetodePembayaran(namaMetode: "Bank Mandiri", nomorTujuan: "${widget.dataProduk['bank_mandiri']}", namaPenerima: "${widget.dataProduk['bank_mandiri_penerima']}"),
+                                  ListMetodePembayaran(namaMetode: "Bank BRI", nomorTujuan: "${widget.dataProduk['bank_bri']}", namaPenerima: "${widget.dataProduk['bank_bri_penerima']}"),
+                                  ListMetodePembayaran(namaMetode: "DANA", nomorTujuan: "${widget.dataProduk['dana']}", namaPenerima: "${widget.dataProduk['dana_penerima']}"),
+                                  ListMetodePembayaran(namaMetode: "${widget.dataProduk['bank_lainnya_namabank']}", nomorTujuan: "${widget.dataProduk['bank_lainnya']}", namaPenerima: "${widget.dataProduk['bank_lainnya_penerima']}"),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 40,),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-                                foregroundColor: Colors.black
+                            Container(
+                              child: Column(
+                                children: [
+                                  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                        foregroundColor: Colors.black
+                                      ),
+                                      onPressed: () async {
+                                        await getImage();
+                                      },
+                                      child: Text("Masukkan bukti pembayaran")),
+                                  buktiFoto != null
+                                ? Container(
+                                    height: 500,
+                                    color: Color.fromRGBO(225, 202, 167, 1),
+                                    width:
+                                        (MediaQuery.of(context).size.width / 1.2),
+                                    child: Image.file(
+                                      buktiFoto!,
+                                      fit: BoxFit.fitWidth,
+                                    ))
+                                : Container(
+                                  child: Icon(Icons.image, size: 50,),
+                                  height: 200,
+                                  width: 200,
+                                  
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        spreadRadius: 1,
+                                        blurRadius: 10,
+                                      )
+                                    ]
+                                  ),
+                                ),
+                                SizedBox(height: 5,),
+                                Text(_alertFoto, style: TextStyle(color: Colors.red),),
+                                ],
                               ),
-                              onPressed: () async {
-                                CircularProgressIndicator();
-                                await uploadBuktiFoto();
-                                await widget._referencePesanan.update({
-                                  'id_kondisi': 400,
-                                  'url_bukti_pembayaran': fotoBuktiUrl,
-                                  'waktu_transaksi': DateTime.now(),
-                                  'total': widget.dataPesanan['total'],
-                                  'alamat_kirim': alamat_kirimController.text,
-                                  'id_pengiriman': id_pengiriman
-                                });
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (context) {
-                                  return ProdusenTransaksi();
-                                }));
-                              },
-                              child: Text("Bayar"))
-                        ],
+                            ),
+                            SizedBox(height: 40,),
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                                  foregroundColor: Colors.black
+                                ),
+                                onPressed: () async {
+                                  if(_formKey.currentState == null){
+                                    _alertAlamat = "alamat harus diisi 222";
+                                    return;
+                                  }
+                                  if(_formKey.currentState!.validate()){
+                                    if(buktiFoto != null){
+                                      await uploadBuktiFoto();
+                                      await widget._referencePesanan.update({
+                                        'id_kondisi': 400,
+                                        'url_bukti_pembayaran': fotoBuktiUrl,
+                                        'waktu_transaksi': DateTime.now(),
+                                        'total': widget.dataPesanan['total'],
+                                        'alamat_kirim': alamat_kirimController.text,
+                                        'id_pengiriman': id_pengiriman
+                                      });
+                                      Navigator.pushReplacement(context,
+                                          MaterialPageRoute(builder: (context) {
+                                        return ProdusenTransaksi();
+                                      }));
+                                    }
+                                    else {
+                                      setState(() {
+                                        _alertFoto = "Bukti foto harus diisi!";
+                                      });
+                                    }
+                                  }
+                                },
+                                child: Text("Bayar"))
+                          ],
+                        ),
                       );
                     }
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   },
                 );
               }
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             }),
       ),
     );
@@ -325,150 +391,61 @@ class _ProdusenPembayaranState extends State<ProdusenPembayaran> {
 
 
 
+class ListMetodePembayaran extends StatelessWidget {
+  const ListMetodePembayaran({
+    super.key,
+    required this.namaMetode,
+    required this.nomorTujuan,
+    required this.namaPenerima,
+  });
 
+  final String namaMetode;
+  final String nomorTujuan;
+  final String namaPenerima;
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey,
+            blurRadius: 5
+          )
+        ]
+      ),
+      width: double.infinity,
+      margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+      child: Table(
+        columnWidths: {
+          0: FlexColumnWidth(2),
+          1: FlexColumnWidth(3)
+        },
+        children: [
+          TableRow(
+            children: [
+              Text("Metode"),
+              Text(": ${namaMetode}")
+            ]
+          ),
+          TableRow(
+            children: [
+              Text("Nomor Tujuan"),
+              Text(": ${nomorTujuan}")
+            ]
+          ),
+          TableRow(
+            children: [
+              Text("Penerima"),
+              Text(": ${namaPenerima}")
+            ]
+          )
+        ],
+      )
 
-
-
-
-// child: ListView(
-//             children: [
-//               Container(
-//                 padding: EdgeInsets.all(20),
-//                 child: Column(
-//                   children: [
-//                     Text(id_peternak),
-//                     Text(id_produk),
-//                     Text('harga produk = ${formatter.format(hargaProduk)}'),
-//                     Text(alamat),
-//                     Text(
-//                       "Metode Pengiriman",
-//                       style: TextStyle(fontSize: 18),
-//                     ),
-//                     // Divider(),
-//                     RadioListTile(
-//                       title: Text("Diantar"),
-//                       value: MetodeKirim.Diantar,
-//                       groupValue: _metodeKirim,
-//                       onChanged: (MetodeKirim? value) {
-//                         setState(() {
-//                           _metodeKirim = value;
-//                         });
-//                       },
-//                     ),
-//                     RadioListTile(
-//                       title: Text("Diambil Sendiri"),
-//                       value: MetodeKirim.TidakDiantar,
-//                       groupValue: _metodeKirim,
-//                       onChanged: (MetodeKirim? value) {
-//                         setState(() {
-//                           _metodeKirim = value;
-//                         });
-//                       },
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               // Text(widget.pesananID),
-//               // Text('${widget._futureData1}'),
-              
-//               _alamatPengiriman(_metodeKirim),
-              
-//               Container(
-//                 padding: EdgeInsets.all(20),
-//                 child: Column(
-//                   children: [
-//                     Text(
-//                       "Metode Pembayaran",
-//                       style: TextStyle(fontSize: 18),
-//                     ),
-//                     // Divider(),
-//                     RadioListTile(
-//                       title: Text("Dana"),
-//                       value: MetodeBayar.Dana,
-//                       groupValue: _metodeBayar,
-//                       onChanged: (MetodeBayar? value) {
-//                         setState(() {
-//                           _metodeBayar = value;
-//                         });
-//                       },
-//                     ),
-//                     RadioListTile(
-//                       title: Text("Bank Mandiri"),
-//                       value: MetodeBayar.BankMandiri,
-//                       groupValue: _metodeBayar,
-//                       onChanged: (MetodeBayar? value) {
-//                         setState(() {
-//                           _metodeBayar = value;
-//                         });
-//                       },
-//                     ),
-              
-//                     RadioListTile(
-//                       title: Text("Dibayar Ditempat"),
-//                       value: MetodeBayar.PembayaranDitempat,
-//                       groupValue: _metodeBayar,
-//                       onChanged: (MetodeBayar? value) {
-//                         setState(() {
-//                           _metodeBayar = value;
-//                         });
-//                       },
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               Container(
-//                 child: Column(
-//                   children: [
-//                     // Text(id_produk),
-//                     // Text(namaProduk),
-//                     Text("Harga: 30.000"),
-//                     Text("Ongkos Kirim"),
-//                     Text("Total Pembayaran: Rp. 35.000")
-//                   ],
-//                 ),
-//               ),
-//               Container(
-//                 child: Column(
-//                   children: [
-//                     ElevatedButton(
-//                         onPressed: () async {
-//                           await getImage();
-//                         },
-//                         child: Text("Masukkan bukti pembayaran")),
-//                     buktiFoto != null
-//                         ? Container(
-//                             height: 500,
-//                             width: MediaQuery.of(context).size.width,
-//                             child: Image.file(
-//                               buktiFoto!,
-//                               fit: BoxFit.cover,
-//                             ))
-//                         : Container(),
-//                   ],
-//                 ),
-//               ),
-//               ElevatedButton(
-//                   onPressed: () async {
-//                     CircularProgressIndicator();
-//                     await uploadBuktiFoto();
-//                     await widget._referencePesanan.update({
-//                       'id_kondisi':4,
-//                       'url_bukti_pembayaran': fotoBuktiUrl,
-//                       'waktu_transaksi': DateTime.now(),
-//                       'total': hargaProduk,
-//                       'alamat_kirim': alamat_kirimController.text,
-//                       'id_produsen':userProdusenID,
-//                       'id_peternak': id_peternak
-//                     });
-//                     // .then((DocumentReference doc) async{
-//                     //   FirebaseFirestore.instance.collection('pemesanan').doc(widget.pesananID).update({'id_transaksi':doc.id});
-//                     // });
-//                     // Navigator.pushReplacement(context,
-//                     //     MaterialPageRoute(builder: (context) {
-//                     //   return ProdusenTransaksi();
-//                     // }));
-//                   },
-//                   child: Text("Bayar"))
-//             ],
-//           ),
+    );
+  }
+}

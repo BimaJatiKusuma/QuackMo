@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:quackmo/login.dart';
 import 'package:quackmo/produsen/daftarpeternak/produsen_daftar_peternak.dart';
+import 'package:quackmo/produsen/go_premium/premium.dart';
 import 'package:quackmo/produsen/produsen_login.dart';
 import 'package:quackmo/produsen/pesanan/produsen_pesanan.dart';
 import 'package:quackmo/produsen/transaksi/produsen_transaksi.dart';
@@ -359,6 +360,27 @@ class ProdusenProfilPage extends StatefulWidget {
 }
 
 class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
+  _jenisAkun(premium){
+    if (premium == "y"){
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.amber
+        ),
+        onPressed: (){},
+        child: Text("Akun Premium"));
+    }
+    else{
+      return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.grey
+        ),
+        onPressed: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context){
+          return ProdusenPremium(idProdusen: userProdusenID,);
+        }));
+      }, child: Text("Akun Biasa"));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -411,7 +433,8 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                             ],
                           ),
                           Text(widget.dataProfil['nama'], style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20),),
-                          Text('Produsen Telur Asin')
+                          Text('Produsen Telur Asin'),
+                          _jenisAkun(widget.dataProfil['premium']),
                         ],
                       ),
                     ),
