@@ -42,6 +42,7 @@ dependencies:
   cloud_firestore: ^4.5.2
   firebase_storage: ^11.1.1
   intl: ^0.17.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +57,10 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  image_path: "images/open_apps_01.png"
 
 # The following section is specific to Flutter packages.
 flutter:
