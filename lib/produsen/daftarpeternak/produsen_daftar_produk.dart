@@ -26,7 +26,7 @@ class _ProdusenDaftarProdukState extends State<ProdusenDaftarProduk> {
 
   void initState(){
     super.initState();
-    _streamProdukList = _produkList.where('peternak_uid', isEqualTo: widget.peternakID).snapshots();
+    _streamProdukList = _produkList.where('peternak_uid', isEqualTo: widget.peternakID).where('deleted_at', isEqualTo: '').snapshots();
   }
   
   @override

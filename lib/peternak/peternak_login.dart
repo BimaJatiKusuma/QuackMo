@@ -200,23 +200,33 @@ class _PeternakLoginState extends State<PeternakLogin> {
                     .get()
                     .then((DocumentSnapshot documentSnapshot) {
                       if (documentSnapshot.exists){
-                        if(documentSnapshot.get('role')=='peternak'){
-                          userPeternakID = user.uid;
-                          setState(() {
-                            alertText = '';
-                            premiumPeternak = documentSnapshot.get('premium');
-                          });
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                            return PeternakHomepage();
-                          }), (route) => false);
+                        if(documentSnapshot.get('deleted_at')==''){
+                          if(documentSnapshot.get('role')=='peternak'){
+                            userPeternakID = user.uid;
+                            setState(() {
+                              alertText = '';
+                              premiumPeternak = documentSnapshot.get('premium');
+                            });
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+                              return PeternakHomepage();
+                            }), (route) => false);
+                          }
+                          else{
+                            setState(() {
+                              visible = false;
+                              alertText = 'User Belum mendaftar sebagai peternak';
+                            });
+                            return print('User Belum mendaftar sebagai peternak');
+                          }
                         }
                         else{
                           setState(() {
                             visible = false;
-                            alertText = 'User Belum mendaftar sebagai peternak';
+                            alertText = 'Akun telah dihapus/dinonaktifkan';
                           });
-                          return print('User Belum mendaftar sebagai peternak');
+                          return print('Akun telah dihapus/dinonaktifkan');
                         }
+                        
                       }
                       else{
                         setState(() {

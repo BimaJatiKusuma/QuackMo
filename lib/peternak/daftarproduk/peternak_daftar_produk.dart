@@ -7,7 +7,6 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:quackmo/peternak/aduan/peternak_aduan.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk_buat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk_detail.dart';
 import 'package:quackmo/peternak/daftarproduk/peternak_daftar_produk_edit.dart';
 import 'package:quackmo/peternak/peternak_login.dart';
 
@@ -19,15 +18,14 @@ class PeternakDaftarProduk extends StatefulWidget {
 }
 
 class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
-  CollectionReference _produkList =
-      FirebaseFirestore.instance.collection('produk');
+  CollectionReference _produkList = FirebaseFirestore.instance.collection('produk');
   late Stream<QuerySnapshot> _streamProdukList;
 
   void initState() {
     // TODO: implement initState
     super.initState();
     _streamProdukList = _produkList
-        .where('peternak_uid', isEqualTo: userPeternakID)
+        .where('peternak_uid', isEqualTo: userPeternakID).where('deleted_at', isEqualTo: '')
         .snapshots();
   }
 
@@ -35,8 +33,8 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
     Reference referenceFotoProdukUpdate =
         FirebaseStorage.instance.refFromURL(foto_url);
     try {
-      await referenceFotoProdukUpdate.delete();
-      _produkList.doc(id_produk).delete();
+      // await referenceFotoProdukUpdate.delete();
+      _produkList.doc(id_produk).update({'deleted_at':DateTime.now().toString()});
     } catch (error) {
       print(error);
     }
@@ -66,7 +64,6 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
               QuerySnapshot querySnapshot = snapshot.data;
               List<QueryDocumentSnapshot> listQueryDocumentSnapshot =
                   querySnapshot.docs;
-
               return ListView.builder(
                 itemCount: listQueryDocumentSnapshot.length,
                 itemBuilder: (context, index) {

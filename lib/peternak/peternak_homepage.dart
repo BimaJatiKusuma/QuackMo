@@ -40,11 +40,13 @@ class _PeternakHomepageState extends State<PeternakHomepage> {
 
       case 2:
         child= AlertDialog(
+          titlePadding: EdgeInsets.zero,
               title: Container(color: Color.fromRGBO(225, 202, 167, 1), child: Text('Pemberitahuan', textAlign: TextAlign.center,)),
               content: Text('Yakin ingin keluar ?', textAlign: TextAlign.center,),
+              actionsAlignment: MainAxisAlignment.spaceBetween,
               actions: <Widget>[
                 TextButton(
-                  style: TextButton.styleFrom(
+                  style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black
                   ),
                   onPressed: () {
@@ -54,7 +56,7 @@ class _PeternakHomepageState extends State<PeternakHomepage> {
                   },
                   child: const Text('Tidak'),
                 ),
-                TextButton(
+                ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(225, 202, 167, 1),
                     foregroundColor: Colors.black
@@ -140,7 +142,7 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
 
   @override
   void initState() {
-    _streamPemesanan = _pemesananCollection.where('id_kondisi', isEqualTo: 100).snapshots();
+    _streamPemesanan = _pemesananCollection.where('id_peternak', isEqualTo: userPeternakID).where('id_kondisi', isEqualTo: 100).snapshots();
     super.initState();
   }
 
@@ -745,8 +747,8 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                                                       foregroundColor: Colors.black
                                                     ),
                                                     onPressed: () async {
-                                                      await FirebaseAuth.instance.currentUser!.delete();
-                                                      await FirebaseFirestore.instance.collection('users').doc(userPeternakID).delete();
+                                                      // await FirebaseAuth.instance.currentUser!.delete();
+                                                      await FirebaseFirestore.instance.collection('users').doc(userPeternakID).update({'deleted_at': DateTime.now().toString()});
                                                       setState(() {
                                                         _index = 0;
                                                       });

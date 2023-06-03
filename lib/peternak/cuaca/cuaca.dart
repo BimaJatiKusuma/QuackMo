@@ -43,7 +43,7 @@ class _CuacaState extends State<Cuaca> {
     return Scaffold(
       appBar: AppBar(
         title: Container(
-          height: 50  ,
+          height: 50 ,
           child: TextFormField(
                 controller: kotaController,
                 decoration: InputDecoration(
@@ -89,7 +89,7 @@ class _CuacaState extends State<Cuaca> {
                       Container(
                         alignment: Alignment.center,
                         height: 30,
-                        child: Text("Prediksi Cuaca Terkini di ${newData["city"]["name"]}")
+                        child: Text("Prediksi Cuaca Terkini di ${newData["city"]["name"]}", style: TextStyle(fontWeight: FontWeight.w600),)
                         ),
                       Expanded(
                         child: ListView.builder(
@@ -105,8 +105,16 @@ class _CuacaState extends State<Cuaca> {
                               margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
                               padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                               decoration: BoxDecoration(
-                                color: Color.fromRGBO(239, 229, 237, 1),
-                                borderRadius: BorderRadius.circular(20)
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 3,
+                                    blurRadius: 3,
+                                    offset: Offset(0, 3)
+                                  )
+                                ]
                               ),
                               child: Column(
                                 children: [

@@ -667,8 +667,8 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                                                       foregroundColor: Colors.black
                                                     ),
                                                     onPressed: () async {
-                                                      await FirebaseAuth.instance.currentUser!.delete();
-                                                      await FirebaseFirestore.instance.collection('users').doc(userProdusenID).delete();
+                                                      // await FirebaseAuth.instance.currentUser!.delete();
+                                                      await FirebaseFirestore.instance.collection('users').doc(userProdusenID).update({'deleted_at': DateTime.now().toString()});
                                                       setState(() {
                                                         _index = 0;
                                                       });

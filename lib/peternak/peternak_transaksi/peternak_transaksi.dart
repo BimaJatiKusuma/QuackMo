@@ -188,38 +188,86 @@ class TabDetailPenjualan extends StatefulWidget {
 }
 
 class _TabDetailPenjualanState extends State<TabDetailPenjualan> {
+  Future<List<Map<String, dynamic>>> getData() async {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('pemesanan').where('id_peternak', isEqualTo: userPeternakID).where('id_kondisi', isEqualTo: 500).get();
+    
+    List<Map<String, dynamic>> data = [];
+
+    for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+      DateTime dateTime = documentSnapshot['waktu_pembayaran'].toDate();
+// Text(DateFormat('dd MMMM yyyy, HH:mm').format((pemesanan['waktu_transaksi']as Timestamp).toDate())),
+      String monthYear = DateFormat('MMMM yyyy').format(dateTime);
+      // String monthYear = '${dateTime.month}-${dateTime.year}';
+      double value = documentSnapshot['total'].toDouble();
+      int existingIndex = data.indexWhere((entry) => entry['monthYear'] == monthYear);
+      if (existingIndex != -1) {
+        data[existingIndex]['sum'] += value;
+      } else {
+        data.add({'monthYear': monthYear, 'sum': value});
+      }
+    }
+
+    return data;
+  }
+
+  
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: ListView(
-      children: [
-        Text("Semua Penjualan"),
-        InkWell(
-            onTap: () {},
-            child: Column(
-              children: [
-                Text('Juni'),
-                Card(
-                  child: Row(children: [
-                    Image(image: AssetImage('images/transaksi_02.png')),
-                    Column(
-                      children: [
-                        Text('Pendapatan'),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text("+ Rp. 200.0000"),
-                      ],
+    return FutureBuilder<List<Map<String, dynamic>>>(
+      future: getData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Text('');
+        } else {
+          List<Map<String, dynamic>> data = snapshot.data!;
+          return ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              String monthYear = data[index]['monthYear'];
+              double sum = data[index]['sum'];
+              return Container(
+                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Bulan $monthYear'),
+                    Container(
+                      height: 50,
+                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      decoration:BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            spreadRadius: 1,
+                            blurRadius: 2,
+                              )
+                            ]
+                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Pendapatan :"),
+                          Text("Rp. $sum")
+                        ],
+                      ),
                     )
-                  ]),
+                  ],
                 ),
-              ],
-            ))
-      ],
-    ));
+              );
+            },
+          );
+        }
+      },
+    );
   }
 }
+
 
 class PeternakTransaksi extends StatefulWidget {
   const PeternakTransaksi({super.key});
@@ -259,120 +307,3 @@ class _PeternakTransaksiState extends State<PeternakTransaksi> {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// class TabTransaksiMasuk extends StatelessWidget {
-//   const TabTransaksiMasuk({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//         child: ListView(
-//       children: [
-//         Text("Semua Transaksi"),
-//         Container(
-//           child: Column(children: [
-//             Text('1 April 2023'),
-//             InkWell(
-//               onTap: () {
-//                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-//                   return PeternakTransaksiDetail();
-//                 }));
-//               },
-//               child: Ink(
-//                 color: Colors.blue,
-//                 child: Row(
-//                   children: [
-//                     Image(
-//                       image: AssetImage('images/transaksi_02.png'),
-//                     ),
-//                     Column(children: [
-//                       Text('Transfer Rupiah'),
-//                       Text('Transfer dari BANK MANDIRI'),
-//                       Text('FARHAZ NURJANANTO 09183764644')
-//                     ]),
-//                     Column(
-//                       children: [
-//                         Icon(Icons.access_time_filled_outlined),
-//                         Text("+ Rp. 20.0000")
-//                       ],
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ]),
-//         ),
-//         Container(
-//           child: Column(children: [
-//             Text('1 April 2023'),
-//             InkWell(
-//               onTap: () {},
-//               child: Ink(
-//                 color: Colors.blue,
-//                 child: Row(
-//                   children: [
-//                     Image(
-//                       image: AssetImage('images/transaksi_02.png'),
-//                     ),
-//                     Column(children: [
-//                       Text('Transfer Rupiah'),
-//                       Text('Transfer dari BANK MANDIRI'),
-//                       Text('FARHAZ NURJANANTO 09183764644')
-//                     ]),
-//                     Column(
-//                       children: [
-//                         Icon(Icons.check_circle),
-//                         Text("+ Rp. 20.0000")
-//                       ],
-//                     )
-//                   ],
-//                 ),
-//               ),
-//             ),
-//           ]),
-//         )
-//       ],
-//     ));
-//   }
-// }

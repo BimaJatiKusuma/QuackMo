@@ -313,6 +313,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                                   'bank_lainnya_namabank':bankLainNamaBankController.text,
                                   'bank_lainnya_penerima': bankLainNamaController.text,
                                   'foto_url': imageUrl,
+                                  'deleted_at': ''
                                 });
                                 namaProdukController.text = '';
                                 stokController.text = '';

@@ -50,7 +50,7 @@ class _PeternakPesananState extends State<PeternakPesanan> {
             borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))
           ),
           child: Text('Pemberitahuan', textAlign: TextAlign.center,)),
-        content: const Text('Pemesanan disetujui ?'),
+        content: const Text('Pemesanan disetujui ?', textAlign: TextAlign.center,),
         titlePadding: EdgeInsets.zero,
         actions: [
           Row(

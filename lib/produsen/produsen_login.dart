@@ -197,22 +197,32 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                     .get()
                     .then((DocumentSnapshot documentSnapshot) {
                       if (documentSnapshot.exists){
-                        if(documentSnapshot.get('role')=='produsen'){
-                          userProdusenID = user.uid;
-                              setState(() {
-                                alertText = '';
-                              });
-                          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-                            return ProdusenHomepage();
-                          }), (route) => false);
+                        if(documentSnapshot.get('deleted_at')==''){
+                          if(documentSnapshot.get('role')=='produsen'){
+                            userProdusenID = user.uid;
+                                setState(() {
+                                  alertText = '';
+                                });
+                            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
+                              return ProdusenHomepage();
+                            }), (route) => false);
+                          }
+                          else{
+                            setState(() {
+                              visible = false;
+                              alertText = 'User Belum mendaftar sebagai produsen';
+                            });
+                            return print('User Belum mendaftar sebagai produsen');
+                          }
                         }
                         else{
                           setState(() {
                             visible = false;
-                            alertText = 'User Belum mendaftar sebagai produsen';
+                            alertText = 'Akun telah dihapus/dinonaktifkan';
                           });
-                          return print('User Belum mendaftar sebagai produsen');
+                          return print('Akun telah dihapus/dinonaktifkan');
                         }
+
                       }
                       else{
                         setState(() {

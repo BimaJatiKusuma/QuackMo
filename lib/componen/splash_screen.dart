@@ -9,24 +9,27 @@ class SplashScreen extends StatefulWidget {
     super.key
     });
 
-  final Future<dynamic> navigator;
-  final String pesan;
+  final navigator;
+  final pesan;
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState(){
-    super.initState();
+  
+  // @override
+  // void initState(){
+  //   super.initState();
 
-    Timer(Duration(seconds: 1), () {
-      widget.navigator;
-    });
-  }
+  //   Timer(Duration(seconds: 1), () {
+  //     widget.navigator;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+  String pesan2 = widget.pesan;
+  var navigator2 = widget.navigator;
     return Scaffold(
       backgroundColor: Color.fromRGBO(225, 202, 167, 1),
       body: SafeArea(
@@ -35,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.check_circle, size: 200, color: Colors.white,),
-              Text(widget.pesan, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+              Text(pesan2, style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
             ],
           ),
         ),
