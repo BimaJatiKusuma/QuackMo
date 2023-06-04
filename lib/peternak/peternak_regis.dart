@@ -118,52 +118,58 @@ class _PeternakRegisState extends State<PeternakRegis> {
 
                           SizedBox(height: 20,),
 
-                          TextFormField(
-                            controller: passwordController,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                              hintText: 'Kata sandi',
-                              contentPadding: EdgeInsets.all(5),
-                              suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
+                          Container(
+                            height: 60,
+                            child: TextFormField(
+                              controller: passwordController,
+                              obscureText: _obscureText,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                hintText: 'Kata sandi',
+                                // contentPadding: EdgeInsets.all(5),
+                                suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
+                              ),
+                              validator: (value) {
+                                RegExp regex = RegExp(r'^.{6,}$');
+                                if (value!.isEmpty){
+                                  return "Kata sandi tidak boleh kosong";
+                                }
+                                if (!regex.hasMatch(value)){
+                                  return ("masukkan Kata sandi minimal 6 karakter");
+                                }
+                                else {
+                                  return null;
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              RegExp regex = RegExp(r'^.{6,}$');
-                              if (value!.isEmpty){
-                                return "Kata sandi tidak boleh kosong";
-                              }
-                              if (!regex.hasMatch(value)){
-                                return ("masukkan Kata sandi minimal 6 karakter");
-                              }
-                              else {
-                                return null;
-                              }
-                            },
                           ),
 
                           SizedBox(height: 20,),
                           
-                          TextFormField(
-                            controller: konfirmasipasswordController,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                              hintText: 'ta sandi',
-                              contentPadding: EdgeInsets.all(5),
-                              suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
+                          Container(
+                            height: 60,
+                            child: TextFormField(
+                              controller: konfirmasipasswordController,
+                              obscureText: _obscureText,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                hintText: 'Kata sandi',
+                                // contentPadding: EdgeInsets.all(5),
+                                suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
+                              ),
+                              validator: (value) {
+                                if (konfirmasipasswordController.text != passwordController.text){
+                                  return "Kata sandi tidak sama";
+                                }
+                                else {
+                                  return null;
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              if (konfirmasipasswordController.text != passwordController.text){
-                                return "Kata sandi tidak sama";
-                              }
-                              else {
-                                return null;
-                              }
-                            },
                           ),
                           SizedBox(height: 20,),
                           Text(alertTextRegis),

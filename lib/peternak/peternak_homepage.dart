@@ -166,7 +166,7 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                     alignment: Alignment.center,
                     width: double.infinity,
                     decoration:
-                        BoxDecoration(color: Color.fromRGBO(245, 233, 215, 1)),
+                        BoxDecoration(color: Colors.white),
                     child: Row(
                       children: [
                         Container(
@@ -175,6 +175,7 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                             width: 75,
                             child: Image(image: AssetImage('images/peternak_01.png'))),
                         ),
+                        SizedBox(width: 10,),
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -212,7 +213,8 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                               var totalPendingPesanan = 0;
                               totalPendingPesanan = listQueryPemesanan.length;
                               return Column(
-                                children: [Text("Pesanan belum dikonfirmasi: "), Text("${totalPendingPesanan} pesanan")],
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [Text("Pesanan belum dikonfirmasi: ", style: TextStyle(color: Colors.white),), Text("${totalPendingPesanan} pesanan", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),)],
                                 );
                             }
                             else{
@@ -228,7 +230,11 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                               }));
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Color.fromRGBO(208, 155, 76, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: BorderSide(color: Colors.white)
+                              ),
+                                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
                                 foregroundColor: Colors.white),
                             child: Text("Detail"))
                       ],

@@ -152,7 +152,7 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
                 children: [
                   Container(
                     decoration:
-                        BoxDecoration(color: Color.fromRGBO(245, 233, 215, 1)),
+                        BoxDecoration(color: Colors.white),
                     child: Row(
                       children: [
                         Container(
@@ -161,17 +161,20 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
                             width: 75,
                             child: Image(image: AssetImage('images/produsen_01.png'))),
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Hai, Produsen!'),
-                            Text(
-                              widget.dataProfil['nama'],
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w600),
-                            ),
-                          ],
+                        SizedBox(width: 10,),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Hai, Produsen!'),
+                              Text(
+                                widget.dataProfil['nama'],
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w600),
+                              ),
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -180,7 +183,7 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
                     width: double.infinity,
                     height: 50,
                     decoration:
-                        BoxDecoration(color: Color.fromRGBO(225, 202, 167, 1)),
+                        BoxDecoration(color: Colors.white),
                   ),
                   Container(
                     padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -288,7 +291,7 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
 
                         Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Container(
                               width: 100,

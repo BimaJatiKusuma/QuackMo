@@ -19,7 +19,8 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
   String username = "";
   String email= "";
   String password= "";
-  bool _obscureText = true;
+  // bool _obscureText = true;
+  bool _isObscure = true;
 
   final _formkey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
@@ -31,11 +32,11 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
 
   var role = 'produsen';
   
-  void _toggle(){
-    setState(() {
-      _obscureText = !_obscureText;
-    });
-  }
+  // void _toggle(){
+  //   setState(() {
+  //     _obscureText = !_obscureText;
+  //   });
+  // }
 
   _eyePass(_obscureText){
     if (_obscureText == true ){
@@ -118,52 +119,72 @@ class _ProdusenRegisState extends State<ProdusenRegis> {
 
                           SizedBox(height: 20,),
 
-                          TextFormField(
-                            controller: passwordController,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                              hintText: 'Kata sandi',
-                              contentPadding: EdgeInsets.all(5),
-                              suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
+                          Container(
+                            height: 60,
+                            child: TextFormField(
+                              controller: passwordController,
+                              obscureText: _isObscure,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                hintText: 'Kata sandi',
+                                // contentPadding: EdgeInsets.all(5),
+                                suffix: IconButton(
+                                    icon: Icon(_isObscure ? Icons.visibility:Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscure = !_isObscure;
+                                      });
+                                    },
+                                  )
+                              ),
+                              validator: (value) {
+                                RegExp regex = RegExp(r'^.{6,}$');
+                                if (value!.isEmpty){
+                                  return "Kata sandi tidak boleh kosong";
+                                }
+                                if (!regex.hasMatch(value)){
+                                  return ("Masukkan kata sandi minimal 6 karakter");
+                                }
+                                else {
+                                  return null;
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              RegExp regex = RegExp(r'^.{6,}$');
-                              if (value!.isEmpty){
-                                return "Kata sandi tidak boleh kosong";
-                              }
-                              if (!regex.hasMatch(value)){
-                                return ("Masukkan kata sandi minimal 6 karakter");
-                              }
-                              else {
-                                return null;
-                              }
-                            },
                           ),
 
                           SizedBox(height: 20,),
                           
-                          TextFormField(
-                            controller: konfirmasipasswordController,
-                            obscureText: _obscureText,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                              hintText: 'Konfirmasi kata sandi',
-                              contentPadding: EdgeInsets.all(5),
-                              suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
+                          Container(
+                            height: 60,
+                            child: TextFormField(
+                              controller: konfirmasipasswordController,
+                              obscureText: _isObscure,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                hintText: 'Konfirmasi kata sandi',
+                                // contentPadding: EdgeInsets.all(5),
+                                suffix: IconButton(
+                                    icon: Icon(_isObscure ? Icons.visibility:Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscure = !_isObscure;
+                                      });
+                                    },
+                                  )
+                              ),
+                              validator: (value) {
+                                if (konfirmasipasswordController.text != passwordController.text){
+                                  return "Kata sandi tidak sama";
+                                }
+                                else {
+                                  return null;
+                                }
+                              },
                             ),
-                            validator: (value) {
-                              if (konfirmasipasswordController.text != passwordController.text){
-                                return "Kata sandi tidak sama";
-                              }
-                              else {
-                                return null;
-                              }
-                            },
                           ),
                           SizedBox(height: 20,),
                           Text(alertTextRegis),

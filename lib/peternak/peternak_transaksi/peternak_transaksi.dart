@@ -237,7 +237,7 @@ class _TabDetailPenjualanState extends State<TabDetailPenjualan> {
                     Text('Bulan $monthYear'),
                     Container(
                       height: 50,
-                      padding: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
                       decoration:BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
@@ -252,8 +252,8 @@ class _TabDetailPenjualanState extends State<TabDetailPenjualan> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Pendapatan :"),
-                          Text("Rp. $sum")
+                          Text("Pendapatan :", style: TextStyle(fontWeight: FontWeight.w900),),
+                          Text("Rp. $sum", style: TextStyle(fontWeight: FontWeight.w900))
                         ],
                       ),
                     )
