@@ -125,17 +125,17 @@ class _PeternakRegisState extends State<PeternakRegis> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                              hintText: 'Password',
+                              hintText: 'Kata sandi',
                               contentPadding: EdgeInsets.all(5),
                               suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
                             ),
                             validator: (value) {
                               RegExp regex = RegExp(r'^.{6,}$');
                               if (value!.isEmpty){
-                                return "password tidak boleh kosong";
+                                return "Kata sandi tidak boleh kosong";
                               }
                               if (!regex.hasMatch(value)){
-                                return ("masukkan password minimal 6 karakter");
+                                return ("masukkan Kata sandi minimal 6 karakter");
                               }
                               else {
                                 return null;
@@ -152,13 +152,13 @@ class _PeternakRegisState extends State<PeternakRegis> {
                               filled: true,
                               fillColor: Colors.white,
                               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                              hintText: 'Konfirmasi Password',
+                              hintText: 'ta sandi',
                               contentPadding: EdgeInsets.all(5),
                               suffix: IconButton(onPressed: _toggle, icon: _eyePass(_obscureText))
                             ),
                             validator: (value) {
                               if (konfirmasipasswordController.text != passwordController.text){
-                                return "Password tidak sama";
+                                return "Kata sandi tidak sama";
                               }
                               else {
                                 return null;

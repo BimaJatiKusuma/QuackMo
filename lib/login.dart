@@ -18,13 +18,16 @@ class Login extends StatelessWidget {
             children: [
               Text("Pilih karaktermu untuk masuk ke aplikasi!", style: TextStyle(fontWeight: FontWeight.w600),),
               Text("Pilih sebagai:"),
+              SizedBox(height: 50,),
               Row(
                 // mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
                     children: [
-                      Image(image: AssetImage('images/peternak_01.png')),
+                      Container(
+                        width: 75,
+                        child: Image(image: AssetImage('images/peternak_01.png'))),
                       SizedBox(height: 10,),
                       Text("Peternak Bebek", style: TextStyle(fontWeight: FontWeight.w600),),
                       SizedBox(height: 10,),
@@ -41,7 +44,9 @@ class Login extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Image(image: AssetImage('images/produsen_01.png')),
+                      Container(
+                        width: 75,
+                        child: Image(image: AssetImage('images/produsen_01.png'))),
                       SizedBox(height: 10,),
                       Text("Produsen Telur Asin", style: TextStyle(fontWeight: FontWeight.w600)),
                       SizedBox(height: 10,),

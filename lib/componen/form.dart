@@ -49,7 +49,7 @@ class _FormGroupState extends State<FormGroup> {
 
   confirmPassword(a,b){
     if(a != b){
-      return "Password tidak cocok";
+      return "Kata sandi tidak cocok";
     }
   }
 
@@ -85,7 +85,7 @@ class _FormGroupState extends State<FormGroup> {
               }
               if (widget.confirmPassword != null){
                 if (widget.controllerNama.text != widget.confirmPassword!.text){
-                  return "Password tidak cocok";
+                  return "Kata sandi tidak cocok";
                 }
               }
               else {return null;}

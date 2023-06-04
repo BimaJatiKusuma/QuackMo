@@ -40,7 +40,10 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                     SizedBox(height: 40,),
                     Column(
                       children: [
-                        Image(image: AssetImage('images/produsen_01.png')),
+                        Container(
+                          width: 75,
+                          child: Image(image: AssetImage('images/produsen_01.png'))),
+                          SizedBox(height: 20,),
                         Text("Produsen Telur Asin"),
                       ],
                     ),
@@ -95,7 +98,7 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                                 filled: true,
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                                hintText: 'Password',
+                                hintText: 'Kata sandi',
                                 suffixIcon: IconButton(
                                   icon: Icon(_isObscure ? Icons.visibility:Icons.visibility_off),
                                   onPressed: () {
@@ -111,13 +114,13 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
                                   setState(() {
                                     visible = false;
                                   });
-                                  return "Password tidak boleh kosong";
+                                  return "Kata sandi tidak boleh kosong";
                                 }
                                 if (!regex.hasMatch(value)){
                                   setState(() {
                                     visible = false;
                                   });
-                                  return ("Masukkan password minimal 6 karakter");
+                                  return ("Masukkan kata sandi minimal 6 karakter");
                                 }
                                 else {
                                   return null;
@@ -255,9 +258,9 @@ class _ProdusenLoginState extends State<ProdusenLogin> {
         else if (e.code == 'wrong-password'){
           setState(() {
             visible = false;
-            alertText = 'Password salah';
+            alertText = 'Kata sandi salah';
           });
-          print('Password salah');
+          print('Kata sandi salah');
         }
       }
     }

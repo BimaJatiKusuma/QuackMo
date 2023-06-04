@@ -44,6 +44,7 @@ class _ProdusenHomepageState extends State<ProdusenHomepage> {
         child= AlertDialog(
               title: Container(color: Color.fromRGBO(225, 202, 167, 1), child: Text('Pemberitahuan', textAlign: TextAlign.center,)),
               content: Text('Yakin ingin keluar ?', textAlign: TextAlign.center,),
+              actionsAlignment: MainAxisAlignment.spaceAround,
               actions: <Widget>[
                 TextButton(
                   style: TextButton.styleFrom(
@@ -154,11 +155,16 @@ class _ProdusenMainHomePageState extends State<ProdusenMainHomePage> {
                         BoxDecoration(color: Color.fromRGBO(245, 233, 215, 1)),
                     child: Row(
                       children: [
-                        Image(image: AssetImage('images/produsen_01.png')),
+                        Container(
+                          height: 150,
+                          child: Container(
+                            width: 75,
+                            child: Image(image: AssetImage('images/produsen_01.png'))),
+                        ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Hai, Produsen'),
+                            Text('Hai, Produsen!'),
                             Text(
                               widget.dataProfil['nama'],
                               textAlign: TextAlign.left,
@@ -390,6 +396,26 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
         elevation: 0,
         centerTitle: true,
         title: Text("Profil"),
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            setState(() {
+              _index = 0;
+            });
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return ProdusenHomepage();
+            }));
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              // elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
+        ),
       ),
       body: Container(
         child: FutureBuilder(
@@ -411,13 +437,16 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                         children: [
                           Stack(
                             children: [
-                              Image(
-                                  image: AssetImage('images/produsen_01.png')),
+                              Container(
+                                width: 75,
+                                child: Image(
+                                    image: AssetImage('images/produsen_01.png')),
+                              ),
                               Positioned(
                                   right: 0,
                                   bottom: 0,
                                   child: CircleAvatar(
-                                    radius: 20,
+                                    radius: 15,
                                     backgroundColor: Colors.blue,
                                     child: IconButton(
                                         onPressed: () {
@@ -428,7 +457,7 @@ class _ProdusenProfilPageState extends State<ProdusenProfilPage> {
                                                 userProdusenID);
                                           }));
                                         },
-                                        icon: Icon(Icons.edit_rounded)),
+                                        icon: Icon(Icons.edit_rounded, size: 15,)),
                                   ))
                             ],
                           ),
@@ -790,6 +819,21 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
         elevation: 0,
         centerTitle: true,
         title: Text("Edit Profil"),
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
+        ),
       ),
       body: Container(
         child: FutureBuilder(
@@ -809,7 +853,9 @@ class _ProdusenProfilPageEditState extends State<ProdusenProfilPageEdit> {
                     Container(
                       child: Column(
                         children: [
-                          Image(image: AssetImage('images/produsen_01.png')),
+                          Container(
+                            width: 75,
+                            child: Image(image: AssetImage('images/produsen_01.png'))),
                           Text('Produsen Telur Bebek')
                         ],
                       ),

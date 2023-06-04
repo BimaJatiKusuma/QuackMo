@@ -115,15 +115,35 @@ class _PeternakPesananState extends State<PeternakPesanan> {
   Widget build(BuildContext context) {
     _pemesananList.snapshots();
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-          leading: BackButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: Text("Pesanan Masuk"),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+        title: Text("Pesanan Masuk"),
+        centerTitle: true,
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
         ),
+      ),
+        // appBar: AppBar(
+        //   backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+        //   leading: BackButton(
+        //     onPressed: () {
+        //       Navigator.pop(context);
+        //     },
+        //   ),
+        //   title: Text("Pesanan Masuk"),
+        // ),
         body: StreamBuilder(
           stream: _streamPemesananList,
           builder: (BuildContext context, AsyncSnapshot snapshot) {

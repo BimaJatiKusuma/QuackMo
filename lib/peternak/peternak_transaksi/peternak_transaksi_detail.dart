@@ -149,8 +149,28 @@ class _PeternakTransaksiDetailState extends State<PeternakTransaksiDetail> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-        title: Text('Detail Transaksi'),
+        title: Text("Detail Transaksi"),
+        centerTitle: true,
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
+        ),
       ),
+      // appBar: AppBar(
+      //   backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      //   title: Text('Detail Transaksi'),
+      // ),
       body: Container(
         padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: FutureBuilder<DocumentSnapshot>(
@@ -287,7 +307,7 @@ class __PeternakSplashScreenTransaksiDetailDoneState extends State<_PeternakSpla
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.check_circle, size: 200, color: Colors.white,),
-              Text("TRANSAKSI BEERHASIL DI TAMBAHKAN", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
+              Text("TRANSAKSI BERHASIL DI TAMBAHKAN", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16),),
             ],
           ),
         ),

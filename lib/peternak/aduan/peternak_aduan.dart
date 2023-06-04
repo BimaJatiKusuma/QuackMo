@@ -43,10 +43,30 @@ class _PeternakAduanState extends State<PeternakAduan> {
           {return Scaffold(
             backgroundColor: Color.fromRGBO(249, 239, 224, 1),
             appBar: AppBar(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
               title: Text("Aduan"),
               centerTitle: true,
-              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              leading: PreferredSize(
+                preferredSize: Size(10, 10),
+                child: ElevatedButton(onPressed: (){
+                  Navigator.pop(context);
+                },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(60),
+                      side: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  child: Icon(Icons.arrow_back_ios_new,)),
               ),
+            ),
+            // appBar: AppBar(
+            //   title: Text("Aduan"),
+            //   centerTitle: true,
+            //   backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+            //   ),
             body: Column(
               children: [
                 Expanded(
@@ -167,10 +187,30 @@ class _PeternakAduanState extends State<PeternakAduan> {
           else {
             return Scaffold(
             appBar: AppBar(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
               title: Text("Aduan"),
               centerTitle: true,
-              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              leading: PreferredSize(
+                preferredSize: Size(10, 10),
+                child: ElevatedButton(onPressed: (){
+                  Navigator.pop(context);
+                },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(60),
+                      side: BorderSide(color: Colors.white),
+                    ),
+                  ),
+                  child: Icon(Icons.arrow_back_ios_new,)),
               ),
+            ),
+            // appBar: AppBar(
+            //   title: Text("Aduan"),
+            //   centerTitle: true,
+            //   backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+            //   ),
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

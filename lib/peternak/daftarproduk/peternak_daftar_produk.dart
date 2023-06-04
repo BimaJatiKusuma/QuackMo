@@ -47,11 +47,32 @@ class _PeternakDaftarProdukState extends State<PeternakDaftarProduk> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        centerTitle: true,
-        title: Text("DAFTAR PRODUK"),
-        leading: BackButton(),
         backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+        title: Text("DAFTAR PRODUK"),
+        centerTitle: true,
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
+        ),
       ),
+      
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: Text("DAFTAR PRODUK"),
+      //   leading: BackButton(),
+      //   backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      // ),
       body: Container(
         padding: EdgeInsets.fromLTRB(0, 20, 0, 50),
         child: StreamBuilder(

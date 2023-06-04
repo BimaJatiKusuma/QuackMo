@@ -170,15 +170,18 @@ class _PeternakMainHomePageState extends State<PeternakMainHomePage> {
                     child: Row(
                       children: [
                         Container(
-                          width: 100,
-                          child: Image(image: AssetImage('images/peternak_01.png'))),
+                          height: 150,
+                          child: Container(
+                            width: 75,
+                            child: Image(image: AssetImage('images/peternak_01.png'))),
+                        ),
                         Expanded(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Text(userPeternakID),
-                              Text('Hai, Peternak'),
+                              Text('Hai, Peternak!'),
                               Text(
                                 widget.dataProfil['nama'],
                                 textAlign: TextAlign.left,
@@ -466,11 +469,38 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(255, 255, 255, 0),
-        foregroundColor: Colors.black,
         elevation: 0,
+        foregroundColor: Colors.black,
         title: Text("Profil"),
         centerTitle: true,
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            setState(() {
+              _index = 0;
+            });
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return PeternakHomepage();
+            }));
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              // elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
+        ),
       ),
+      // appBar: AppBar(
+      //   backgroundColor: Color.fromRGBO(255, 255, 255, 0),
+      //   foregroundColor: Colors.black,
+      //   elevation: 0,
+      //   title: Text("Profil"),
+      //   centerTitle: true,
+      // ),
       body: Container(
         child: FutureBuilder(
           future: widget._futureDataProfil,
@@ -491,13 +521,16 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                         children: [
                           Stack(
                             children: [
-                              Image(
-                                  image: AssetImage('images/peternak_01.png')),
+                              Container(
+                                width: 75,
+                                child: Image(
+                                    image: AssetImage('images/peternak_01.png')),
+                              ),
                               Positioned(
                                   right: 0,
                                   bottom: 0,
                                   child: CircleAvatar(
-                                    radius: 20,
+                                    radius: 15,
                                     backgroundColor: Colors.blue,
                                     child: IconButton(
                                         onPressed: () {
@@ -508,7 +541,7 @@ class _PeternakProfilPageState extends State<PeternakProfilPage> {
                                                 userPeternakID);
                                           }));
                                         },
-                                        icon: Icon(Icons.edit_rounded)),
+                                        icon: Icon(Icons.edit_rounded, size: 15,)),
                                   ))
                             ],
                           ),
@@ -869,9 +902,31 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
         backgroundColor: Color.fromRGBO(255, 255, 255, 0),
         foregroundColor: Colors.black,
         elevation: 0,
-        centerTitle: true,
         title: Text("Edit Profil"),
+        centerTitle: true,
+        leading: PreferredSize(
+          preferredSize: Size(10, 10),
+          child: ElevatedButton(onPressed: (){
+            Navigator.pop(context);
+          },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+              // elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(60),
+                side: BorderSide(color: Colors.white),
+              ),
+            ),
+            child: Icon(Icons.arrow_back_ios_new,)),
+        ),
       ),
+      // appBar: AppBar(
+      //   backgroundColor: Color.fromRGBO(255, 255, 255, 0),
+      //   foregroundColor: Colors.black,
+      //   elevation: 0,
+      //   centerTitle: true,
+      //   title: Text("Edit Profil"),
+      // ),
       body: Container(
         child: FutureBuilder(
           future: widget._futureDataProfil,
@@ -890,7 +945,9 @@ class _PeternakProfilPageEditState extends State<PeternakProfilPageEdit> {
                     Container(
                       child: Column(
                         children: [
-                          Image(image: AssetImage('images/peternak_01.png')),
+                          Container(
+                            width: 75,
+                            child: Image(image: AssetImage('images/peternak_01.png'))),
                           Text('Peternak Bebek')
                         ],
                       ),

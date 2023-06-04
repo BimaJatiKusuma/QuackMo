@@ -92,12 +92,32 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
     CollectionReference peternak_produk = firestore.collection('produk');
 
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(),
-        backgroundColor: Color.fromRGBO(225, 202, 167, 1),
-        title: Text("Tambah Produk"),
-        centerTitle: true,
-      ),
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+          title: Text("Tambah Produk"),
+          centerTitle: true,
+          leading: PreferredSize(
+            preferredSize: Size(10, 10),
+            child: ElevatedButton(onPressed: (){
+              Navigator.pop(context);
+            },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(60),
+                  side: BorderSide(color: Colors.white),
+                ),
+              ),
+              child: Icon(Icons.arrow_back_ios_new,)),
+          ),
+        ),
+      // appBar: AppBar(
+      //   leading: BackButton(),
+      //   backgroundColor: Color.fromRGBO(225, 202, 167, 1),
+      //   title: Text("Tambah Produk"),
+      //   centerTitle: true,
+      // ),
       body: ListView(
         children: [
           Container(
@@ -243,7 +263,7 @@ class _PeternakDaftarProdukBuatState extends State<PeternakDaftarProdukBuat> {
                         ),
                         Expanded(
                           flex: 5,
-                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: danaNamaController, keyboardType: TextInputType.number, optionalAnswer: true)
+                          child: FormGroup(stringNamaLabel: "Atas Nama", controllerNama: danaNamaController, keyboardType: TextInputType.text, optionalAnswer: true)
                         ),
                       ],
                     ),
